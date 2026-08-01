@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get/get_rx/src/rx_typedefs/rx_typedefs.dart';
 
 Widget cardButton({
   double? width,
   double padding = 20,
   IconData? icon,
   String text = "Learn",
+  void Function()? onPressed
 }) {
   return InkWell(
-    onTap: () {
-      print("Hello");
-    },
+    onTap: onPressed,
     borderRadius: BorderRadius.circular(20),
     child: Container(
       padding: EdgeInsets.all(20),

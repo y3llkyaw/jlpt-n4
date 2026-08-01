@@ -1,3 +1,9 @@
-
 import 'package:get/get.dart';
-class HomeController extends GetxController {}
+
+class HomeController extends GetxController {
+  final index = 0.obs;
+
+  void changeIndex(int value) {
+    index.value = value;
+  }
+}

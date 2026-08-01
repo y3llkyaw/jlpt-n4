@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -55,11 +56,27 @@ class DatabaseServices {
   // Fetch vocabulary for a specific chapter (e.g., chapter 1)
   Future<List<Map<String, dynamic>>> getVocabularyByChapter(int chapter) async {
     final db = await instance.database;
-    return await db.query(
-      'n4_vocabulary',
-      where: 'chapter = ?',
-      whereArgs: [chapter],
-      orderBy: "id"
+    return await db.query('n4_vocabulary',
+        where: 'chapter = ?', whereArgs: [chapter], orderBy: "id");
+  }
+
+  Future<int> updateVocabulary(Vocabulary vocab) async {
+    final db = await database; // သင့်ရဲ့ Sqflite Database Instance
+
+    return await db.update(
+      'n4_vocabulary', // Table Name
+      {
+        'kana': vocab.kana,
+        'kanji': vocab.kanji,
+        'meaning': vocab.meaning,
+        'part_of_speech': vocab.partOfSpeech,
+        'note': vocab.note,
+        'example': vocab.example,
+      },
+      where: 'id = ?', // ဘယ် ID ကို Update လုပ်မှာလဲဆိုတာ သတ်မှတ်ပေးရန်
+      whereArgs: [
+        vocab.id
+      ], // ID Value ကို သီးသန့် ပို့ပေးခြင်း (SQL Injection မဖြစ်အောင်)
     );
   }
 }

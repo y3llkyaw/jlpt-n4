@@ -1,5 +1,7 @@
-class Vocabulary {
-  int id;
+import 'package:equatable/equatable.dart';
+
+class Vocabulary extends Equatable {
+  int? id;
   int chapter;
   String kana;
   String kanji;
@@ -35,4 +37,7 @@ class Vocabulary {
       'example': example,
     };
   }
+  
+  @override
+  List<Object?> get props => [id,chapter,kana,kanji,meaning,partOfSpeech,note,example];
 }

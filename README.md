@@ -1,6 +1,6 @@
-# n4
+# JLPT N4 - SRS based Learning System
 
-A new Flutter project.
+JLPT N4 Project
 
 ## Getting Started
 

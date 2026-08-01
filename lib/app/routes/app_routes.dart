@@ -4,4 +4,7 @@
   static const UNKNOWN = '/404';
   static const LESSONDETAIL = '/lessondetail';
   static const EDITVOCAB = '/editvocab';
+  static const VOCAB_PAGE = '/vocab-page';
+  static const SETTING = '/setting';
+  static const REVIEW = '/review';
 }
