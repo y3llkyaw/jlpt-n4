@@ -8,13 +8,32 @@ class EditVocabPage extends GetView<EditvocabController> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(""),
+        title: Obx(
+          () => Text(controller.isNew ? 'Add Vocabulary' : 'Edit Vocabulary'),
+        ),
         actions: [
-          IconButton(
-            onPressed: () {
-              controller.printVocab();
-            },
-            icon: Icon(Icons.more_vert),
+          Obx(
+            () => controller.isNew
+                ? SizedBox.shrink()
+                : IconButton(
+                    onPressed: () {
+                      Get.defaultDialog(
+                        title: 'Delete Vocabulary',
+                        middleText:
+                            'Are you sure you want to delete this vocabulary?',
+                        textCancel: 'Cancel',
+                        textConfirm: 'Delete',
+                        confirmTextColor: Get.theme.colorScheme.onPrimary,
+                        onConfirm: () async {
+                          await controller.deleteVocab();
+                          Get.back();
+                          Get.back();
+                        },
+                        buttonColor: Get.theme.colorScheme.error,
+                      );
+                    },
+                    icon: Icon(Icons.delete),
+                  ),
           ),
         ],
       ),
@@ -24,9 +43,11 @@ class EditVocabPage extends GetView<EditvocabController> {
           crossAxisAlignment: CrossAxisAlignment.start,
           spacing: 5,
           children: [
-            Text(
-              "Edit Vocabulary",
-              style: Get.textTheme.displaySmall,
+            Obx(
+              () => Text(
+                controller.isNew ? 'Add Vocabulary' : 'Edit Vocabulary',
+                style: Get.textTheme.displaySmall,
+              ),
             ),
             SizedBox(
               height: 10,

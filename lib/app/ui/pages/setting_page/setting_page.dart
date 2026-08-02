@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 import '../../../controllers/setting_controller.dart';
+import '../../../routes/app_routes.dart';
 
 class SettingPage extends GetView<SettingController> {
   const SettingPage({Key? key}) : super(key: key);
@@ -20,6 +21,13 @@ class SettingPage extends GetView<SettingController> {
             ),
           ),
           Spacer(),
+          ListTile(
+            leading: Icon(Icons.add),
+            title: Text("Add Vocabulary"),
+            onTap: () {
+              Get.toNamed(AppRoutes.EDITVOCAB);
+            },
+          ),
           ListTile(
             leading: Icon(Icons.import_export),
             title: Text("Import Database"),

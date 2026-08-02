@@ -5,6 +5,9 @@ import 'package:n4/app/data/services/database_services.dart';
 
 class EditvocabController extends GetxController {
   final vocab = Rxn<Vocabulary>();
+  final original = Rxn<Vocabulary>();
+  List<Vocabulary>? sourceList;
+  int? sourceIndex;
   TextEditingController kana = TextEditingController();
   TextEditingController kanji = TextEditingController();
   TextEditingController note = TextEditingController();
@@ -12,58 +15,116 @@ class EditvocabController extends GetxController {
   TextEditingController meaing = TextEditingController();
   TextEditingController example = TextEditingController();
   var isEdited = false.obs;
-  var type = "".obs;
+  var type = "Noun".obs;
+
+  bool get isNew => vocab.value?.id == null;
 
   @override
   void onInit() {
-    vocab.value = Get.arguments[0];
+    super.onInit();
+
+    final args = Get.arguments;
+    if (args is List && args.isNotEmpty && args[0] is Vocabulary) {
+      vocab.value = args[0] as Vocabulary;
+      if (args.length >= 3) {
+        if (args[1] is List && args[2] is int) {
+          sourceList = (args[1] as List).cast<Vocabulary>();
+          sourceIndex = args[2] as int;
+        } else if (args[1] is int && args[2] is List) {
+          sourceList = (args[2] as List).cast<Vocabulary>();
+          sourceIndex = args[1] as int;
+        }
+      }
+    } else {
+      vocab.value = Vocabulary(null, 1, '', '', '', 'Noun', '', '');
+    }
+    original.value = Vocabulary(
+      vocab.value!.id,
+      vocab.value!.chapter,
+      vocab.value!.kana,
+      vocab.value!.kanji,
+      vocab.value!.meaning,
+      vocab.value!.partOfSpeech,
+      vocab.value!.note,
+      vocab.value!.example,
+    );
 
     chapter.text = vocab.value!.chapter.toString();
     kana.text = vocab.value!.kana;
     kanji.text = vocab.value!.kanji;
     note.text = vocab.value!.note;
     meaing.text = vocab.value!.meaning;
-    type.value = vocab.value!.partOfSpeech;
+    type.value = vocab.value!.partOfSpeech.isNotEmpty
+        ? vocab.value!.partOfSpeech
+        : 'Noun';
     example.text = vocab.value!.example;
-
-    super.onInit();
   }
 
   void onChange() {
-    Get.log("changed");
-    Vocabulary changedVocab = Vocabulary(
-        Get.arguments[0].id,
-        int.parse(chapter.text),
-        kana.text,
-        kanji.text,
-        meaing.text,
-        type.string,
-        note.text,
-        example.text);
+    Get.log('changed');
+    final current = Vocabulary(
+      vocab.value?.id,
+      int.tryParse(chapter.text) ?? 1,
+      kana.text,
+      kanji.text,
+      meaing.text,
+      type.string.isNotEmpty ? type.string : 'Noun',
+      note.text,
+      example.text,
+    );
 
-    if (changedVocab != Get.arguments[0]) {
-      isEdited.value = true;
+    if (isNew) {
+      isEdited.value = current.kana.isNotEmpty ||
+          current.kanji.isNotEmpty ||
+          current.meaning.isNotEmpty ||
+          current.note.isNotEmpty ||
+          current.example.isNotEmpty ||
+          current.chapter != 1 ||
+          current.partOfSpeech.isNotEmpty;
     } else {
-      isEdited.value = false;
+      isEdited.value = current != original.value;
     }
   }
 
-  void saveVocab() async {
-    Vocabulary updatedVocab = Vocabulary(
-        Get.arguments[0].id,
-        int.parse(chapter.text),
-        kana.text,
-        kanji.text,
-        meaing.text,
-        type.string,
-        note.text,
-        example.text);
-    Get.arguments[1][Get.arguments[2]] = updatedVocab;
-    await DatabaseServices.instance.updateVocabulary(updatedVocab);
+  Future<void> saveVocab() async {
+    final updatedVocab = Vocabulary(
+      vocab.value?.id,
+      int.tryParse(chapter.text) ?? 1,
+      kana.text,
+      kanji.text,
+      meaing.text,
+      type.string.isNotEmpty ? type.string : 'Noun',
+      note.text,
+      example.text,
+    );
+
+    if (isNew) {
+      await DatabaseServices.instance.insertVocabulary(updatedVocab);
+    } else {
+      await DatabaseServices.instance.updateVocabulary(updatedVocab);
+      if (sourceList != null && sourceIndex != null) {
+        sourceList![sourceIndex!] = updatedVocab;
+      } else if (sourceList != null) {
+        final updateIndex = sourceList!.indexWhere((item) => item.id == updatedVocab.id);
+        if (updateIndex != -1) {
+          sourceList![updateIndex] = updatedVocab;
+        }
+      }
+    }
+
     Get.back();
   }
 
-  void printVocab() {
-    Get.log(vocab.value!.id.toString());
+  Future<void> deleteVocab() async {
+    final id = vocab.value?.id;
+
+    if (id == null) {
+      return;
+    }
+
+    await DatabaseServices.instance.deleteVocabulary(id);
+    if (sourceList != null) {
+      sourceList!.removeWhere((item) => item.id == id);
+    }
   }
 }

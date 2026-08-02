@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:get/get.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -25,7 +26,7 @@ class DatabaseServices {
 
     if (!exists) {
       // If it doesn't exist, copy it from the assets folder
-      print("Creating a copy of the database from assets...");
+      Get.log("**** Creating a copy of the database from assets...");
 
       // Make sure the parent directory exists
       try {
@@ -40,7 +41,7 @@ class DatabaseServices {
       // Write and save the file
       await File(path).writeAsBytes(bytes, flush: true);
     } else {
-      print("Database already exists.");
+      Get.log("Database already exists.");
     }
 
     // Open the database
@@ -58,12 +59,20 @@ class DatabaseServices {
         where: 'chapter = ?', whereArgs: [chapter], orderBy: "id");
   }
 
+  Future<int> insertVocabulary(Vocabulary vocab) async {
+    final db = await database;
+    final data = vocab.toMap();
+    data.remove('id');
+    return await db.insert('vocabulary', data);
+  }
+
   Future<int> updateVocabulary(Vocabulary vocab) async {
-    final db = await database; 
+    final db = await database;
 
     return await db.update(
-      'n4_vocabulary', // Table Name
+      'vocabulary',
       {
+        'chapter': vocab.chapter,
         'kana': vocab.kana,
         'kanji': vocab.kanji,
         'meaning': vocab.meaning,
@@ -71,10 +80,17 @@ class DatabaseServices {
         'note': vocab.note,
         'example': vocab.example,
       },
-      where: 'id = ?', 
-      whereArgs: [
-        vocab.id
-      ], 
+      where: 'id = ?',
+      whereArgs: [vocab.id],
+    );
+  }
+
+  Future<int> deleteVocabulary(int id) async {
+    final db = await database;
+    return await db.delete(
+      'vocabulary',
+      where: 'id = ?',
+      whereArgs: [id],
     );
   }
 }
