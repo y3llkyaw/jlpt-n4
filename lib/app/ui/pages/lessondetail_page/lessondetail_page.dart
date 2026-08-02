@@ -1,5 +1,5 @@
 import 'package:animated_emoji/animated_emoji.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
@@ -12,148 +12,126 @@ class LessondetailPage extends GetView<LessondetailController> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text("Lessons ${Get.arguments}"),
-          actions: [
-            IconButton(
-                onPressed: () {
-                  controller.isListView.value = !controller.isListView.value;
-                },
-                icon: Icon(Icons.help_outline))
-          ],
-        ),
-        body: Obx(
-          () => controller.isListView.value
-              ? ListView.builder(
-                  itemCount: controller.vocabs.length,
-                  itemBuilder: (context, index) {
-                    return listCard(
+      appBar: AppBar(
+        centerTitle: true,
+        title: Obx(() => Text("Total Vocabs ${controller.vocabs.length}")),
+        actions: [
+          IconButton(
+              onPressed: () {
+                controller.isListView.value = !controller.isListView.value;
+              },
+              icon: Icon(Icons.help_outline))
+        ],
+      ),
+      body: Obx(
+        () => controller.isListView.value
+            ? ListView.builder(
+                itemCount: controller.vocabs.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    margin: EdgeInsets.all(10),
+                    child: listCard(
                       controller.vocabs[index],
                       index,
                       controller.vocabs,
-                    );
-                  },
-                )
-              : controller.isFinished.value
-                  ? AnimatedContainer(
-                      duration: Duration(milliseconds: 500),
-                      curve: Curves.easeInOut,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(20),
-                      ),
-                      child: Center(
-                        child: Column(
-                          spacing: 20,
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            AnimatedEmoji(
-                              AnimatedEmojis.partyPopper,
-                              size: 100,
+                      isBack: true,
+                    ),
+                  );
+                },
+              )
+            : controller.isFinished.value
+                ? AnimatedContainer(
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeInOut,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                    ),
+                    child: Center(
+                      child: Column(
+                        spacing: 20,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          AnimatedEmoji(
+                            AnimatedEmojis.partyPopper,
+                            size: 100,
+                          ),
+                          Text(
+                            "Congratulations!\nYou have known all vocabulary.",
+                            style: Get.textTheme.titleMedium!.copyWith(
+                              color: Get.theme.colorScheme.onPrimaryContainer,
+                              fontWeight: FontWeight.bold,
                             ),
-                            Text(
-                              "Congratulations!\nYou have known all vocabulary.",
+                            textAlign: TextAlign.center,
+                          ),
+                          ElevatedButton.icon(
+                            icon: Icon(
+                              Icons.repeat_rounded,
+                              color: Get.theme.colorScheme.onSecondary,
+                            ),
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(
+                                  Get.theme.colorScheme.primary),
+                            ),
+                            onPressed: () {
+                              controller.resetReview();
+                            },
+                            label: Text(
+                              "Restart ?",
                               style: Get.textTheme.titleMedium!.copyWith(
-                                color: Get.theme.colorScheme.onPrimaryContainer,
+                                color: Get.theme.colorScheme.onPrimary,
                                 fontWeight: FontWeight.bold,
                               ),
-                              textAlign: TextAlign.center,
                             ),
-                            ElevatedButton.icon(
-                              icon: Icon(
-                                Icons.repeat_rounded,
+                          ),
+                          ElevatedButton.icon(
+                            // icon: Icon(Icons.arrow_back),
+                            style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(
+                                  Get.theme.colorScheme.secondary),
+                            ),
+                            onPressed: () {
+                              Get.back();
+                            },
+                            label: Text(
+                              "Go Back",
+                              style: Get.textTheme.titleMedium!.copyWith(
                                 color: Get.theme.colorScheme.onSecondary,
-                              ),
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                    Get.theme.colorScheme.primary),
-                              ),
-                              onPressed: () {
-                                controller.resetReview();
-                              },
-                              label: Text(
-                                "Restart ?",
-                                style: Get.textTheme.titleMedium!.copyWith(
-                                  color: Get.theme.colorScheme.onPrimary,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                fontWeight: FontWeight.bold,
                               ),
                             ),
-                            ElevatedButton.icon(
-                              // icon: Icon(Icons.arrow_back),
-                              style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                    Get.theme.colorScheme.secondary),
-                              ),
-                              onPressed: () {
-                                Get.back();
-                              },
-                              label: Text(
-                                "Go Back",
-                                style: Get.textTheme.titleMedium!.copyWith(
-                                  color: Get.theme.colorScheme.onSecondary,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            )
-                          ],
+                          )
+                        ],
+                      ),
+                    ),
+                  )
+                : Column(
+                    spacing: 20,
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        controller.round.value == 1
+                            ? "Round 1"
+                            : "Round ${controller.round.value} [Forgotten Cards]",
+                        style: Get.textTheme.titleLarge!.copyWith(
+                          color: Get.theme.colorScheme.onPrimaryContainer,
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                    )
-                  : Column(
-                      spacing: 20,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          controller.round.value == 1
-                              ? "Round 1"
-                              : "Round ${controller.round.value} [Forgotten Cards]",
-                          style: Get.textTheme.titleLarge!.copyWith(
-                            color: Get.theme.colorScheme.onPrimaryContainer,
-                            fontWeight: FontWeight.bold,
-                          ),
+                      Obx(
+                        () => _swipehint(
+                          knownCount: controller.knownList.length,
+                          forgotCount: controller.forgotList.length,
                         ),
-                        Obx(
-                          () => Row(
-                            spacing: 20,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Chip(
-                                label: Text("Forgot"),
-                                avatar: CircleAvatar(
-                                  backgroundColor:
-                                      Get.theme.colorScheme.errorContainer,
-                                  child: Text(
-                                    controller.forgotList.length.toString(),
-                                    style: Get.textTheme.bodyMedium,
-                                  ),
-                                ),
-                              ),
-                              Chip(
-                                label: Text("Remember"),
-                                avatar: CircleAvatar(
-                                  child: Text(
-                                    controller.knownList.length.toString(),
-                                    style: Get.textTheme.bodyMedium,
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                          children: [
-                            Icon(Icons.swipe_left),
-                            Text("Swipe Left: Forgot"),
-                            Text("Swipe Right: Know"),
-                            Icon(Icons.swipe_right),
-                          ],
-                        ),
-                        SizedBox(
-                          height: Get.height * 0.5,
-                          child: Obx(
-                            () => controller.vocabsCopy.isEmpty
+                      ),
+                      
+                      SizedBox(
+                        height: Get.height * 0.5,
+                        child: Obx(
+                          () {
+                            Get.log(
+                                "Vocabs Copy Length: shuffle ${controller.vocabsCopy.length}");
+
+                            return controller.vocabsCopy.isEmpty
                                 ? Center(
                                     child: Text(
                                       "No cards left to review.",
@@ -161,8 +139,7 @@ class LessondetailPage extends GetView<LessondetailController> {
                                     ),
                                   )
                                 : CardSwiper(
-                                    controller:
-                                        controller.cardSwiperController.value,
+                                    showBackCardOnUndo: false,
                                     onEnd: () {
                                       controller.finishedRound();
                                     },
@@ -178,7 +155,7 @@ class LessondetailPage extends GetView<LessondetailController> {
                                       Get.log(
                                         "Current Vocabs${vocab.kana} ",
                                       );
-                                      if (vocab.id == 0 ) {
+                                      if (vocab.id == 0) {
                                         controller.showRestart();
                                       }
                                       if (direction ==
@@ -193,7 +170,9 @@ class LessondetailPage extends GetView<LessondetailController> {
                                     isLoop: true,
                                     allowedSwipeDirection:
                                         AllowedSwipeDirection.only(
-                                            left: true, right: true),
+                                      left: true,
+                                      right: true,
+                                    ),
                                     cardsCount: controller.vocabsCopy.isEmpty
                                         ? 1
                                         : controller.vocabsCopy.length,
@@ -202,56 +181,109 @@ class LessondetailPage extends GetView<LessondetailController> {
                                         horizontalOffsetPercentage,
                                         verticalOffsetPercentage) {
                                       return Center(
-                                        child: listCard(
+                                        child: FlipCard(
+                                          key: ValueKey(
+                                              'vocab-card-${controller.vocabsCopy[index].id ?? index}-${controller.vocabsCopy[index].kana}-${controller.vocabsCopy[index].meaning}'),
+                                          direction: FlipDirection.VERTICAL,
+                                          front: listCard(
                                             controller.vocabsCopy[index],
                                             index,
-                                            controller.vocabsCopy),
+                                            controller.vocabsCopy,
+                                          ),
+                                          back: listCard(
+                                            controller.vocabsCopy[index],
+                                            index,
+                                            controller.vocabsCopy,
+                                            isBack: true,
+                                          ),
+                                        ),
                                       );
                                     },
-                                  ),
-                            // :CardSwiper(cardBuilder: ((context, index, horizontalOffsetPercentage, verticalOffsetPercentage) => Text("Hello")), cardsCount: 1)
-                          ),
+                                  );
+                          },
+                          // :CardSwiper(cardBuilder: ((context, index, horizontalOffsetPercentage, verticalOffsetPercentage) => Text("Hello")), cardsCount: 1)
                         ),
-                      ],
-                    ),
-        ),
-        floatingActionButton: Align(
-          alignment: Alignment.bottomCenter,
-          child: Container(
-            padding: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
+                      ),
+                    ],
+                  ),
+      ),
+    );
+  }
+}
+
+Widget _swipehint({int knownCount = 0, int forgotCount = 0}) {
+  return Row(
+    spacing: 20,
+    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+    children: [
+      Column(
+        children: [
+          AnimatedContainer(
+            padding: EdgeInsets.all(5),
+            duration: Duration(milliseconds: 500),
             decoration: BoxDecoration(
-              color: Get.theme.colorScheme.primary,
-              borderRadius: BorderRadius.circular(20),
+              shape: BoxShape.circle,
+              color: Get.theme.colorScheme.primaryContainer,
             ),
-            child: Row(
-              spacing: 20,
-              mainAxisAlignment: MainAxisAlignment.center,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                CircleAvatar(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.note),
-                    color: Get.theme.colorScheme.onPrimaryContainer,
-                  ),
+            child: Center(
+              child: Text(
+                "$knownCount",
+                style: Get.textTheme.titleMedium!.copyWith(
+                  color: Get.theme.colorScheme.onPrimaryContainer,
+                  fontWeight: FontWeight.bold,
                 ),
-                CircleAvatar(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(CupertinoIcons.smiley_fill),
-                    color: Get.theme.colorScheme.onPrimaryContainer,
-                  ),
-                ),
-                CircleAvatar(
-                  child: IconButton(
-                    onPressed: () {},
-                    icon: Icon(Icons.shuffle),
-                    color: Get.theme.colorScheme.onPrimaryContainer,
-                  ),
-                ),
-              ],
+              ),
             ),
           ),
-        ));
-  }
+          Row(
+            spacing: 10,
+            children: [
+              Icon(Icons.swipe_right),
+              Text(
+                "Known",
+                style: Get.textTheme.titleMedium!.copyWith(
+                  color: Get.theme.colorScheme.onPrimaryContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+      Column(
+        children: [
+          AnimatedContainer(
+            padding: EdgeInsets.all(5),
+            duration: Duration(milliseconds: 500),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              color: Get.theme.colorScheme.errorContainer,
+            ),
+            child: Center(
+              child: Text(
+                "$forgotCount",
+                style: Get.textTheme.titleMedium!.copyWith(
+                  color: Get.theme.colorScheme.onErrorContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Row(
+            spacing: 10,
+            children: [
+              Text(
+                "Forgot",
+                style: Get.textTheme.titleMedium!.copyWith(
+                  color: Get.theme.colorScheme.onPrimaryContainer,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+              Icon(Icons.swipe_right),
+            ],
+          ),
+        ],
+      ),
+    ],
+  );
 }

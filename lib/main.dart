@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/ui/utils/util.dart';
@@ -21,12 +20,11 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
- TextTheme textTheme = createTextTheme(context, "ABeeZee", "ADLaM Display");
+    TextTheme textTheme = createTextTheme(context, "ABeeZee", "ADLaM Display");
 
     MaterialTheme theme = MaterialTheme(textTheme);
-   return ScreenUtilInit(
-      builder: (_,__) {
+    return ScreenUtilInit(
+      builder: (_, __) {
         return GetMaterialApp(
           title: 'N4',
           debugShowCheckedModeBanner: false,
@@ -44,7 +42,7 @@ class MyApp extends StatelessWidget {
           },
         );
       },
-     //! Must change it to true if you want to use the ScreenUtil
+      //! Must change it to true if you want to use the ScreenUtil
       designSize: const Size(411, 823),
     );
   }

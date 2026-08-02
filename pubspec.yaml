@@ -62,5 +62,5 @@ flutter:
     - assets/icons/
     - assets/image/
     - assets/animation/
-    - assets/data/n4_vocabulary.db
+    - assets/data/
   uses-material-design: true

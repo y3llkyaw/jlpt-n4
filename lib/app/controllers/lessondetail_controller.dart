@@ -9,7 +9,6 @@ class LessondetailController extends GetxController {
   var forgotList = <Vocabulary>[].obs;
   var knownList = <Vocabulary>[].obs;
   var isListView = true.obs;
-  var cardSwiperController = CardSwiperController().obs;
   var round = 1.obs;
   var isFinished = false.obs;
 
@@ -19,6 +18,7 @@ class LessondetailController extends GetxController {
 
     final data =
         await DatabaseServices.instance.getVocabularyByChapter(Get.arguments);
+    Get.log(data.toString());
     vocabs.value = data.map((e) => Vocabulary.fromMap(e)).toList();
     vocabsCopy.value = vocabs.toList();
   }
@@ -54,14 +54,18 @@ class LessondetailController extends GetxController {
     knownList.clear();
     forgotList.clear();
     vocabsCopy.value = vocabs.toList();
+    Get.log("Finished! Shuffle the review.");
+    vocabs.shuffle();
     isFinished.value = false;
-    cardSwiperController.value = CardSwiperController();
   }
 
   void showRestart() {
+    round.value = 1;
     isFinished.value = true;
     knownList.clear();
     forgotList.clear();
     vocabsCopy.value = vocabs.toList();
+    Get.log("Finished! Shuffle the review.");
+    vocabs.shuffle();
   }
 }

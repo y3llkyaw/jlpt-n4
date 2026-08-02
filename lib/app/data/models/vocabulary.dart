@@ -18,7 +18,7 @@ class Vocabulary extends Equatable {
         map['id'] as int,
         map['chapter'] as int,
         map['kana'] as String,
-        map['kanji'] as String? ?? '',
+        map['kanji'] as String? ?? '',  
         map['meaning'] as String,
         map['part_of_speech'] as String,
         map['note'] as String ?? '',

@@ -22,7 +22,7 @@ class VocabPage extends GetView<VocabPageController> {
                 onTap: () => Get.toNamed(AppRoutes.LESSONDETAIL,
                     arguments: 25 + index + 1),
                 title: Text(
-                  "Lesson ${index + 1}",
+                  "Lesson ${index + 1 + 25}",
                   style: Get.textTheme.titleMedium,
                 ),
                 trailing: Icon(Icons.chevron_right),
