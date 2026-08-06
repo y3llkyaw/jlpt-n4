@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:n4/app/data/models/vocabulary.dart';
 
 TextTheme createTextTheme(
     BuildContext context, String bodyFontString, String displayFontString) {
   TextTheme baseTextTheme = Theme.of(context).textTheme;
-  TextTheme bodyTextTheme = GoogleFonts.getTextTheme(bodyFontString, baseTextTheme);
+  TextTheme bodyTextTheme =
+      GoogleFonts.getTextTheme(bodyFontString, baseTextTheme);
   TextTheme displayTextTheme =
       GoogleFonts.getTextTheme(displayFontString, baseTextTheme);
   TextTheme textTheme = displayTextTheme.copyWith(
@@ -16,4 +19,12 @@ TextTheme createTextTheme(
     labelSmall: bodyTextTheme.labelSmall,
   );
   return textTheme;
+}
+
+void speak(Vocabulary vocab) async {
+  FlutterTts flutterTts = FlutterTts();
+  await flutterTts.setLanguage("ja-JP"); // Japanese accent/voice
+  await flutterTts.setSpeechRate(0.4); // Slower speed
+  await flutterTts.setPitch(1.2); // Slightly higher pitch
+  await flutterTts.speak(vocab.kana);
 }

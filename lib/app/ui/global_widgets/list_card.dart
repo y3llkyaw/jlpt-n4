@@ -2,15 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/routes/app_routes.dart';
+import 'package:n4/app/ui/utils/util.dart';
 
-Widget listCard(Vocabulary vocab, int index, List<Vocabulary> vocabList,
+Widget listCard(Vocabulary vocab, int? index, List<Vocabulary>? vocabList,
     {bool isReview = false, bool isBack = false}) {
   return Container(
     height: 250,
     padding: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
     margin: EdgeInsets.all(5),
     decoration: BoxDecoration(
-      border: Border.all(color: Colors.black),
+      boxShadow: [
+        BoxShadow(color: Get.theme.colorScheme.shadow, blurRadius: 0.5),
+      ],
       borderRadius: BorderRadius.circular(20),
       color: Get.theme.colorScheme.primaryContainer,
     ),
@@ -23,12 +26,19 @@ Widget listCard(Vocabulary vocab, int index, List<Vocabulary> vocabList,
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            Text(
-              "#${index + 1}",
-              style: Get.textTheme.titleMedium!.copyWith(
-                color: Get.theme.colorScheme.primary,
-              ),
-            ),
+            index != null
+                ? Text(
+                    "#${index + 1}",
+                    style: Get.textTheme.titleMedium!.copyWith(
+                      color: Get.theme.colorScheme.primary,
+                    ),
+                  )
+                : Text(
+                    "#${1}",
+                    style: Get.textTheme.titleMedium!.copyWith(
+                      color: Get.theme.colorScheme.primary,
+                    ),
+                  ),
             // Chip(label: Text(vocab.partOfSpeech))
             Row(
               children: [
@@ -69,7 +79,9 @@ Widget listCard(Vocabulary vocab, int index, List<Vocabulary> vocabList,
                   )
                 : SizedBox(),
             ElevatedButton.icon(
-              onPressed: () {},
+              onPressed: () async {
+                speak(vocab);
+              },
               label: Text("Speak"),
               icon: Icon(Icons.volume_up),
             ),

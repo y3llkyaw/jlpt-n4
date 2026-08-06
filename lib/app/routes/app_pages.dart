@@ -1,4 +1,6 @@
-import '../bindings/review_binding.dart';
+import '../bindings/vocab_training_binding.dart';
+import '../ui/pages/vocab_training_page/vocab_training_page.dart';
+      import '../bindings/review_binding.dart';
 import '../ui/pages/review_page/review_page.dart';
       import '../bindings/setting_binding.dart';
 import '../ui/pages/setting_page/setting_page.dart';
@@ -59,6 +61,12 @@ class AppPages {
       name: AppRoutes.REVIEW,
       page: () => const ReviewPage(),
       binding: ReviewBinding(),
+      transition: _defaultTransition,
+    ),
+    GetPage(
+      name: AppRoutes.VOCAB_TRAINING,
+      page: () => const VocabTrainingPage(),
+      binding: VocabTrainingBinding(),
       transition: _defaultTransition,
     ), 
 ];

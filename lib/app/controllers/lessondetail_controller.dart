@@ -11,14 +11,16 @@ class LessondetailController extends GetxController {
   var isListView = true.obs;
   var round = 1.obs;
   var isFinished = false.obs;
+  var congrat = Vocabulary(0, 0, 'Congratulations!', '',
+      'You have completed all the cards in this round.', '', '', '');
 
   @override
   void onInit() async {
     super.onInit();
+    vocabs.value = [congrat, congrat];
 
     final data =
         await DatabaseServices.instance.getVocabularyByChapter(Get.arguments);
-    Get.log(data.toString());
     vocabs.value = data.map((e) => Vocabulary.fromMap(e)).toList();
     vocabsCopy.value = vocabs.toList();
   }

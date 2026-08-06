@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/global_widgets/card_button.dart';
 import 'package:n4/app/ui/pages/review_page/review_page.dart';
@@ -9,38 +10,69 @@ import '../../../controllers/home_controller.dart';
 
 class HomePage extends GetView<HomeController> {
   const HomePage({Key? key}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
+    var congrat = Vocabulary(0, 0, 'Congratulations!', '',
+        'You have completed all the cards in this round.', '', '', '');
     return Scaffold(
       appBar: AppBar(
-        title: Text("JLPT N4"),
-        actions: [
-          IconButton(
-            onPressed: () {
-              showAboutDialog(
-                context: context,
-                applicationVersion: "1.0",
-                applicationName: "JLPT N4",
-                applicationIcon: Icon(Icons.face),
-              );
-            },
-            icon: Icon(Icons.help_outline),
-          )
-        ],
+        backgroundColor: Get.theme.colorScheme.secondaryContainer,
+        toolbarHeight: 200,
+        centerTitle: true,
+        title: Column(
+          children: [
+            Text(
+              "JLPT N4",
+              style: Get.textTheme.headlineLarge,
+            ),
+            Text(
+              "learn japanese with space repetition system learning.",
+              style: Get.textTheme.titleSmall,
+            ),
+          ],
+        ),
+        
       ),
       body: Obx(() => [
             Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              spacing: 20,
               children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                SizedBox(),
+                Column(
+                  spacing: 20,
+                  mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    cardButton(
+                    cardButton2(
+                        width: Get.width * 0.85,
                         text: "Vocabs",
                         icon: Icons.book,
                         onPressed: () {
                           Get.toNamed(AppRoutes.VOCAB_PAGE);
                         }),
-                    cardButton(text: "Kenji", icon: Icons.book),
+                    cardButton2(
+                        width: Get.width * 0.85,
+                        text: "Kanji",
+                        icon: Icons.book,
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.VOCAB_PAGE);
+                        }),
+                    cardButton2(
+                        width: Get.width * 0.85,
+                        text: "Grammers",
+                        icon: Icons.book,
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.VOCAB_PAGE);
+                        }),
+                    cardButton2(
+                        width: Get.width * 0.85,
+                        text: "Old Questions",
+                        icon: Icons.book,
+                        onPressed: () {
+                          Get.toNamed(AppRoutes.VOCAB_PAGE);
+                        }),
+                    // cardButton(text: "Kenji", icon: Icons.book),
                   ],
                 ),
               ],

@@ -7,4 +7,5 @@
   static const VOCAB_PAGE = '/vocab-page';
   static const SETTING = '/setting';
   static const REVIEW = '/review';
+  static const VOCAB_TRAINING = '/vocab-training';
 }
