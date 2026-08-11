@@ -1,5 +1,5 @@
-import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
+import 'package:n4/app/data/models/enums.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/data/services/database_services.dart';
 
@@ -8,7 +8,10 @@ class LessondetailController extends GetxController {
   var vocabsCopy = <Vocabulary>[].obs;
   var forgotList = <Vocabulary>[].obs;
   var knownList = <Vocabulary>[].obs;
+  var viewVocabs = <Vocabulary>[].obs;
+
   var isListView = true.obs;
+  var vocabFilter = VocabFilter.all.obs;
   var round = 1.obs;
   var isFinished = false.obs;
   var congrat = Vocabulary(0, 0, 'Congratulations!', '',
@@ -23,6 +26,7 @@ class LessondetailController extends GetxController {
         await DatabaseServices.instance.getVocabularyByChapter(Get.arguments);
     vocabs.value = data.map((e) => Vocabulary.fromMap(e)).toList();
     vocabsCopy.value = vocabs.toList();
+    viewVocabs.value = vocabs.toList();
   }
 
   void addForgotVocab(Vocabulary vocab) {
@@ -49,6 +53,8 @@ class LessondetailController extends GetxController {
     Get.log("Forgot list length: ${forgotList.length}");
     vocabsCopy.value = forgotList.toList();
     forgotList.clear();
+    knownList.clear();
+    viewVocabs.value = _filterVocabs();
   }
 
   void resetReview() {
@@ -58,6 +64,7 @@ class LessondetailController extends GetxController {
     vocabsCopy.value = vocabs.toList();
     Get.log("Finished! Shuffle the review.");
     vocabs.shuffle();
+    viewVocabs.value = _filterVocabs();
     isFinished.value = false;
   }
 
@@ -69,5 +76,40 @@ class LessondetailController extends GetxController {
     vocabsCopy.value = vocabs.toList();
     Get.log("Finished! Shuffle the review.");
     vocabs.shuffle();
+    viewVocabs.value = _filterVocabs();
+  }
+
+  void changeFilter(VocabFilter filter) {
+    vocabFilter.value = filter;
+    viewVocabs.value = _filterVocabs();
+  }
+
+  List<Vocabulary> _filterVocabs() {
+    final currentFilter = vocabFilter.value;
+
+    if (currentFilter == VocabFilter.all) {
+      return vocabs.toList();
+    }
+
+    return vocabs.where((vocab) {
+      final partOfSpeech = vocab.partOfSpeech.toLowerCase();
+
+      switch (currentFilter) {
+        case VocabFilter.noun:
+          return partOfSpeech.contains('noun');
+        case VocabFilter.verb:
+          return partOfSpeech.contains('verb');
+        case VocabFilter.iAdj:
+          return partOfSpeech.contains('i-adj');
+        case VocabFilter.naAdji:
+          return partOfSpeech.contains('na-adj');
+        case VocabFilter.speaking:
+          return partOfSpeech.contains('speaking');
+        case VocabFilter.suffix:
+          return partOfSpeech.contains('suffix');
+        case VocabFilter.all:
+          return true;
+      }
+    }).toList();
   }
 }
