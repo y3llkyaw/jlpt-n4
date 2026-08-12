@@ -45,11 +45,11 @@ Widget listCard(Vocabulary vocab, int? index, List<Vocabulary>? vocabList,
                 Chip(
                   label: Text(
                     vocab.partOfSpeech,
-                    style: Get.textTheme.bodyMedium!.copyWith(
-                        color: Get.theme.colorScheme.onPrimary,
+                    style: Get.textTheme.bodySmall!.copyWith(
+                        // color: Get.theme.colorScheme.onPrimary,
                         fontWeight: FontWeight.bold),
                   ),
-                  color: WidgetStatePropertyAll(Get.theme.colorScheme.primary),
+                  // color: WidgetStatePropertyAll(Get.theme.colorScheme.primary),
                 ),
               ],
             ),
@@ -78,7 +78,7 @@ Widget listCard(Vocabulary vocab, int? index, List<Vocabulary>? vocabList,
                     icon: Icon(Icons.edit_note),
                   )
                 : SizedBox(),
-            ElevatedButton.icon(
+            FilledButton.icon(
               onPressed: () async {
                 speak(vocab);
               },

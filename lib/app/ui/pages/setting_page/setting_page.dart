@@ -10,17 +10,19 @@ class SettingPage extends GetView<SettingController> {
   const SettingPage({Key? key}) : super(key: key);
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(SettingController());
     return Container(
       padding: EdgeInsets.all(20),
       child: Column(
         children: [
-          Center(
-            child: AnimatedEmoji(
-              AnimatedEmojis.gear,
-              size: 50,
+          Obx(
+            () => SwitchListTile(
+              secondary: Icon(Icons.light_mode_outlined),
+              title: Text(controller.isDarkMode.value ? 'Dark mode' : 'Light mode'),
+              value: controller.isDarkMode.value,
+              onChanged: (_) => controller.toggleTheme(),
             ),
           ),
-          Spacer(),
           ListTile(
             leading: Icon(Icons.add),
             title: Text("Add Vocabulary"),
