@@ -5,6 +5,7 @@ import 'package:n4/app/controllers/lessondetail_controller.dart';
 import 'package:n4/app/data/models/enums.dart';
 import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/global_widgets/list_card.dart';
+import 'package:n4/app/ui/utils/util.dart';
 
 class LessondetailPage extends GetView<LessondetailController> {
   const LessondetailPage({Key? key}) : super(key: key);
@@ -92,6 +93,7 @@ class LessondetailPage extends GetView<LessondetailController> {
                     children: VocabFilter.values
                         .map(
                           (e) => ChoiceChip(
+                            // shape: ,
                             onSelected: (value) {
                               controller.changeFilter(e);
                             },
@@ -109,9 +111,14 @@ class LessondetailPage extends GetView<LessondetailController> {
                 (context, index) {
                   final currentVocab = controller.viewVocabs[index];
                   return ListTile(
+                    onTap: () {
+                      speak(currentVocab);
+                    },
                     leading: Text("${index + 1}"),
                     title: Text(
-                      currentVocab.kana,
+                      currentVocab.kana == ''
+                          ? currentVocab.kanji
+                          : currentVocab.kana,
                       style: Get.textTheme.titleMedium,
                     ),
                     subtitle: Text(currentVocab.meaning),

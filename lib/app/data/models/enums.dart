@@ -4,9 +4,9 @@ enum VocabType {
   verb2,
   verb3,
   iAdj,
-  naAdji,
+  naAdj,
   speaking,
   suffix
 }
 
-enum VocabFilter { all, noun, verb, iAdj, naAdji, speaking, suffix }
+enum VocabFilter { all, noun, verb, iAdj, naAdj, speaking, suffix }

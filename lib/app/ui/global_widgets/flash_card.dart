@@ -59,12 +59,12 @@ Widget flashCard(
                   .copyWith(color: Get.theme.colorScheme.onPrimaryContainer),
             ),
             Text(
-              vocab.note,
+              vocab?.note ?? '',
               style: Get.textTheme.bodyLarge!
                   .copyWith(color: Get.theme.colorScheme.onPrimaryContainer),
             ),
             Text(
-              vocab.example,
+              vocab?.example ?? '',
               style: Get.textTheme.bodyLarge!
                   .copyWith(color: Get.theme.colorScheme.onPrimaryContainer),
             ),

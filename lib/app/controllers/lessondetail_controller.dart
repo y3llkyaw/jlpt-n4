@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:get/get.dart';
 import 'package:n4/app/data/models/enums.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
@@ -25,6 +27,8 @@ class LessondetailController extends GetxController {
     final data =
         await DatabaseServices.instance.getVocabularyByChapter(Get.arguments);
     vocabs.value = data.map((e) => Vocabulary.fromMap(e)).toList();
+
+    log(data.length.toString());
     vocabsCopy.value = vocabs.toList();
     viewVocabs.value = vocabs.toList();
   }
@@ -100,9 +104,9 @@ class LessondetailController extends GetxController {
         case VocabFilter.verb:
           return partOfSpeech.contains('verb');
         case VocabFilter.iAdj:
-          return partOfSpeech.contains('i-adj');
-        case VocabFilter.naAdji:
-          return partOfSpeech.contains('na-adj');
+          return partOfSpeech.toLowerCase().contains('iadj');
+        case VocabFilter.naAdj:
+          return partOfSpeech.toLowerCase().contains('naadji');
         case VocabFilter.speaking:
           return partOfSpeech.contains('speaking');
         case VocabFilter.suffix:

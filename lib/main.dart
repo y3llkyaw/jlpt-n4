@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_storage/get_storage.dart';
 import 'package:n4/app/ui/utils/util.dart';
 import 'app/data/services/dependency_injection.dart';
 import 'app/data/services/theme_service.dart';
@@ -11,6 +12,7 @@ import 'app/ui/theme/themes.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await GetStorage.init();
   DependecyInjection.init();
   runApp(const MyApp());
 }

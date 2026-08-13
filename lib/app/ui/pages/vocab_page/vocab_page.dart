@@ -18,16 +18,35 @@ class VocabPage extends GetView<VocabPageController> {
           return Column(
             children: [
               ListTile(
-                leading: Icon(Icons.play_lesson_rounded),
+                shape: Border(
+                  bottom:
+                      BorderSide(color: Get.theme.colorScheme.outlineVariant),
+                ),
+                leading: CircleAvatar(
+                  child: Icon(Icons.book_rounded),
+                ),
                 onTap: () => Get.toNamed(AppRoutes.LESSONDETAIL,
                     arguments: 25 + index + 1),
                 title: Text(
                   "Lesson ${index + 1 + 25}",
                   style: Get.textTheme.titleMedium,
                 ),
-                trailing: Icon(Icons.chevron_right),
+                subtitle: Text("words 42."),
+                trailing: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    CircularProgressIndicator(
+                      value: 0.43,
+                    ),
+                    Text(
+                      "43",
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    )
+                  ],
+                ),
               ),
-              Divider(),
             ],
           );
         }),

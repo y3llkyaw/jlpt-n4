@@ -13,7 +13,7 @@ class DatabaseServices {
 
   Future<Database> get database async {
     if (_database != null) return _database!;
-    _database = await _initDB('mina1.db');
+    _database = await _initDB('manual.db');
     return _database!;
   }
 
@@ -50,12 +50,12 @@ class DatabaseServices {
 
   Future<List<Map<String, dynamic>>> getVocabulary() async {
     final db = await instance.database;
-    return await db.query('vocabulary');
+    return await db.query('vocabularies');
   }
 
   Future<List<Map<String, dynamic>>> getVocabularyByChapter(int chapter) async {
     final db = await instance.database;
-    return await db.query('vocabulary',
+    return await db.query('vocabularies',
         where: 'chapter = ?', whereArgs: [chapter], orderBy: "id");
   }
 
@@ -63,14 +63,14 @@ class DatabaseServices {
     final db = await database;
     final data = vocab.toMap();
     data.remove('id');
-    return await db.insert('vocabulary', data);
+    return await db.insert('vocabularies', data);
   }
 
   Future<int> updateVocabulary(Vocabulary vocab) async {
     final db = await database;
 
     return await db.update(
-      'vocabulary',
+      'vocabularies',
       {
         'chapter': vocab.chapter,
         'kana': vocab.kana,

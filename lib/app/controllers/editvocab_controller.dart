@@ -52,12 +52,12 @@ class EditvocabController extends GetxController {
     chapter.text = vocab.value!.chapter.toString();
     kana.text = vocab.value!.kana;
     kanji.text = vocab.value!.kanji;
-    note.text = vocab.value!.note;
+    note.text = vocab.value?.note ?? '';
     meaing.text = vocab.value!.meaning;
     type.value = vocab.value!.partOfSpeech.isNotEmpty
         ? vocab.value!.partOfSpeech
         : 'Noun';
-    example.text = vocab.value!.example;
+    example.text = vocab.value?.example ?? '';
   }
 
   void onChange() {
@@ -77,8 +77,8 @@ class EditvocabController extends GetxController {
       isEdited.value = current.kana.isNotEmpty ||
           current.kanji.isNotEmpty ||
           current.meaning.isNotEmpty ||
-          current.note.isNotEmpty ||
-          current.example.isNotEmpty ||
+          current.note != null ||
+          current.example != null ||
           current.chapter != 1 ||
           current.partOfSpeech.isNotEmpty;
     } else {
@@ -105,7 +105,8 @@ class EditvocabController extends GetxController {
       if (sourceList != null && sourceIndex != null) {
         sourceList![sourceIndex!] = updatedVocab;
       } else if (sourceList != null) {
-        final updateIndex = sourceList!.indexWhere((item) => item.id == updatedVocab.id);
+        final updateIndex =
+            sourceList!.indexWhere((item) => item.id == updatedVocab.id);
         if (updateIndex != -1) {
           sourceList![updateIndex] = updatedVocab;
         }

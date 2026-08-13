@@ -33,19 +33,6 @@ class HomePage extends GetView<HomeController> {
                           style: Get.textTheme.titleMedium,
                         ),
                       ),
-                      Obx(
-                        () => CarouselSlider(
-                          items: [
-                            WordOfTheDay(vocab: controller.randomVocab.value)
-                          ],
-                          options: CarouselOptions(
-                            enableInfiniteScroll: false,
-                            autoPlay: true,
-                            height: 180,
-                            viewportFraction: 0.6
-                          ),
-                        ),
-                      ),
                       ListTile(
                         title: Text(
                           "Learning Category",
@@ -56,25 +43,37 @@ class HomePage extends GetView<HomeController> {
                         onTap: () {
                           Get.toNamed(AppRoutes.VOCAB_PAGE);
                         },
+                        shape: Border(
+                          bottom: BorderSide(
+                              color: Get.theme.colorScheme.outlineVariant),
+                        ),
                         contentPadding:
                             EdgeInsets.symmetric(horizontal: 20, vertical: 0),
                         leading: CircleAvatar(child: Icon(Icons.book)),
-                        title: Text("Vocabulary"),
+                        title: Text(
+                          "Vocabulary",
+                          style: Get.textTheme.titleMedium,
+                        ),
                         subtitle: Text(
                             "learn Vocabulary and take a quiz. It will be in review session when the time is right"),
                         trailing: Icon(Icons.chevron_right),
                       ),
-                      Divider(),
                       ListTile(
                         onTap: () {},
+                        shape: Border(
+                          bottom: BorderSide(
+                              color: Get.theme.colorScheme.outlineVariant),
+                        ),
                         contentPadding: EdgeInsets.symmetric(horizontal: 20),
                         leading: CircleAvatar(child: Icon(Icons.brush)),
-                        title: Text("Kanji"),
+                        title: Text(
+                          "Kanji",
+                          style: Get.textTheme.titleMedium,
+                        ),
                         subtitle: Text(
                             "learn Vocabulary and take a quiz. It will be in review session when the time is right"),
                         trailing: Icon(Icons.chevron_right),
                       ),
-                      Divider(),
                     ],
                   ),
                 ],

@@ -7,8 +7,8 @@ class Vocabulary extends Equatable {
   String kanji;
   String meaning;
   String partOfSpeech;
-  String note;
-  String example;
+  String? note;
+  String? example;
 
   Vocabulary(this.id, this.chapter, this.kana, this.kanji, this.meaning,
       this.partOfSpeech, this.note, this.example);
@@ -19,10 +19,10 @@ class Vocabulary extends Equatable {
         map['chapter'] as int,
         map['kana'] as String,
         map['kanji'] as String? ?? '',  
-        map['meaning'] as String,
+        map['meaning'] ?? '',
         map['part_of_speech'] as String,
-        map['note'] as String ?? '',
-        map['example'] as String ?? '');
+        map['note'],
+        map['example']);
   }
 
   Map<String, dynamic> toMap() {
