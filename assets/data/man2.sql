@@ -456,6 +456,12 @@ INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, e
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (35, '関係', 'かんけい', 'noun', 'ပတ်သက်မှု', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (35, '仲よくします', 'なかよくします', 'verb3', 'သင့်တင့်စွာနေသည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (35, '必要[な]', 'ひつよう[な]', 'naAdji', 'လိုအပ်သော', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (35, '', 'しゃ', 'noun', 'ပြဒါး။', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (35, '', 'まじわります', 'verb1', 'ပေါင်းသင်းဆက်ဆံသည်။', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (35, '', 'ことわざ', 'noun', 'စကားပုံ', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (35, '', 'さあ', 'noun', 'အင်း', NULL, NULL);
+
+
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '遭います', 'あいます', 'verb1', 'တွေ့ကြုံသည်[မတော်တဆ～]', 'じこに～', NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '貯金します', 'ちょきんします', 'verb3', 'ငွေစုသည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '過ぎます', 'すぎます', 'verb2', 'ကျော်လွန်သည်', '７じを～', NULL);
@@ -486,6 +492,15 @@ INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, e
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '運びます', 'はこびます', 'verb1', 'သယ်ဆောင်သည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '利用します', 'りようします', 'verb3', 'အသုံးချသည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '自由に', 'じゆうに', 'noun', 'လွတ်လပ်စွာ', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '', 'おおぜいの〜', 'noun', 'အများကြီး', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '', 'きせん', 'noun', 'သင်္ဘော', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '', 'きしゃ', 'noun', 'ရထား၊ ရေနွေးငွေ့ရထား', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '', 'とおく', 'noun', 'အ၀ေး', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '', 'ーせいき', 'noun', 'ရာစုနှစ်', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '', 'ラッシュ', 'noun', 'လမ်း ကား ရထားကြပ်ခြင်း။', NULL, NULL);
+INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (36, '', 'ほとんど', 'noun', 'အများစု', NULL, NULL);
+
+
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (37, '褒めます', 'ほめます', 'verb2', 'ချီးမွမ်းသည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (37, '叱ります', 'しかります', 'verb1', 'ဆူပူသည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (37, '誘います', 'さそいます', 'verb1', 'ဖိတ်ခေါ်သည်', NULL, NULL);
@@ -522,6 +537,8 @@ INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, e
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (37, '彫刻', 'ちょうこく', 'noun', 'ပန်းပု', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (37, '眠ります', 'ねむります', 'verb1', 'အိပ်ပျော်သည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (37, '一生懸命', 'いっしょうけんめい', 'noun', 'အားသွန်ခွန်စိုက်', NULL, NULL);
+
+
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (38, '参加します', 'さんかします', 'verb3', 'ပါဝင်သည်', 'りょこうに～', NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (38, '育てます', 'そだてます', 'verb2', 'ပြုစုပျိုးထောင်သည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (38, '運びます', 'はこびます', 'verb1', 'သယ်ဆောင်သည်', NULL, NULL);

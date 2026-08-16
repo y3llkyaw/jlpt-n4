@@ -1,13 +1,13 @@
-import 'package:carousel_slider/carousel_slider.dart';
+import 'package:animated_emoji/animated_emoji.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/routes/app_routes.dart';
-import 'package:n4/app/ui/global_widgets/card_button.dart';
-import 'package:n4/app/ui/global_widgets/list_card.dart';
 import 'package:n4/app/ui/global_widgets/word_of_the_day.dart';
 import 'package:n4/app/ui/pages/review_page/review_page.dart';
 import 'package:n4/app/ui/pages/setting_page/setting_page.dart';
+import 'package:n4/app/ui/utils/util.dart';
 
 import '../../../controllers/home_controller.dart';
 
@@ -16,63 +16,202 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    var congrat =
-        Vocabulary(0, 0, 'Congratulations!', '', 'fjalsdjf', '', '', '');
+    var congrat = Vocabulary(0, 0, 'でんしゃのなか', '電車の中', 'ရထားအတွင်း', '', '', '');
     return Scaffold(
+      appBar: AppBar(
+        title: Text("Nihon GO"),
+        centerTitle: true,
+      ),
+      drawer: Drawer(
+        child: Column(children: [Text("Hello")],),
+      ),
       body: SafeArea(
         child: Obx(() => [
               Column(
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
+                  ListTile(
+                    title: Text(
+                      "Stats",
+                      style: Get.textTheme.bodyLarge,
+                    ),
+                  ),
+                  Container(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: 20,
+                    ),
+                    height: 200,
+                    child: Card(
+                      elevation: 0,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
+                        children: [
+                          Stack(
+                            alignment: Alignment.center,
+                            children: [
+                              SizedBox(
+                                width: Get.width * 0.35,
+                                height: Get.width * 0.35,
+                                child: PieChart(
+                                  PieChartData(
+                                    sections: [
+                                      PieChartSectionData(
+                                        showTitle: false,
+                                        value: 10,
+                                        color: Colors.green,
+                                      ),
+                                      PieChartSectionData(
+                                        showTitle: false,
+                                        value: 30,
+                                        color: Colors.lightGreen,
+                                      ),
+                                      PieChartSectionData(
+                                        showTitle: false,
+                                        value: 10,
+                                        color: Colors.amber,
+                                      ),
+                                      PieChartSectionData(
+                                        showTitle: false,
+                                        value: 10,
+                                        color: Colors.grey,
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Text("Stats")
+                            ],
+                          ),
+                          Column(
+                            spacing: 4,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Row(
+                                spacing: 20,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.green,
+                                  ),
+                                  Text("Well Known")
+                                ],
+                              ),
+                              Row(
+                                spacing: 20,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.lightGreen,
+                                  ),
+                                  Text("Familier")
+                                ],
+                              ),
+                              Row(
+                                spacing: 20,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.amber,
+                                  ),
+                                  Text("Just Learned")
+                                ],
+                              ),
+                              Row(
+                                spacing: 20,
+                                children: [
+                                  CircleAvatar(
+                                    radius: 10,
+                                    backgroundColor: Colors.grey,
+                                  ),
+                                  Text("Unlearned")
+                                ],
+                              ),
+                              SizedBox(),
+                              FilledButton.tonalIcon(
+                                icon: Icon(Icons.bar_chart),
+                                onPressed: () {},
+                                label: Text("Detail"),
+                              )
+                            ],
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  ListTile(
+                    title: Text(
+                      "Daily Kanji and Vocab",
+                      style: Get.textTheme.bodyLarge,
+                    ),
+                    trailing: TextButton(
+                      onPressed: () {
+                        controller.randomRefresh();
+                      },
+                      child: Text("refresh"),
+                    ),
+                  ),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      ListTile(
-                        title: Text(
-                          "Featuring Cards",
-                          style: Get.textTheme.titleMedium,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          InkWell(
+                            borderRadius: BorderRadius.circular(20),
+                            onTap: () {
+                              speak(controller.randomVocab.value!);
+                            },
+                            child: WordOfTheDay(
+                              vocab: controller.randomVocab.value,
+                            ),
+                          ),
+                          WordOfTheDay(
+                            vocab: congrat,
+                          ),
+                        ],
                       ),
                       ListTile(
                         title: Text(
                           "Learning Category",
-                          style: Get.textTheme.titleMedium,
+                          style: Get.textTheme.bodyLarge,
                         ),
                       ),
-                      ListTile(
-                        onTap: () {
-                          Get.toNamed(AppRoutes.VOCAB_PAGE);
-                        },
-                        shape: Border(
-                          bottom: BorderSide(
-                              color: Get.theme.colorScheme.outlineVariant),
+                      Padding(
+                        padding: EdgeInsetsGeometry.symmetric(horizontal: 20),
+                        child: Card(
+                          elevation: 0,
+                          child: Column(
+                            children: [
+                              InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () {
+                                  Get.toNamed(AppRoutes.VOCAB_PAGE);
+                                },
+                                child: ListTile(
+                                  leading: CircleAvatar(
+                                      child: Icon(Icons.translate)),
+                                  title: Text("Vocabulary"),
+                                  subtitle:
+                                      Text("learn vocabs and take a quiz."),
+                                  trailing: Icon(Icons.chevron_right),
+                                ),
+                              ),
+                              InkWell(
+                                borderRadius: BorderRadius.circular(10),
+                                onTap: () {},
+                                child: ListTile(
+                                  leading:
+                                      CircleAvatar(child: Icon(Icons.brush)),
+                                  title: Text("Kanji"),
+                                  subtitle:
+                                      Text("learn kanji and take a quiz."),
+                                  trailing: Icon(Icons.chevron_right),
+                                ),
+                              ),
+                            ],
+                          ),
                         ),
-                        contentPadding:
-                            EdgeInsets.symmetric(horizontal: 20, vertical: 0),
-                        leading: CircleAvatar(child: Icon(Icons.book)),
-                        title: Text(
-                          "Vocabulary",
-                          style: Get.textTheme.titleMedium,
-                        ),
-                        subtitle: Text(
-                            "learn Vocabulary and take a quiz. It will be in review session when the time is right"),
-                        trailing: Icon(Icons.chevron_right),
-                      ),
-                      ListTile(
-                        onTap: () {},
-                        shape: Border(
-                          bottom: BorderSide(
-                              color: Get.theme.colorScheme.outlineVariant),
-                        ),
-                        contentPadding: EdgeInsets.symmetric(horizontal: 20),
-                        leading: CircleAvatar(child: Icon(Icons.brush)),
-                        title: Text(
-                          "Kanji",
-                          style: Get.textTheme.titleMedium,
-                        ),
-                        subtitle: Text(
-                            "learn Vocabulary and take a quiz. It will be in review session when the time is right"),
-                        trailing: Icon(Icons.chevron_right),
                       ),
                     ],
                   ),
@@ -87,10 +226,12 @@ class HomePage extends GetView<HomeController> {
           onTap: (value) => controller.changeIndex(value),
           currentIndex: controller.index.value,
           items: [
-            BottomNavigationBarItem(icon: Icon(Icons.school), label: "Home"),
+            BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
             BottomNavigationBarItem(
                 icon: Badge(
-                  label: Text("1", style: Get.textTheme.labelMedium),
+                  label: Text("1",
+                      style: Get.textTheme.labelMedium!
+                          .copyWith(color: Get.theme.colorScheme.onError)),
                   isLabelVisible: true,
                   child: Icon(Icons.reviews),
                 ),

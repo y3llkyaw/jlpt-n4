@@ -3,65 +3,47 @@ import 'package:get/get.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 
 class WordOfTheDay extends StatelessWidget {
-  WordOfTheDay({Key? key, required this.vocab}) : super(key: key);
+  WordOfTheDay({Key? key, this.vocab}) : super(key: key);
   Vocabulary? vocab;
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Get.theme.colorScheme.inversePrimary,
+      elevation: 0,
       child: Container(
+        width: Get.width * 0.4,
+        height: Get.width * 0.4,
         padding: EdgeInsets.all(10),
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          spacing: 10,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Word of the Day",
-                      style: Get.textTheme.titleSmall!.copyWith(
-                          fontWeight: FontWeight.bold,
-                          color: Get.theme.colorScheme.onPrimaryContainer),
-                    ),
-                    Text("Aug 5, 2026"),
-                  ],
+                Text(
+                  vocab?.kanji ?? '',
+                  style: Get.textTheme.titleLarge,
                 ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(Icons.share),
-                )
+                Text(
+                  vocab?.partOfSpeech ?? '',
+                  style: Get.textTheme.titleSmall,
+                ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              vocab!.kana,
-              style: Get.textTheme.headlineSmall!.copyWith(
-                  fontWeight: FontWeight.bold,
-                  color: Get.theme.colorScheme.onPrimaryContainer),
-            ),
-            Row(
-              spacing: 20,
-              mainAxisAlignment: MainAxisAlignment.start,
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(vocab!.partOfSpeech.toLowerCase()),
-                Text(vocab!.kanji,
-                    style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        color: Get.theme.colorScheme.onPrimaryContainer)),
+                Text(
+                  vocab?.kana ?? '',
+                  style: Get.textTheme.titleMedium,
+                ),
+                Text(
+                  vocab?.meaning ?? '',
+                  style: Get.textTheme.bodySmall,
+                ),
               ],
             ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(vocab!.meaning,
-                style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    color: Get.theme.colorScheme.onPrimaryContainer)),
           ],
         ),
       ),

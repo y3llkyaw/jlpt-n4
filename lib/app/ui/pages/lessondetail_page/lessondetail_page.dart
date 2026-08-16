@@ -84,24 +84,27 @@ class LessondetailPage extends GetView<LessondetailController> {
                   )
                 ],
               ),
-              flexibleSpace: FlexibleSpaceBar(
-                background: Padding(
-                  padding: const EdgeInsets.only(top: 100, left: 12, right: 12),
-                  child: Wrap(
-                    alignment: WrapAlignment.center,
-                    spacing: 20,
-                    children: VocabFilter.values
-                        .map(
-                          (e) => ChoiceChip(
-                            // shape: ,
-                            onSelected: (value) {
-                              controller.changeFilter(e);
-                            },
-                            label: Text("${e.name.capitalize}"),
-                            selected: controller.vocabFilter.value == e,
-                          ),
-                        )
-                        .toList(),
+              flexibleSpace: SafeArea(
+                child: FlexibleSpaceBar(
+                  background: Padding(
+                    padding:
+                        const EdgeInsets.only(top: 100, left: 12, right: 12),
+                    child: Wrap(
+                      alignment: WrapAlignment.center,
+                      spacing: 20,
+                      children: VocabFilter.values
+                          .map(
+                            (e) => ChoiceChip(
+                              // shape: ,
+                              onSelected: (value) {
+                                controller.changeFilter(e);
+                              },
+                              label: Text("${e.name.capitalize}"),
+                              selected: controller.vocabFilter.value == e,
+                            ),
+                          )
+                          .toList(),
+                    ),
                   ),
                 ),
               ),
@@ -119,7 +122,9 @@ class LessondetailPage extends GetView<LessondetailController> {
                       currentVocab.kana == ''
                           ? currentVocab.kanji
                           : currentVocab.kana,
-                      style: Get.textTheme.titleMedium,
+                      style: Get.textTheme.titleLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     subtitle: Text(currentVocab.meaning),
                   );

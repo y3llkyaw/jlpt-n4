@@ -14,11 +14,16 @@ class HomeController extends GetxController {
     final data = await DatabaseServices.instance.getVocabulary();
     vocabs.value = data.map((e) => Vocabulary.fromMap(e)).toList();
     final random = Random();
-    // randomVocab.value = vocabs[random.nextInt(vocabs.length)];
+    randomVocab.value = vocabs[random.nextInt(vocabs.length)];
     super.onInit();
   }
 
   void changeIndex(int value) {
     index.value = value;
+  }
+
+  void randomRefresh() {
+    final random = Random();
+    randomVocab.value = vocabs[random.nextInt(vocabs.length)];
   }
 }
