@@ -25,11 +25,12 @@ dependencies:
   intl: ^0.20.3
   carousel_slider: ^5.1.2
   equatable: ^2.1.0
-  animated_emoji: ^3.3.0
   flutter_card_swiper: ^7.2.0
   flip_card: ^0.7.0
   flutter_tts: ^4.2.5
   fl_chart: ^1.2.0
+  flutter_kanjivg: ^0.1.1
+  share_plus: 12.0.2
 
 
 dev_dependencies:
@@ -65,4 +66,7 @@ flutter:
     - assets/image/
     - assets/animation/
     - assets/data/
+    - assets/kanji/
+
+
   uses-material-design: true

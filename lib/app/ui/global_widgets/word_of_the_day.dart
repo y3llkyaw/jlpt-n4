@@ -10,8 +10,8 @@ class WordOfTheDay extends StatelessWidget {
     return Card(
       elevation: 0,
       child: Container(
-        width: Get.width * 0.4,
-        height: Get.width * 0.4,
+        width: Get.width * 0.43,
+        height: Get.width * 0.43,
         padding: EdgeInsets.all(10),
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

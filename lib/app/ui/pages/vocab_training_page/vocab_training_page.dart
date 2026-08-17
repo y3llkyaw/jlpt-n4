@@ -1,4 +1,3 @@
-import 'package:animated_emoji/animated_emoji.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -38,10 +37,6 @@ class VocabTrainingPage extends GetView<VocabTrainingPage> {
                       spacing: 20,
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        AnimatedEmoji(
-                          AnimatedEmojis.partyPopper,
-                          size: 100,
-                        ),
                         Text(
                           "Congratulations!\nYou have known all vocabulary.",
                           style: Get.textTheme.titleMedium!.copyWith(

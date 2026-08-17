@@ -1,4 +1,3 @@
-import 'package:animated_emoji/animated_emoji.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/data/models/vocabulary.dart';

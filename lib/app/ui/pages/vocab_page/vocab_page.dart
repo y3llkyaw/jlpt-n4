@@ -18,10 +18,6 @@ class VocabPage extends GetView<VocabPageController> {
           return Column(
             children: [
               ListTile(
-                shape: Border(
-                  bottom:
-                      BorderSide(color: Get.theme.colorScheme.outlineVariant),
-                ),
                 leading: CircleAvatar(
                   child: Icon(Icons.book_rounded),
                 ),

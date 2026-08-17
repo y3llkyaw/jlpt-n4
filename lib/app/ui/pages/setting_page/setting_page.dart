@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
@@ -20,14 +21,27 @@ class SettingPage extends GetView<SettingController> {
           ),
           Card(
             elevation: 0,
-            child: Obx(
-              () => SwitchListTile(
-                secondary: Icon(Icons.light_mode_outlined),
-                title: Text(
-                    controller.isDarkMode.value ? 'Dark mode' : 'Light mode'),
-                value: controller.isDarkMode.value,
-                onChanged: (_) => controller.toggleTheme(),
-              ),
+            child: Column(
+              children: [
+                Obx(
+                  () => SwitchListTile(
+                    secondary: Icon(Icons.light_mode_outlined),
+                    title: Text(controller.isDarkMode.value
+                        ? 'Dark mode'
+                        : 'Light mode'),
+                    value: controller.isDarkMode.value,
+                    onChanged: (_) => controller.toggleTheme(),
+                  ),
+                ),
+                InkWell(
+                  onTap: () {},
+                  borderRadius: BorderRadius.circular(10),
+                  child: ListTile(
+                    leading: Icon(CupertinoIcons.book),
+                    title: Text("Change JLPT Level"),
+                  ),
+                ),
+              ],
             ),
           ),
           Text(
@@ -45,20 +59,30 @@ class SettingPage extends GetView<SettingController> {
                     Get.toNamed(AppRoutes.EDITVOCAB);
                   },
                 ),
-                ListTile(
-                  leading: Icon(Icons.upload),
-                  title: Text("Import Database"),
+                InkWell(
+                  onTap: () {
+                    // controller.shareDatabase();
+                  },
+                  child: ListTile(
+                    leading: Icon(Icons.upload),
+                    title: Text("Import Database"),
+                  ),
                 ),
-                ListTile(
-                  leading: Icon(Icons.share),
-                  title: Text("Share your Database"),
+                InkWell(
+                  borderRadius: BorderRadius.circular(10),
+                  onTap: () {
+                    controller.exportDatabase();
+                  },
+                  child: ListTile(
+                    leading: Icon(Icons.share),
+                    title: Text("Share your Database"),
+                  ),
                 ),
               ],
             ),
           ),
           Text(
             "System",
-            style: Get.textTheme.titleMedium,
           ),
           Card(
             elevation: 0,
@@ -70,9 +94,13 @@ class SettingPage extends GetView<SettingController> {
               child: ListTile(
                 leading: Icon(Icons.info_outline),
                 title: Text("About this app"),
+                subtitle: Text("version 1.0.1"),
               ),
             ),
-          )
+          ),
+          Center(
+            child: Text("Developed by Ye Htet Kyaw"),
+          ),
         ],
       ),
     );

@@ -22,8 +22,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    
     TextTheme textTheme = createTextTheme(context, "ABeeZee", "ADLaM Display");
-
     MaterialTheme theme = MaterialTheme(textTheme);
     return ScreenUtilInit(
       builder: (_, __) {

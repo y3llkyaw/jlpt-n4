@@ -12,44 +12,10 @@ class LessondetailPage extends GetView<LessondetailController> {
 
   @override
   Widget build(BuildContext context) {
+    AppBar appBar = AppBar(title: Text("Helo"),);
+    double height = appBar.preferredSize.height;
+
     return Scaffold(
-      // appBar: AppBar(
-      //   toolbarHeight: 200,
-      //   centerTitle: true,
-      //   title: Column(
-      //     spacing: 10,
-      //     children: [
-      //       Row(
-      //         spacing: 10,
-      //         children: [
-      //           IconButton(
-      //             onPressed: () {
-      //               Get.back();
-      //             },
-      //             icon: Icon(Icons.arrow_back),
-      //           ),
-      //           Column(
-      //             crossAxisAlignment: CrossAxisAlignment.start,
-      //             children: [
-      //               Obx(() => Text("Chapter ${controller.vocabs.first.chapter}",
-      //                   style: Get.textTheme.titleLarge)),
-      //               Obx(() => Text("words ${controller.vocabs.length}",
-      //                   style: Get.textTheme.bodyMedium)),
-      //             ],
-      //           ),
-      //           Spacer(),
-      //           FilledButton.icon(
-      //             onPressed: () {
-      //               Get.toNamed(AppRoutes.VOCAB_TRAINING);
-      //             },
-      //             label: Text("Quiz"),
-      //             icon: Icon(Icons.quiz),
-      //           )
-      //         ],
-      //       ),
-      //     ],
-      //   ),
-      // ),
       body: Obx(
         () => CustomScrollView(
           slivers: [
@@ -57,7 +23,7 @@ class LessondetailPage extends GetView<LessondetailController> {
               pinned: true,
               floating: true,
               snap: false,
-              expandedHeight: 200,
+              expandedHeight: height*2.5,
               toolbarHeight: 75,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -86,24 +52,25 @@ class LessondetailPage extends GetView<LessondetailController> {
               ),
               flexibleSpace: SafeArea(
                 child: FlexibleSpaceBar(
-                  background: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 100, left: 12, right: 12),
-                    child: Wrap(
-                      alignment: WrapAlignment.center,
-                      spacing: 20,
-                      children: VocabFilter.values
-                          .map(
-                            (e) => ChoiceChip(
-                              // shape: ,
-                              onSelected: (value) {
-                                controller.changeFilter(e);
-                              },
-                              label: Text("${e.name.capitalize}"),
-                              selected: controller.vocabFilter.value == e,
-                            ),
-                          )
-                          .toList(),
+                  background: Container(
+                    margin: EdgeInsets.only(top: height,bottom: 10, left: 10),
+                    child: SingleChildScrollView(
+                      scrollDirection: Axis.horizontal,
+                      child: Row(
+                        spacing: 10,
+                        children: VocabFilter.values
+                            .map(
+                              (e) => ChoiceChip(
+                                // shape: ,
+                                onSelected: (value) {
+                                  controller.changeFilter(e);
+                                },
+                                label: Text("${e.name.capitalize}"),
+                                selected: controller.vocabFilter.value == e,
+                              ),
+                            )
+                            .toList(),
+                      ),
                     ),
                   ),
                 ),

@@ -68,7 +68,7 @@ class DatabaseServices {
 
   Future<int> updateVocabulary(Vocabulary vocab) async {
     final db = await database;
-
+    
     return await db.update(
       'vocabularies',
       {

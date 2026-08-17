@@ -1,6 +1,10 @@
-
+import 'dart:io';
+import 'package:path_provider/path_provider.dart';
+import 'package:path/path.dart' as p;
+import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:sqflite/sqflite.dart';
 
 import '../data/services/theme_service.dart';
 
@@ -19,5 +23,38 @@ class SettingController extends GetxController {
 
     ThemeService.instance.themeMode =
         newDarkMode ? ThemeMode.dark : ThemeMode.light;
+  }
+
+  void shareDatabase() {
+    // SharePlus.instance
+    //     .share(ShareParams(text: 'check out my website https://example.com'));
+  }
+
+  Future<void> exportDatabase() async {
+    final databasesPath = await getDatabasesPath();
+
+    final dbFile = File(
+      p.join(databasesPath, 'manual.db'),
+    );
+
+    if (!await dbFile.exists()) {
+      throw Exception('Database does not exist');
+    }
+
+    final tempDir = await getTemporaryDirectory();
+
+    final exportFile = await dbFile.copy(
+      p.join(tempDir.path, 'vocabulary.db'),
+    );
+
+    await SharePlus.instance.share(
+      ShareParams(
+        files: [
+          XFile(exportFile.path),
+        ],
+        text: "Vocabulary Databse",
+        subject: 'Vocabulary Database',
+      ),
+    );
   }
 }
