@@ -61,11 +61,11 @@ class SettingPage extends GetView<SettingController> {
                 ),
                 InkWell(
                   onTap: () {
-                    // controller.shareDatabase();
+                    controller.importDatabase();
                   },
                   child: ListTile(
-                    leading: Icon(Icons.upload),
-                    title: Text("Import Database"),
+                    leading: Icon(Icons.file_open_sharp),
+                    title: Text("Import Vocabulary"),
                   ),
                 ),
                 InkWell(

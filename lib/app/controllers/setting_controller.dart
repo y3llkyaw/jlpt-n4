@@ -1,12 +1,12 @@
 import 'dart:io';
+import 'package:n4/app/data/services/database_services.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart' as p;
 import 'package:share_plus/share_plus.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:sqflite/sqflite.dart';
-
-import '../data/services/theme_service.dart';
+import 'package:n4/app/data/services/theme_service.dart';
 
 class SettingController extends GetxController {
   final isDarkMode = false.obs;
@@ -56,5 +56,13 @@ class SettingController extends GetxController {
         subject: 'Vocabulary Database',
       ),
     );
+  }
+
+  void importDatabase() async {
+    try {
+      await DatabaseServices.instance.importDatabase();
+    } catch (e) {
+      if (e == DatabaseException) {}
+    }
   }
 }

@@ -1,9 +1,11 @@
 import 'dart:io';
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
+import 'package:path/path.dart' as p;
 
 class DatabaseServices {
   static final DatabaseServices instance = DatabaseServices._init();
@@ -68,7 +70,7 @@ class DatabaseServices {
 
   Future<int> updateVocabulary(Vocabulary vocab) async {
     final db = await database;
-    
+
     return await db.update(
       'vocabularies',
       {
@@ -92,5 +94,81 @@ class DatabaseServices {
       where: 'id = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<void> importDatabase() async {
+    // Pick .db file
+    final result = await FilePicker.platform.pickFiles(
+      type: FileType.custom,
+      allowedExtensions: ['db'],
+    );
+
+    if (result == null || result.files.single.path == null) {
+      return; // User cancelled
+    }
+
+    final selectedFile = File(result.files.single.path!);
+
+    // Open the selected database temporarily (read-only)
+    final importedDb = await openDatabase(
+      selectedFile.path,
+      readOnly: true,
+    );
+
+    try {
+      // Verify vocabularies table exists
+      final tables = await importedDb.rawQuery('''
+        SELECT name
+        FROM sqlite_master
+        WHERE type = 'table'
+        AND name = 'vocabularies'
+      ''');
+
+      if (tables.isEmpty) {
+        throw Exception('Invalid database: vocabularies table not found');
+      }
+
+      // Verify required columns
+      final columns = await importedDb.rawQuery(
+        'PRAGMA table_info(vocabularies)',
+      );
+      final columnNames = columns.map((c) => c['name'].toString()).toSet();
+
+      const requiredColumns = {
+        'id',
+        'chapter',
+        'kana',
+        'kanji',
+        'meaning',
+        'part_of_speech',
+        'note',
+        'example',
+      };
+
+      if (!columnNames.containsAll(requiredColumns)) {
+        throw Exception(
+            'Invalid vocabulary database: missing required columns');
+      }
+
+      // Read all rows from the imported DB
+      final importedVocs = await importedDb.query('vocabularies');
+
+      // Get the current database and replace all vocabulary entries
+      final db = await database;
+      await db.transaction((txn) async {
+        await txn.delete('vocabularies');
+        for (final vocab in importedVocs) {
+          await txn.insert(
+            'vocabularies',
+            vocab,
+            conflictAlgorithm: ConflictAlgorithm.replace,
+          );
+        }
+      });
+    } finally {
+      await importedDb.close();
+    }
+
+    Get.log('Vocabulary imported successfully');
   }
 }
