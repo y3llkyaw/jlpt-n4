@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_tts/flutter_tts.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
@@ -27,4 +28,10 @@ void speak(Vocabulary vocab) async {
   await flutterTts.setSpeechRate(0.4); // Slower speed
   await flutterTts.setPitch(1.2); // Slightly higher pitch
   await flutterTts.speak(vocab.kana);
+}
+
+Future<String> loadKanjiSVG(String kanji) async {
+  int codePoint = kanji.runes.first;
+  return await rootBundle
+      .loadString('assets/kanji/0${codePoint.toRadixString(16)}.svg');
 }

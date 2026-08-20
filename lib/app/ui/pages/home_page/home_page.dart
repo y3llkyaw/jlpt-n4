@@ -164,10 +164,21 @@ class HomePage extends GetView<HomeController> {
                                   vocab: controller.randomVocab.value,
                                 ),
                               ),
-                              Obx(() => controller.kanjiSVG.value == ''
-                                  ? SizedBox()
-                                  : KanjiCard(
-                                      source: controller.kanjiSVG.value))
+                              Obx(
+                                () => controller.kvg.value == null
+                                    ? Card(
+                                        child: Container(
+                                          height: Get.width * 0.4,
+                                          width: Get.width * 0.4,
+                                        ),
+                                      )
+                                    : Obx(
+                                        () => KanjiCard(
+                                          kvg: controller.kvg.value!,
+                                          kanji: controller.randomKanji.value!,
+                                        ),
+                                      ),
+                              )
                             ],
                           ),
                           ListTile(

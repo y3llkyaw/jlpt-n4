@@ -37,196 +37,193 @@ class EditVocabPage extends GetView<EditvocabController> {
           ),
         ],
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(20.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          spacing: 5,
-          children: [
-            Obx(
-              () => Text(
-                controller.isNew ? 'Add Vocabulary' : 'Edit Vocabulary',
-                style: Get.textTheme.displaySmall,
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            Text(
-              "Kana",
-              style: Get.textTheme.titleMedium,
-            ),
-            TextField(
-              onChanged: (value) => controller.onChange(),
-              controller: controller.kana,
-              decoration: InputDecoration(
-                // icon: Icon(Icons.help_outline),
-                // label: Text("Kana"),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            Text(
-              "Kanji (optional)",
-              style: Get.textTheme.titleMedium,
-            ),
-            TextField(
-              onChanged: (value) => controller.onChange(),
-              controller: controller.kanji,
-              decoration: InputDecoration(
-                // icon: Icon(Icons.help_outline),
-                // label: Text("Kanji"),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            Text(
-              "Meaning",
-              style: Get.textTheme.titleMedium,
-            ),
-            TextField(
-              onChanged: (value) => controller.onChange(),
-              controller: controller.meaing,
-              decoration: InputDecoration(
-                // icon: Icon(Icons.help_outline),
-                // label: Text("Meaning"),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            Text(
-              "Note (optional)",
-              style: Get.textTheme.titleMedium,
-            ),
-            TextField(
-              onChanged: (value) => controller.onChange(),
-              controller: controller.note,
-              decoration: InputDecoration(
-                hintMaxLines: 30,
-                // icon: Icon(Icons.help_outline),
-                // label: Text("Note"),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            Text(
-              "Example (optional)",
-              style: Get.textTheme.titleMedium,
-            ),
-            TextField(
-              onChanged: (value) => controller.onChange(),
-              controller: controller.example,
-              decoration: InputDecoration(
-                hintMaxLines: 30,
-                // icon: Icon(Icons.help_outline),
-                // label: Text("Example"),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
-            TextField(
-              onChanged: (value) => controller.onChange(),
-              controller: controller.chapter,
-              keyboardType: TextInputType.numberWithOptions(),
-              decoration: InputDecoration(
-                // icon: Icon(Icons.help_outline),
-                label: Text("Chapter"),
-                border: OutlineInputBorder(),
-              ),
-            ),
-            Obx(
-              () => Center(
-                child: Wrap(
-                  runAlignment: WrapAlignment.center,
-                  alignment: WrapAlignment.center,
-                  runSpacing: 10,
-                  spacing: 10,
-                  children: [
-                    // SizedBox(
-                    //   width: 100,
-                    //   child: TextField(
-                    //     controller: controller.chapter,
-                    //     keyboardType: TextInputType.numberWithOptions(),
-                    //     decoration: InputDecoration(
-                    //       // icon: Icon(Icons.help_outline),
-                    //       label: Text("Chapter"),
-                    //       border: OutlineInputBorder(),
-                    //     ),
-                    //   ),
-                    // ),
-                    ChoiceChip(
-                      selectedColor: Get.theme.colorScheme.primaryContainer,
-                      selected: controller.type.value == "Noun",
-                      label: Text("noun"),
-                      onSelected: (value) {
-                        controller.type.value = "Noun";
-                        controller.onChange();
-                      },
-                    ),
-                    ChoiceChip(
-                      selectedColor: Get.theme.colorScheme.primaryContainer,
-                      selected: controller.type.value == "Verb 1",
-                      label: Text("verb-1"),
-                      onSelected: (value) {
-                        controller.type.value = "Verb 1";
-                        controller.onChange();
-                      },
-                    ),
-                    ChoiceChip(
-                      selectedColor: Get.theme.colorScheme.primaryContainer,
-                      selected: controller.type.value == "Verb 2",
-                      label: Text("verb-2"),
-                      onSelected: (value) {
-                        controller.type.value = "Verb 2";
-                        controller.onChange();
-                      },
-                    ),
-                    ChoiceChip(
-                      selectedColor: Get.theme.colorScheme.primaryContainer,
-                      selected: controller.type.value == "Verb 3",
-                      label: Text("verb-3"),
-                      onSelected: (value) {
-                        controller.type.value = "Verb 3";
-                        controller.onChange();
-                      },
-                    ),
-                    ChoiceChip(
-                      selectedColor: Get.theme.colorScheme.primaryContainer,
-                      selected: controller.type.value == "I-Adjective",
-                      label: Text("i-adj"),
-                      onSelected: (value) {
-                        controller.type.value = "I-Adjective";
-                        controller.onChange();
-                      },
-                    ),
-                    ChoiceChip(
-                      selectedColor: Get.theme.colorScheme.primaryContainer,
-                      selected: controller.type.value == "Na-Adjective",
-                      label: Text("na-adji"),
-                      onSelected: (value) {
-                        controller.type.value = "Na-Adjective";
-                        controller.onChange();
-                      },
-                    ),
-                    ChoiceChip(
-                      selectedColor: Get.theme.colorScheme.primaryContainer,
-                      selected: controller.type.value == "Speaking",
-                      label: Text("speaking"),
-                      onSelected: (value) {
-                        controller.type.value = "Speaking";
-                        controller.onChange();
-                      },
-                    ),
-                  ],
+      body: SafeArea(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: const EdgeInsets.all(20.0),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              spacing: 5,
+              children: [
+                Text(
+                  "Kana",
+                  style: Get.textTheme.titleMedium,
                 ),
-              ),
+                TextField(
+                  onChanged: (value) => controller.onChange(),
+                  controller: controller.kana,
+                  decoration: InputDecoration(
+                    // icon: Icon(Icons.help_outline),
+                    // label: Text("Kana"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                Text(
+                  "Kanji (optional)",
+                  style: Get.textTheme.titleMedium,
+                ),
+                TextField(
+                  onChanged: (value) => controller.onChange(),
+                  controller: controller.kanji,
+                  decoration: InputDecoration(
+                    // icon: Icon(Icons.help_outline),
+                    // label: Text("Kanji"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                Text(
+                  "Meaning",
+                  style: Get.textTheme.titleMedium,
+                ),
+                TextField(
+                  onChanged: (value) => controller.onChange(),
+                  controller: controller.meaing,
+                  decoration: InputDecoration(
+                    // icon: Icon(Icons.help_outline),
+                    // label: Text("Meaning"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                Text(
+                  "Note (optional)",
+                  style: Get.textTheme.titleMedium,
+                ),
+                TextField(
+                  onChanged: (value) => controller.onChange(),
+                  controller: controller.note,
+                  decoration: InputDecoration(
+                    hintMaxLines: 30,
+                    // icon: Icon(Icons.help_outline),
+                    // label: Text("Note"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                Text(
+                  "Example (optional)",
+                  style: Get.textTheme.titleMedium,
+                ),
+                TextField(
+                  onChanged: (value) => controller.onChange(),
+                  controller: controller.example,
+                  decoration: InputDecoration(
+                    hintMaxLines: 30,
+                    // icon: Icon(Icons.help_outline),
+                    // label: Text("Example"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                SizedBox(
+                  height: 10,
+                ),
+                TextField(
+                  onChanged: (value) => controller.onChange(),
+                  controller: controller.chapter,
+                  keyboardType: TextInputType.numberWithOptions(),
+                  decoration: InputDecoration(
+                    // icon: Icon(Icons.help_outline),
+                    label: Text("Chapter"),
+                    border: OutlineInputBorder(),
+                  ),
+                ),
+                Obx(
+                  () => Center(
+                    child: Wrap(
+                      runAlignment: WrapAlignment.center,
+                      alignment: WrapAlignment.center,
+                      runSpacing: 10,
+                      spacing: 10,
+                      children: [
+                        // SizedBox(
+                        //   width: 100,
+                        //   child: TextField(
+                        //     controller: controller.chapter,
+                        //     keyboardType: TextInputType.numberWithOptions(),
+                        //     decoration: InputDecoration(
+                        //       // icon: Icon(Icons.help_outline),
+                        //       label: Text("Chapter"),
+                        //       border: OutlineInputBorder(),
+                        //     ),
+                        //   ),
+                        // ),
+                        ChoiceChip(
+                          selectedColor: Get.theme.colorScheme.primaryContainer,
+                          selected: controller.type.value == "Noun",
+                          label: Text("noun"),
+                          onSelected: (value) {
+                            controller.type.value = "Noun";
+                            controller.onChange();
+                          },
+                        ),
+                        ChoiceChip(
+                          selectedColor: Get.theme.colorScheme.primaryContainer,
+                          selected: controller.type.value == "Verb 1",
+                          label: Text("verb-1"),
+                          onSelected: (value) {
+                            controller.type.value = "Verb 1";
+                            controller.onChange();
+                          },
+                        ),
+                        ChoiceChip(
+                          selectedColor: Get.theme.colorScheme.primaryContainer,
+                          selected: controller.type.value == "Verb 2",
+                          label: Text("verb-2"),
+                          onSelected: (value) {
+                            controller.type.value = "Verb 2";
+                            controller.onChange();
+                          },
+                        ),
+                        ChoiceChip(
+                          selectedColor: Get.theme.colorScheme.primaryContainer,
+                          selected: controller.type.value == "Verb 3",
+                          label: Text("verb-3"),
+                          onSelected: (value) {
+                            controller.type.value = "Verb 3";
+                            controller.onChange();
+                          },
+                        ),
+                        ChoiceChip(
+                          selectedColor: Get.theme.colorScheme.primaryContainer,
+                          selected: controller.type.value == "I-Adjective",
+                          label: Text("i-adj"),
+                          onSelected: (value) {
+                            controller.type.value = "I-Adjective";
+                            controller.onChange();
+                          },
+                        ),
+                        ChoiceChip(
+                          selectedColor: Get.theme.colorScheme.primaryContainer,
+                          selected: controller.type.value == "Na-Adjective",
+                          label: Text("na-adji"),
+                          onSelected: (value) {
+                            controller.type.value = "Na-Adjective";
+                            controller.onChange();
+                          },
+                        ),
+                        ChoiceChip(
+                          selectedColor: Get.theme.colorScheme.primaryContainer,
+                          selected: controller.type.value == "Speaking",
+                          label: Text("speaking"),
+                          onSelected: (value) {
+                            controller.type.value = "Speaking";
+                            controller.onChange();
+                          },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
       floatingActionButton: Obx(
         () => controller.isEdited.value
-            ? FloatingActionButton(onPressed: () {
-              controller.saveVocab();
-            }, child: Icon(Icons.save))
+            ? FloatingActionButton(
+                onPressed: () {
+                  controller.saveVocab();
+                },
+                child: Icon(Icons.save))
             : Container(),
       ),
     );

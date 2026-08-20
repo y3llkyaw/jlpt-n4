@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
-import 'package:path/path.dart' as p;
+import 'package:n4/app/data/models/kanji.dart';
 
 class DatabaseServices {
   static final DatabaseServices instance = DatabaseServices._init();
@@ -96,6 +96,12 @@ class DatabaseServices {
     );
   }
 
+  Future<List<Kanji>> getKanjis() async {
+    final db = await instance.database;
+    final kanjiString = await db.query('kanjis');
+    return kanjiString.map((e) => Kanji.fromMap(e)).toList();
+  }
+
   Future<void> importDatabase() async {
     // Pick .db file
     final result = await FilePicker.platform.pickFiles(
@@ -168,7 +174,6 @@ class DatabaseServices {
     } finally {
       await importedDb.close();
     }
-
     Get.log('Vocabulary imported successfully');
   }
 }

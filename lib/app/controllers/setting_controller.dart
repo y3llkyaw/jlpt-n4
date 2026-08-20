@@ -61,6 +61,9 @@ class SettingController extends GetxController {
   void importDatabase() async {
     try {
       await DatabaseServices.instance.importDatabase();
+      ScaffoldMessenger.of(Get.context!).showSnackBar(
+        const SnackBar(content: Text('Import Vocabularies Successfully!')),
+      );
     } catch (e) {
       if (e == DatabaseException) {}
     }

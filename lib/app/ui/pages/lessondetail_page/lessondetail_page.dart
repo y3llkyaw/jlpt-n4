@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_card_swiper/flutter_card_swiper.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/lessondetail_controller.dart';
 import 'package:n4/app/data/models/enums.dart';
 import 'package:n4/app/routes/app_routes.dart';
-import 'package:n4/app/ui/global_widgets/list_card.dart';
 import 'package:n4/app/ui/utils/util.dart';
 
 class LessondetailPage extends GetView<LessondetailController> {
@@ -12,7 +11,9 @@ class LessondetailPage extends GetView<LessondetailController> {
 
   @override
   Widget build(BuildContext context) {
-    AppBar appBar = AppBar(title: Text("Helo"),);
+    AppBar appBar = AppBar(
+      title: Text("Helo"),
+    );
     double height = appBar.preferredSize.height;
 
     return Scaffold(
@@ -23,7 +24,7 @@ class LessondetailPage extends GetView<LessondetailController> {
               pinned: true,
               floating: true,
               snap: false,
-              expandedHeight: height*2.5,
+              expandedHeight: height * 2.5,
               toolbarHeight: 75,
               title: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -53,7 +54,7 @@ class LessondetailPage extends GetView<LessondetailController> {
               flexibleSpace: SafeArea(
                 child: FlexibleSpaceBar(
                   background: Container(
-                    margin: EdgeInsets.only(top: height,bottom: 10, left: 10),
+                    margin: EdgeInsets.only(top: height, bottom: 10, left: 10),
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -94,6 +95,18 @@ class LessondetailPage extends GetView<LessondetailController> {
                       ),
                     ),
                     subtitle: Text(currentVocab.meaning),
+                    trailing: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        IconButton(
+                          onPressed: () {
+                            Get.toNamed(AppRoutes.EDITVOCAB,
+                                arguments: [currentVocab]);
+                          },
+                          icon: Icon(Icons.edit),
+                        ),
+                      ],
+                    ),
                   );
                 },
                 childCount: controller.viewVocabs.length,
