@@ -8,4 +8,5 @@
   static const SETTING = '/setting';
   static const REVIEW = '/review';
   static const VOCAB_TRAINING = '/vocab-training';
+  static const KANJI_BROWSE = '/kanji-browse';
 }

@@ -1,4 +1,6 @@
 import 'package:flip_card/flip_card.dart';
+import 'package:flip_card/flip_card_controller.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
@@ -7,21 +9,15 @@ import 'package:n4/app/ui/global_widgets/list_card.dart';
 
 class VocabTrainingPage extends GetView<VocabTrainingPage> {
   const VocabTrainingPage({Key? key}) : super(key: key);
-
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LessondetailController());
+    final CardSwiperController cardSwiperController = CardSwiperController();
+
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Obx(() => Text("Total Vocabs ${controller.vocabs.length}")),
-        actions: [
-          IconButton(
-              onPressed: () {
-                controller.isListView.value = !controller.isListView.value;
-              },
-              icon: Icon(Icons.help_outline))
-        ],
+        title: Obx(() => Text("Chapter ${controller.vocabs.first.chapter}")),
       ),
       body: SafeArea(
         child: Obx(
@@ -120,6 +116,8 @@ class VocabTrainingPage extends GetView<VocabTrainingPage> {
                                   ),
                                 )
                               : CardSwiper(
+                                  duration: Duration(milliseconds: 500),
+                                  controller: cardSwiperController,
                                   showBackCardOnUndo: false,
                                   onEnd: () {
                                     controller.finishedRound();
@@ -183,6 +181,40 @@ class VocabTrainingPage extends GetView<VocabTrainingPage> {
                         },
                         // :CardSwiper(cardBuilder: ((context, index, horizontalOffsetPercentage, verticalOffsetPercentage) => Text("Hello")), cardsCount: 1)
                       ),
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            FilledButton.icon(
+                              onPressed: () {},
+                              label: Text("show Answer"),
+                            ),
+                            FilledButton.icon(
+                              onPressed: () {
+                                cardSwiperController
+                                    .swipe(CardSwiperDirection.left);
+                              },
+                              label: Text("Known"),
+                              icon: Icon(CupertinoIcons.left_chevron),
+                            ),
+                            FilledButton.icon(
+                              iconAlignment: IconAlignment.end,
+                              onPressed: () {
+                                cardSwiperController
+                                    .swipe(CardSwiperDirection.right);
+                              },
+                              label: Text("Forgot"),
+                              icon: Icon(CupertinoIcons.right_chevron),
+                            ),
+                          ],
+                        ),
+                        SizedBox(
+                          width: 20,
+                        ),
+                      ],
                     ),
                   ],
                 ),

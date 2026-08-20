@@ -1,4 +1,6 @@
-import '../bindings/vocab_training_binding.dart';
+import '../bindings/kanji_browse_binding.dart';
+import '../ui/pages/kanji_browse_page/kanji_browse_page.dart';
+      import '../bindings/vocab_training_binding.dart';
 import '../ui/pages/vocab_training_page/vocab_training_page.dart';
       import '../bindings/review_binding.dart';
 import '../ui/pages/review_page/review_page.dart';
@@ -67,6 +69,12 @@ class AppPages {
       name: AppRoutes.VOCAB_TRAINING,
       page: () => const VocabTrainingPage(),
       binding: VocabTrainingBinding(),
+      transition: _defaultTransition,
+    ),
+    GetPage(
+      name: AppRoutes.KANJI_BROWSE,
+      page: () => const KanjiBrowsePage(),
+      binding: KanjiBrowseBinding(),
       transition: _defaultTransition,
     ), 
 ];

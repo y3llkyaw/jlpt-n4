@@ -208,9 +208,7 @@ class HomePage extends GetView<HomeController> {
                                 InkWell(
                                   borderRadius: BorderRadius.circular(10),
                                   onTap: () async {
-                                    String source = await rootBundle
-                                        .loadString('assets/kanji/09594.svg');
-                                    log(source);
+                                    Get.toNamed(AppRoutes.KANJI_BROWSE);
                                   },
                                   child: ListTile(
                                     leading:
