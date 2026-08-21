@@ -53,12 +53,15 @@ class _SwipeCardState extends State<SwipeCard> {
                     curve: Curves.easeIn,
                     child: Text(
                       widget.vocab.kanji,
-                      style: Get.textTheme.headlineSmall,
+                      style: Get.textTheme.bodyMedium,
                     ),
                   ),
                   Text(
                     widget.vocab.kana,
-                    style: Get.textTheme.displaySmall,
+                    style: Get.textTheme.titleLarge!.copyWith(
+                      color: Get.theme.colorScheme.secondary,
+                      fontWeight: FontWeight.bold,
+                    ),
                   ),
                   AnimatedOpacity(
                     opacity: _showAnswer ? 1 : 0,

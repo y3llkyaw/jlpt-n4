@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/vocab_training_controller.dart';
+import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/ui/global_widgets/swipe_card.dart';
 
 class VocabTrainingPage extends GetView<VocabTrainingController> {
@@ -135,8 +136,19 @@ class VocabTrainingPage extends GetView<VocabTrainingController> {
                           ),
                           onSwipe: (previousIndex, currentIndex, direction) {
                             if (currentIndex == null) {
+                              if (controller.forgotVocabs.length == 1) {
+                                var congrat = Vocabulary(
+                                    0,
+                                    0,
+                                    'Congratulations!',
+                                    '',
+                                    'You have completed all the cards in this round.',
+                                    '',
+                                    '',
+                                    '');
+                                controller.forgotVocabs.add(congrat);
+                              }
                               controller.isFinished.value = true;
-
                               return false;
                             }
                             if (direction == CardSwiperDirection.right) {
@@ -177,6 +189,9 @@ class VocabTrainingPage extends GetView<VocabTrainingController> {
                         ),
                       ],
                     ),
+                  ),
+                  SizedBox(
+                    height: Get.height * 0.1,
                   ),
                 ],
               ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/lessondetail_controller.dart';
 import 'package:n4/app/data/models/enums.dart';
@@ -90,9 +89,9 @@ class LessondetailPage extends GetView<LessondetailController> {
                       currentVocab.kana == ''
                           ? currentVocab.kanji
                           : currentVocab.kana,
-                      style: Get.textTheme.titleLarge!.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                      style: Get.textTheme.titleMedium!.copyWith(
+                          // fontWeight: FontWeight.bold,
+                          ),
                     ),
                     subtitle: Text(currentVocab.meaning),
                     trailing: Row(
