@@ -6,13 +6,18 @@ import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/lessondetail_controller.dart';
 import 'package:n4/app/ui/global_widgets/list_card.dart';
+import 'package:n4/app/ui/utils/util.dart';
 
 class VocabTrainingPage extends GetView<VocabTrainingPage> {
-  const VocabTrainingPage({Key? key}) : super(key: key);
+  VocabTrainingPage({Key? key}) : super(key: key);
+
+  final Map<int, FlipCardController> flipControllers = {};
+  final RxInt currentCardIndex = 0.obs;
+  final CardSwiperController cardSwiperController = CardSwiperController();
+
   @override
   Widget build(BuildContext context) {
     final controller = Get.put(LessondetailController());
-    final CardSwiperController cardSwiperController = CardSwiperController();
 
     return Scaffold(
       appBar: AppBar(
@@ -124,6 +129,8 @@ class VocabTrainingPage extends GetView<VocabTrainingPage> {
                                   },
                                   onSwipe: (previousIndex, currentIndex,
                                       direction) async {
+                                    currentCardIndex.value = currentIndex!;
+
                                     final cards = controller.vocabsCopy;
                                     if (cards.isEmpty ||
                                         previousIndex >= cards.length) {
@@ -131,6 +138,7 @@ class VocabTrainingPage extends GetView<VocabTrainingPage> {
                                     }
 
                                     final vocab = cards[previousIndex];
+
                                     Get.log(
                                       "Current Vocabs${vocab.kana} ",
                                     );
@@ -158,8 +166,12 @@ class VocabTrainingPage extends GetView<VocabTrainingPage> {
                                       index,
                                       horizontalOffsetPercentage,
                                       verticalOffsetPercentage) {
+                                    flipControllers[controller.vocabsCopy[index]
+                                        .id!] = FlipCardController();
                                     return Center(
                                       child: FlipCard(
+                                        controller: flipControllers[
+                                            controller.vocabsCopy[index].id!],
                                         key: ValueKey(
                                             'vocab-card-${controller.vocabsCopy[index].id ?? index}-${controller.vocabsCopy[index].kana}-${controller.vocabsCopy[index].meaning}'),
                                         direction: FlipDirection.VERTICAL,
@@ -189,7 +201,13 @@ class VocabTrainingPage extends GetView<VocabTrainingPage> {
                           crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
                             FilledButton.icon(
-                              onPressed: () {},
+                              onPressed: () {
+                                final currentId = controller
+                                    .vocabsCopy[currentCardIndex.value].id!;
+                                speak(controller
+                                    .vocabsCopy[currentCardIndex.value]);
+                                flipControllers[currentId]?.toggleCard();
+                              },
                               label: Text("show Answer"),
                             ),
                             FilledButton.icon(
@@ -233,7 +251,7 @@ Widget _swipehint({int knownCount = 0, int forgotCount = 0}) {
         children: [
           AnimatedContainer(
             padding: EdgeInsets.all(5),
-            duration: Duration(milliseconds: 500),
+            duration: Duration(milliseconds: 300),
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               color: Get.theme.colorScheme.primaryContainer,

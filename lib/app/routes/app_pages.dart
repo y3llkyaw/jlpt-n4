@@ -1,14 +1,14 @@
 import '../bindings/kanji_browse_binding.dart';
 import '../ui/pages/kanji_browse_page/kanji_browse_page.dart';
-      import '../bindings/vocab_training_binding.dart';
+import '../bindings/vocab_training_binding.dart';
 import '../ui/pages/vocab_training_page/vocab_training_page.dart';
-      import '../bindings/review_binding.dart';
+import '../bindings/review_binding.dart';
 import '../ui/pages/review_page/review_page.dart';
-      import '../bindings/setting_binding.dart';
+import '../bindings/setting_binding.dart';
 import '../ui/pages/setting_page/setting_page.dart';
-      import '../bindings/vocab_page_binding.dart';
+import '../bindings/vocab_page_binding.dart';
 import '../ui/pages/vocab_page/vocab_page.dart';
-      import '../bindings/editvocab_binding.dart';
+import '../bindings/editvocab_binding.dart';
 import '../ui/pages/editvocab_page/editVocab_page.dart';
 import '../bindings/lessondetail_binding.dart';
 import '../ui/pages/lessondetail_page/lessondetail_page.dart';
@@ -67,7 +67,7 @@ class AppPages {
     ),
     GetPage(
       name: AppRoutes.VOCAB_TRAINING,
-      page: () => const VocabTrainingPage(),
+      page: () => VocabTrainingPage(),
       binding: VocabTrainingBinding(),
       transition: _defaultTransition,
     ),
@@ -76,6 +76,6 @@ class AppPages {
       page: () => const KanjiBrowsePage(),
       binding: KanjiBrowseBinding(),
       transition: _defaultTransition,
-    ), 
-];
+    ),
+  ];
 }
