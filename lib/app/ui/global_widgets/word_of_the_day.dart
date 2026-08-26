@@ -37,9 +37,6 @@ class _WordOfTheDayState extends State<WordOfTheDay> {
                         "#${widget.vocab?.chapter ?? ""}",
                         style: Get.textTheme.bodySmall,
                       ),
-                      SizedBox(
-                        height: 10,
-                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -51,11 +48,6 @@ class _WordOfTheDayState extends State<WordOfTheDay> {
                             widget.vocab?.partOfSpeech ?? '',
                             style: Get.textTheme.titleSmall,
                           ),
-                        ],
-                      ),
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
                           Text(
                             widget.vocab?.meaning ?? '',
                             style: Get.textTheme.bodySmall,

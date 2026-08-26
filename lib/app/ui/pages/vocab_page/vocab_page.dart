@@ -28,20 +28,7 @@ class VocabPage extends GetView<VocabPageController> {
                   style: Get.textTheme.titleMedium,
                 ),
                 subtitle: Text("words 42."),
-                trailing: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    CircularProgressIndicator(
-                      value: 0.43,
-                    ),
-                    Text(
-                      "43",
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                      ),
-                    )
-                  ],
-                ),
+                trailing: Icon(Icons.chevron_right),
               ),
             ],
           );

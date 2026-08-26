@@ -4,10 +4,16 @@ import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/ui/utils/util.dart';
 
 class SwipeCard extends StatefulWidget {
-  const SwipeCard({Key? key, required this.vocab, required this.index})
-      : super(key: key);
+  const SwipeCard({
+    Key? key,
+    required this.vocab,
+    required this.index,
+    this.isReverse = false,
+  }) : super(key: key);
+
   final Vocabulary vocab;
   final int index;
+  final bool isReverse;
 
   @override
   State<SwipeCard> createState() => _SwipeCardState();
@@ -26,7 +32,8 @@ class _SwipeCardState extends State<SwipeCard> {
             _showAnswer = !_showAnswer;
           });
         },
-        child: Card(
+        child: Card.filled(
+          color: Get.theme.colorScheme.primaryContainer,
           elevation: 1,
           child: SizedBox(
             height: Get.height * 0.6,
@@ -45,6 +52,7 @@ class _SwipeCardState extends State<SwipeCard> {
                   Chip(
                     label: Text(
                       widget.vocab.partOfSpeech,
+                      style: Get.textTheme.bodyMedium,
                     ),
                   ),
                   AnimatedOpacity(
@@ -56,15 +64,19 @@ class _SwipeCardState extends State<SwipeCard> {
                       style: Get.textTheme.bodyMedium,
                     ),
                   ),
-                  Text(
-                    widget.vocab.kana,
-                    style: Get.textTheme.titleLarge!.copyWith(
-                      color: Get.theme.colorScheme.secondary,
-                      fontWeight: FontWeight.bold,
+                  AnimatedOpacity(
+                    opacity: _showAnswer || widget.isReverse == false ? 1 : 0,
+                    duration: Durations.medium1,
+                    curve: Curves.easeIn,
+                    child: Text(
+                      widget.vocab.kana,
+                      style: Get.textTheme.titleLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: _showAnswer ? 1 : 0,
+                    opacity: _showAnswer || widget.isReverse ? 1 : 0,
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
                     child: Text(

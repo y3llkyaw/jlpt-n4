@@ -25,29 +25,53 @@ class LessondetailPage extends GetView<LessondetailController> {
               snap: false,
               expandedHeight: height * 2.5,
               toolbarHeight: 75,
-              title: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        "Chapter ${controller.vocabs.isNotEmpty ? controller.vocabs.first.chapter : 0}",
-                        // style: Get.textTheme.titleMedium,
-                      ),
-                      Text(
-                        "words ${controller.vocabs.length}",
-                        style: Get.textTheme.bodyMedium,
-                      ),
-                    ],
-                  ),
-                  FilledButton.icon(
-                    onPressed: () {
-                      Get.toNamed(AppRoutes.VOCAB_TRAINING);
-                    },
-                    label: Text("Quiz"),
+              centerTitle: true,
+              actions: [
+                PopupMenuButton(
                     icon: Icon(Icons.quiz),
-                  )
+                    itemBuilder: (context) {
+                      return [
+                        PopupMenuItem(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.VOCAB_TRAINING);
+                          },
+                          child: Row(
+                            spacing: 10,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.quiz),
+                              Text("JP-MM"),
+                            ],
+                          ),
+                        ),
+                        PopupMenuItem(
+                          onTap: () {
+                            Get.toNamed(AppRoutes.VOCAB_TRAINING,
+                                arguments: [true]);
+                          },
+                          child: Row(
+                            spacing: 10,
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.quiz),
+                              Text("MM-JP"),
+                            ],
+                          ),
+                        ),
+                      ];
+                    })
+              ],
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Text(
+                    "Chapter ${controller.vocabs.isNotEmpty ? controller.vocabs.first.chapter : 0}",
+                    // style: Get.textTheme.titleMedium,
+                  ),
+                  Text(
+                    "words ${controller.vocabs.length}",
+                    style: Get.textTheme.bodySmall,
+                  ),
                 ],
               ),
               flexibleSpace: SafeArea(
@@ -89,9 +113,9 @@ class LessondetailPage extends GetView<LessondetailController> {
                       currentVocab.kana == ''
                           ? currentVocab.kanji
                           : currentVocab.kana,
-                      style: Get.textTheme.titleMedium!.copyWith(
-                          // fontWeight: FontWeight.bold,
-                          ),
+                      style: Get.textTheme.bodyLarge!.copyWith(
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                     subtitle: Text(currentVocab.meaning),
                     trailing: Row(

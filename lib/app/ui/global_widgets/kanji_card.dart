@@ -84,7 +84,7 @@ class _KanjiCardState extends State<KanjiCard> with TickerProviderStateMixin {
                         ),
                       ),
                       Text(
-                        widget.kanji.meaning?.replaceAll("; ", ",\n") ?? "",
+                        widget.kanji.meaning ?? "",
                       )
                     ],
                   ),
