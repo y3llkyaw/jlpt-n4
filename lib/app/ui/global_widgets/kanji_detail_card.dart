@@ -4,11 +4,10 @@ import 'package:get/get.dart';
 import 'package:n4/app/data/models/kanji.dart';
 
 class KanjiDetailCard extends StatefulWidget {
-  const KanjiDetailCard({Key? key, required this.kvg, required this.kanji})
-      : super(key: key);
+  const KanjiDetailCard({Key? key, required this.kvg}) : super(key: key);
 
   final KvgData kvg;
-  final Kanji kanji;
+  // final Kanji kanji;
 
   @override
   State<KanjiDetailCard> createState() => _KanjiDetailCardState();

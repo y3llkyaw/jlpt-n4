@@ -30,6 +30,14 @@ void speak(Vocabulary vocab) async {
   await flutterTts.speak(vocab.kana);
 }
 
+void speakString(String text) async {
+  FlutterTts flutterTts = FlutterTts();
+  await flutterTts.setLanguage("ja-JP"); // Japanese accent/voice
+  await flutterTts.setSpeechRate(0.4); // Slower speed
+  await flutterTts.setPitch(1.2); // Slightly higher pitch
+  await flutterTts.speak(text);
+}
+
 Future<String> loadKanjiSVG(String kanji) async {
   int codePoint = kanji.runes.first;
   return await rootBundle

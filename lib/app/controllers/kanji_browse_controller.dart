@@ -13,6 +13,7 @@ class KanjiBrowseController extends GetxController {
   final level = LevelFilter.N5.obs;
 
   final searchedKanji = <Kanji>[].obs;
+  final suggestiondKanji = <Kanji>[].obs;
 
   final index = 0.obs;
   final kvgData = Rxn<KvgData>();
@@ -36,7 +37,9 @@ class KanjiBrowseController extends GetxController {
 
   void search(String kanji) {
     searchedKanji.value = kanjis.where((e) {
-      return e.kanji == kanji;
+      return e.kanji == kanji ||
+          e.kunyomi!.replaceAll("（", "").replaceAll("）", "").contains(kanji) ||
+          e.onyomi!.contains(kanji);
     }).toList();
     if (searchedKanji.isNotEmpty) {
       log("search result : ${searchedKanji.first.kanji} ");

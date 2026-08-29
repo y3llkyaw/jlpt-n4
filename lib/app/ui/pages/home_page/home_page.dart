@@ -1,9 +1,6 @@
-import 'dart:developer';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:get/get.dart';
-import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/global_widgets/kanji_card.dart';
 import 'package:n4/app/ui/global_widgets/word_of_the_day.dart';
@@ -17,7 +14,6 @@ class HomePage extends GetView<HomeController> {
 
   @override
   Widget build(BuildContext context) {
-    var congrat = Vocabulary(0, 0, 'でんしゃのなか', '電車の中', 'ရထားအတွင်း', '', '', '');
     return Scaffold(
       appBar: AppBar(
         title: Text("Nihon GO"),

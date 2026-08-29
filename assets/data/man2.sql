@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS vocabularies (
     part_of_speech TEXT CHECK(part_of_speech IN ('noun', 'verb1', 'verb2', 'verb3', 'iAdj', 'naAdji', 'speaking', 'suffix')),
     meaning TEXT,
     note DEFAULT "",
-    example DEFAULT ""
+    example DEFAULT "",
+    sameVocabId DEFAULT "[]"
     
 );
 
@@ -978,7 +979,9 @@ CREATE TABLE IF NOT EXISTS kanjis (
     kunyomi TEXT,
     onyomi TEXT,
     meaning TEXT,
-    examples TEXT
+    examples TEXT,
+    vocabsId DEFAULT "[]"
+
 );
 
 INSERT INTO kanjis (kanji_number, kanji, level, kunyomi, onyomi, meaning, examples) VALUES (1, '人', 'N5', 'ひと', 'ジン、ニン', 'person', '人 ひと person: ここは人が多おおいですね。 | カナダ人 カナダじん Canadian: その人はカナダ人です。 | 三さん人 さんにん three people: こどもが三さ ん人います。');

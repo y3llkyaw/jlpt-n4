@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_kanjivg/flutter_kanjivg.dart';
 import 'package:get/get.dart';
+import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/global_widgets/kanji_detail_card.dart';
 import 'package:n4/app/ui/utils/util.dart';
 import '../../../controllers/kanji_browse_controller.dart';
@@ -32,19 +33,25 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                       });
                     },
                     icon: Icon(Icons.search_rounded)),
-                PopupMenuButton(itemBuilder: (context) {
-                  return [
-                    PopupMenuItem(
-                      child: Text("All"),
-                    ),
-                    PopupMenuItem(
-                      child: Text("N5"),
-                    ),
-                    PopupMenuItem(
-                      child: Text("N4"),
-                    ),
-                  ];
-                })
+                IconButton(
+                  onPressed: () {
+                    Get.toNamed(AppRoutes.KANJI_HOW);
+                  },
+                  icon: Icon(Icons.question_mark),
+                )
+                // PopupMenuButton(itemBuilder: (context) {
+                //   return [
+                //     PopupMenuItem(
+                //       child: Text("All"),
+                //     ),
+                //     PopupMenuItem(
+                //       child: Text("N5"),
+                //     ),
+                //     PopupMenuItem(
+                //       child: Text("N4"),
+                //     ),
+                //   ];
+                // })
               ],
             ),
             body: Column(
@@ -88,7 +95,8 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                             height: 150,
                                             width: 150,
                                             child: KanjiDetailCard(
-                                                kvg: kvg, kanji: e));
+                                              kvg: kvg,
+                                            ));
                                       },
                                     ),
                                     Column(
