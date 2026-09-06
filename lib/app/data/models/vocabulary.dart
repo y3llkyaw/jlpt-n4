@@ -9,20 +9,31 @@ class Vocabulary extends Equatable {
   String partOfSpeech;
   String? note;
   String? example;
+  List<Vocabulary> sameMeaningVocabs; // Mutable list to hold relations
 
-  Vocabulary(this.id, this.chapter, this.kana, this.kanji, this.meaning,
-      this.partOfSpeech, this.note, this.example);
+  Vocabulary({
+    this.id,
+    required this.chapter,
+    required this.kana,
+    required this.kanji,
+    required this.meaning,
+    required this.partOfSpeech,
+    this.note,
+    this.example,
+    this.sameMeaningVocabs = const [],
+  });
 
   factory Vocabulary.fromMap(Map<String, dynamic> map) {
     return Vocabulary(
-        map['id'] as int,
-        map['chapter'] as int,
-        map['kana'] as String,
-        map['kanji'] as String? ?? '',  
-        map['meaning'] ?? '',
-        map['part_of_speech'] as String,
-        map['note'],
-        map['example']);
+      id: map['id'] as int,
+      chapter: map['chapter'] as int,
+      kana: map['kana'] as String,
+      kanji: map['kanji'] as String? ?? '',
+      meaning: map['meaning'] ?? '',
+      partOfSpeech: map['part_of_speech'] as String,
+      note: map['note'],
+      example: map['example'],
+    );
   }
 
   Map<String, dynamic> toMap() {
@@ -32,12 +43,22 @@ class Vocabulary extends Equatable {
       'kana': kana,
       'kanji': kanji,
       'meaning': meaning,
-      'part_of_speech': partOfSpeech,
+      'part_of_speech': partOfSpeech.toLowerCase().toString(),
       'note': note,
       'example': example,
     };
   }
-  
+
   @override
-  List<Object?> get props => [id,chapter,kana,kanji,meaning,partOfSpeech,note,example];
+  List<Object?> get props => [
+        id,
+        chapter,
+        kana,
+        kanji,
+        meaning,
+        partOfSpeech,
+        note,
+        example,
+        sameMeaningVocabs
+      ];
 }

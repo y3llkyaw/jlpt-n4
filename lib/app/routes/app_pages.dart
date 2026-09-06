@@ -1,6 +1,6 @@
 import '../bindings/kanji_how_binding.dart';
 import '../ui/pages/kanji_how_page/kanji_how_page.dart';
-      import '../bindings/kanji_browse_binding.dart';
+import '../bindings/kanji_browse_binding.dart';
 import '../ui/pages/kanji_browse_page/kanji_browse_page.dart';
 import '../bindings/vocab_training_binding.dart';
 import '../ui/pages/vocab_training_page/vocab_training_page.dart';
@@ -84,6 +84,6 @@ class AppPages {
       page: () => const KanjiHowPage(),
       binding: KanjiHowBinding(),
       transition: _defaultTransition,
-    ), 
-];
+    ),
+  ];
 }

@@ -1,6 +1,7 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:n4/app/data/services/database_services.dart';
 import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/global_widgets/kanji_card.dart';
 import 'package:n4/app/ui/global_widgets/word_of_the_day.dart';
@@ -124,7 +125,9 @@ class HomePage extends GetView<HomeController> {
                                   SizedBox(),
                                   FilledButton.tonalIcon(
                                     icon: Icon(Icons.bar_chart),
-                                    onPressed: () {},
+                                    onPressed: () async {
+                                      await DatabaseServices.instance.test();
+                                    },
                                     label: Text("Detail"),
                                   ),
                                 ],

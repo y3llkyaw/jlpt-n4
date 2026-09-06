@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/editvocab_controller.dart';
+import 'package:n4/app/routes/app_routes.dart';
 
 class EditVocabPage extends GetView<EditvocabController> {
   const EditVocabPage({Key? key}) : super(key: key);
@@ -77,7 +78,7 @@ class EditVocabPage extends GetView<EditvocabController> {
                 ),
                 TextField(
                   onChanged: (value) => controller.onChange(),
-                  controller: controller.meaing,
+                  controller: controller.meaning,
                   decoration: InputDecoration(
                     // icon: Icon(Icons.help_outline),
                     // label: Text("Meaning"),
@@ -147,64 +148,74 @@ class EditVocabPage extends GetView<EditvocabController> {
                         // ),
                         ChoiceChip(
                           selectedColor: Get.theme.colorScheme.primaryContainer,
-                          selected: controller.type.value == "Noun",
+                          selected: controller.type.value == "noun",
                           label: Text("noun"),
                           onSelected: (value) {
-                            controller.type.value = "Noun";
+                            controller.type.value = "noun";
                             controller.onChange();
                           },
                         ),
                         ChoiceChip(
                           selectedColor: Get.theme.colorScheme.primaryContainer,
-                          selected: controller.type.value == "Verb 1",
+                          selected: controller.type.value == "verb1",
                           label: Text("verb-1"),
                           onSelected: (value) {
-                            controller.type.value = "Verb 1";
+                            controller.type.value = "verb1";
                             controller.onChange();
                           },
                         ),
                         ChoiceChip(
                           selectedColor: Get.theme.colorScheme.primaryContainer,
-                          selected: controller.type.value == "Verb 2",
+                          selected: controller.type.value == "verb2",
                           label: Text("verb-2"),
                           onSelected: (value) {
-                            controller.type.value = "Verb 2";
+                            controller.type.value = "verb2";
                             controller.onChange();
                           },
                         ),
                         ChoiceChip(
                           selectedColor: Get.theme.colorScheme.primaryContainer,
-                          selected: controller.type.value == "Verb 3",
+                          selected: controller.type.value == "verb3",
                           label: Text("verb-3"),
                           onSelected: (value) {
-                            controller.type.value = "Verb 3";
+                            controller.type.value = "verb3";
                             controller.onChange();
                           },
                         ),
                         ChoiceChip(
                           selectedColor: Get.theme.colorScheme.primaryContainer,
-                          selected: controller.type.value == "I-Adjective",
+                          selected: controller.type.value == "iAdj",
                           label: Text("i-adj"),
                           onSelected: (value) {
-                            controller.type.value = "I-Adjective";
+                            // iAdj', 'naAdji', 'speaking', 'suffix'
+                            controller.type.value = "iAdj";
                             controller.onChange();
                           },
                         ),
                         ChoiceChip(
                           selectedColor: Get.theme.colorScheme.primaryContainer,
-                          selected: controller.type.value == "Na-Adjective",
+                          selected: controller.type.value == "naAdji",
                           label: Text("na-adji"),
                           onSelected: (value) {
-                            controller.type.value = "Na-Adjective";
+                            controller.type.value = "naAdji";
                             controller.onChange();
                           },
                         ),
                         ChoiceChip(
                           selectedColor: Get.theme.colorScheme.primaryContainer,
-                          selected: controller.type.value == "Speaking",
+                          selected: controller.type.value == "speaking",
                           label: Text("speaking"),
                           onSelected: (value) {
-                            controller.type.value = "Speaking";
+                            controller.type.value = "speaking";
+                            controller.onChange();
+                          },
+                        ),
+                        ChoiceChip(
+                          selectedColor: Get.theme.colorScheme.primaryContainer,
+                          selected: controller.type.value == "suffix",
+                          label: Text("suffix"),
+                          onSelected: (value) {
+                            controller.type.value = "suffix";
                             controller.onChange();
                           },
                         ),
@@ -212,6 +223,49 @@ class EditVocabPage extends GetView<EditvocabController> {
                     ),
                   ),
                 ),
+                SizedBox(
+                  height: 10,
+                ),
+                // Same Meaning
+                Obx(
+                  () => controller.isNew
+                      ? SizedBox.shrink()
+                      : Card(
+                          child: Column(children: <Widget>[
+                            ListTile(
+                              onTap: () {
+                                showSearch(
+                                  context: context,
+                                  delegate: CustomSearchDeletgate(),
+                                  query: "",
+                                );
+                              },
+                              title: Text("List of Same Meaning"),
+                              subtitle: Text("add same meaning vocabulary"),
+                              trailing: Icon(Icons.add_circle_outline),
+                            ),
+                            Column(
+                                children: controller.sameMeaningList
+                                        .map((vocab) => ListTile(
+                                              leading: Text(
+                                                  "id #${vocab.id}\nchapter #${vocab.chapter}"),
+                                              title: Text(vocab.kana),
+                                              subtitle: Text(vocab.meaning),
+                                              trailing: IconButton(
+                                                icon: Icon(Icons.remove_circle),
+                                                onPressed: () {
+                                                  controller.sameMeaningList
+                                                      .remove(vocab);
+                                                  controller
+                                                      .checkSameMeaningEdited();
+                                                },
+                                              ),
+                                            ))
+                                        .toList() ??
+                                    []),
+                          ]),
+                        ),
+                )
               ],
             ),
           ),
@@ -226,6 +280,74 @@ class EditVocabPage extends GetView<EditvocabController> {
                 child: Icon(Icons.save))
             : Container(),
       ),
+    );
+  }
+}
+
+class CustomSearchDeletgate extends SearchDelegate {
+  @override
+  List<Widget>? buildActions(BuildContext context) {
+    return [IconButton(onPressed: () {}, icon: Icon(Icons.search))];
+  }
+
+  @override
+  Widget? buildLeading(BuildContext context) {
+    return null;
+  }
+
+  @override
+  Widget buildResults(BuildContext context) {
+    return Container();
+  }
+
+  @override
+  Widget buildSuggestions(BuildContext context) {
+    Get.find<EditvocabController>().searchVocab(query);
+    return Obx(
+      () {
+        if (Get.find<EditvocabController>().searchedVocab.isEmpty) {
+          return Center(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text("No result found"),
+                ElevatedButton(
+                    onPressed: () {
+                      Get.toNamed(AppRoutes.EDITVOCAB);
+                    },
+                    child: Text("Add New Vocab ?")),
+              ],
+            ),
+          );
+        }
+        return ListView.builder(
+          itemCount: Get.find<EditvocabController>().searchedVocab.length,
+          itemBuilder: (context, index) {
+            final result = Get.find<EditvocabController>().searchedVocab[index];
+            return InkWell(
+              onTap: () {},
+              child: Obx(
+                () => ListTile(
+                  leading: Text("#${result.id}"),
+                  title: Text(result.kana),
+                  subtitle: Text(result.meaning ?? ""),
+                  trailing: IconButton(
+                    icon: Icon(
+                        Get.find<EditvocabController>().isSelected(result)
+                            ? Icons.check_circle
+                            : Icons.add_circle_outline),
+                    onPressed: () {
+                      Get.find<EditvocabController>()
+                          .toggleAddSameMeaning(result);
+                    },
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
     );
   }
 }

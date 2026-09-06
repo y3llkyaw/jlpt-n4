@@ -16,71 +16,28 @@ class LessondetailController extends GetxController {
   var vocabFilter = VocabFilter.all.obs;
   var round = 1.obs;
   var isFinished = false.obs;
-  var congrat = Vocabulary(0, 0, 'Congratulations!', '',
-      'You have completed all the cards in this round.', '', '', '');
+  var congrat = Vocabulary(
+    id: 0,
+    chapter: 0,
+    kana: 'Congratulations!',
+    kanji: '',
+    meaning: 'You have completed all the cards in this round.',
+    partOfSpeech: '',
+    example: '',
+    note: '',
+  );
 
   @override
   void onInit() async {
     super.onInit();
     vocabs.value = [congrat, congrat];
 
-    final data =
-        await DatabaseServices.instance.getVocabularyByChapter(Get.arguments);
-    vocabs.value = data.map((e) => Vocabulary.fromMap(e)).toList();
-
+    final data = await DatabaseServices.instance
+        .getVocabularyByChapterWithSameMeaning(Get.arguments);
+    vocabs.value = data.toList();
     log(data.length.toString());
     vocabsCopy.value = vocabs.toList();
     viewVocabs.value = vocabs.toList();
-  }
-
-  void addForgotVocab(Vocabulary vocab) {
-    forgotList.add(vocab);
-  }
-
-  void addKnownVocab(Vocabulary vocab) {
-    knownList.add(vocab);
-  }
-
-  void finishedRound() {
-    round.value++;
-
-    if (forgotList.isEmpty) {
-      showRestart();
-      return;
-    }
-    if (forgotList.length == 1) {
-      var congrat = Vocabulary(0, 0, 'Congratulations!', '',
-          'You have completed all the cards in this round.', '', '', '');
-
-      forgotList.add(congrat);
-    }
-    Get.log("Forgot list length: ${forgotList.length}");
-    vocabsCopy.value = forgotList.toList();
-    forgotList.clear();
-    knownList.clear();
-    viewVocabs.value = _filterVocabs();
-  }
-
-  void resetReview() {
-    round.value = 1;
-    knownList.clear();
-    forgotList.clear();
-    vocabsCopy.value = vocabs.toList();
-    Get.log("Finished! Shuffle the review.");
-    vocabs.shuffle();
-    viewVocabs.value = _filterVocabs();
-    isFinished.value = false;
-  }
-
-  void showRestart() {
-    round.value = 1;
-    isFinished.value = true;
-    knownList.clear();
-    forgotList.clear();
-    vocabsCopy.value = vocabs.toList();
-    Get.log("Finished! Shuffle the review.");
-    vocabs.shuffle();
-    viewVocabs.value = _filterVocabs();
   }
 
   void changeFilter(VocabFilter filter) {

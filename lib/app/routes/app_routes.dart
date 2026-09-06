@@ -10,4 +10,5 @@ class AppRoutes {
   static const VOCAB_TRAINING = '/vocab-training';
   static const KANJI_BROWSE = '/kanji-browse';
   static const KANJI_HOW = '/kanji-how';
+  static const ADD_SAME_MEANING = '/add-same-meaning';
 }

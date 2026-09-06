@@ -46,8 +46,105 @@ class DatabaseServices {
       Get.log("Database already exists.");
     }
 
-    // Open the database
-    return await openDatabase(path, version: 1);
+    return await openDatabase(
+      path,
+      version: 2,
+      onUpgrade: (db, oldVersion, _) async {
+        if (oldVersion < 2) {
+          await _createSameMeaningTable(db);
+        }
+      },
+    );
+  }
+
+  Future<void> _createSameMeaningTable(Database db) {
+    return db.execute('''
+      CREATE TABLE IF NOT EXISTS same_meaning (
+        vocab_id1 INTEGER,
+        vocab_id2 INTEGER,
+        PRIMARY KEY (vocab_id1, vocab_id2),
+        FOREIGN KEY (vocab_id1) REFERENCES vocabularies(id) ON DELETE CASCADE,
+        FOREIGN KEY (vocab_id2) REFERENCES vocabularies(id) ON DELETE CASCADE
+      )
+    ''');
+  }
+
+  Future<void> createVocabJunction(int vocabId, int vocabId2) async {
+    final db = await database;
+    await db.insert(
+      'same_meaning',
+      {'vocab_id1': vocabId, 'vocab_id2': vocabId2},
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+    await db.insert(
+      'same_meaning',
+      {'vocab_id1': vocabId2, 'vocab_id2': vocabId},
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
+  Future<void> synchronizeVocabJunctions(
+      int vocabId, Iterable<int> relatedVocabIds) async {
+    final db = await database;
+    final desiredIds =
+        relatedVocabIds.where((relatedId) => relatedId != vocabId).toSet();
+
+    await db.transaction((transaction) async {
+      final existingRows = await transaction.query(
+        'same_meaning',
+        columns: ['vocab_id2'],
+        where: 'vocab_id1 = ?',
+        whereArgs: [vocabId],
+      );
+      final existingIds =
+          existingRows.map((row) => row['vocab_id2'] as int).toSet();
+
+      for (final relatedId in existingIds.difference(desiredIds)) {
+        await transaction.delete(
+          'same_meaning',
+          where: 'vocab_id1 = ? AND vocab_id2 = ?',
+          whereArgs: [vocabId, relatedId],
+        );
+        await transaction.delete(
+          'same_meaning',
+          where: 'vocab_id1 = ? AND vocab_id2 = ?',
+          whereArgs: [relatedId, vocabId],
+        );
+      }
+
+      for (final relatedId in desiredIds.difference(existingIds)) {
+        await transaction.insert(
+          'same_meaning',
+          {'vocab_id1': vocabId, 'vocab_id2': relatedId},
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+        await transaction.insert(
+          'same_meaning',
+          {'vocab_id1': relatedId, 'vocab_id2': vocabId},
+          conflictAlgorithm: ConflictAlgorithm.ignore,
+        );
+      }
+    });
+  }
+
+  Future<void> deleteVocabJunction(int vocabId, int vocabId2) async {
+    final db = await database;
+    await db.delete('same_meaning',
+        where: 'vocab_id1 = ? AND vocab_id2 = ?',
+        whereArgs: [vocabId, vocabId2]);
+    await db.delete('same_meaning',
+        where: 'vocab_id1 = ? AND vocab_id2 = ?',
+        whereArgs: [vocabId2, vocabId]);
+  }
+
+  Future<List<Vocabulary>> getRelatedVocabs(int vocabId) async {
+    final db = await instance.database;
+    final List<Map<String, dynamic>> results = await db.rawQuery('''
+    SELECT * FROM Vocabularies v
+    JOIN same_meaning j ON j.vocab_id2 = v.id
+    WHERE j.vocab_id1 = ?
+  ''', [vocabId]); // The variable replaces the '?' safely
+    return results.map((e) => Vocabulary.fromMap(e)).toList();
   }
 
   Future<List<Map<String, dynamic>>> getVocabulary() async {
@@ -175,5 +272,31 @@ class DatabaseServices {
       await importedDb.close();
     }
     Get.log('Vocabulary imported successfully');
+  }
+
+  Future<List<Vocabulary>> getVocabularyByChapterWithSameMeaning(
+      int chapterNumber) async {
+    final db = await DatabaseServices.instance.database;
+
+    // 1. Get all vocabularies for the specific chapter
+    final vocabMaps = await db.query(
+      'vocabularies',
+      where: 'chapter = ?',
+      whereArgs: [chapterNumber],
+    );
+
+    if (vocabMaps.isEmpty) return [];
+    final vocabularies = vocabMaps.map((e) => Vocabulary.fromMap(e)).toList();
+    await Future.wait(vocabularies.map((vocab) async {
+      vocab.sameMeaningVocabs = await getRelatedVocabs(vocab.id!);
+    }));
+    return vocabularies;
+  }
+
+  Future<void> test() async {
+    final db = await database;
+    final samemeaning = await db.query('same_meaning');
+    print('Same Meaning Table: $samemeaning');
+    
   }
 }

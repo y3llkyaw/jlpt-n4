@@ -6,10 +6,18 @@ CREATE TABLE IF NOT EXISTS vocabularies (
     part_of_speech TEXT CHECK(part_of_speech IN ('noun', 'verb1', 'verb2', 'verb3', 'iAdj', 'naAdji', 'speaking', 'suffix')),
     meaning TEXT,
     note DEFAULT "",
-    example DEFAULT "",
-    sameVocabId DEFAULT "[]"
-    
+    example DEFAULT "" 
 );
+
+-- 3. The Junction Table (Connects Kanji and Vocab)
+CREATE TABLE IF NOT EXISTS same_meaning (
+    vocab_id1 INTEGER,
+    vocab_id2 INTEGER,
+    PRIMARY KEY (vocab_id1, vocab_id2),
+    FOREIGN KEY (vocab_id1) REFERENCES vocabularies(id) ON DELETE CASCADE,
+    FOREIGN KEY (vocab_id2) REFERENCES vocabularies(id) ON DELETE CASCADE
+);
+
 
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (26, '見ます、診ます', 'みます', 'verb2', 'ကြည့်သည်၊ ကြည့်ရှုစစ်ဆေးသည်၊ စမ်းသပ်ကြည့်ရှုသည်', NULL, NULL);
 INSERT INTO vocabularies (chapter, kanji, kana, part_of_speech, meaning, note, example) VALUES (26, '探します、捜します', 'さがします', 'verb1', 'ရှာသည်၊ ရှာဖွေသည်', NULL, NULL);
@@ -979,10 +987,21 @@ CREATE TABLE IF NOT EXISTS kanjis (
     kunyomi TEXT,
     onyomi TEXT,
     meaning TEXT,
-    examples TEXT,
-    vocabsId DEFAULT "[]"
-
+    examples TEXT
 );
+
+
+
+-- 3. The Junction Table (Connects Kanji and Vocab)
+CREATE TABLE IF NOT EXISTS kanji_vocabulary (
+    kanji_id INTEGER,
+    vocab_id INTEGER,
+    PRIMARY KEY (kanji_id, vocab_id),
+    FOREIGN KEY (kanji_id) REFERENCES kanjis(id) ON DELETE CASCADE,
+    FOREIGN KEY (vocab_id) REFERENCES vocabularies(id) ON DELETE CASCADE
+);
+
+
 
 INSERT INTO kanjis (kanji_number, kanji, level, kunyomi, onyomi, meaning, examples) VALUES (1, '人', 'N5', 'ひと', 'ジン、ニン', 'person', '人 ひと person: ここは人が多おおいですね。 | カナダ人 カナダじん Canadian: その人はカナダ人です。 | 三さん人 さんにん three people: こどもが三さ ん人います。');
 INSERT INTO kanjis (kanji_number, kanji, level, kunyomi, onyomi, meaning, examples) VALUES (2, '日', 'N5', 'ひ、か', 'ニチ', 'that day', 'その日 そのひ that day: すみません。その日は いそが忙しいです。 | 三みっ日 みっか the third day of the month: 今日 日 き ょ うは三みっ日です。 | じゅう十五ご 日 じゅうごにち the fifteenth day of the month: 明日 あ し たは十五 じ ゅ う ご日です。 | 日曜よ う日 にちようび Sunday: 日曜よ う日は休やすみです。');

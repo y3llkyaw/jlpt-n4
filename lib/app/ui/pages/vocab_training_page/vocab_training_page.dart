@@ -148,14 +148,16 @@ class VocabTrainingPage extends GetView<VocabTrainingController> {
                           if (currentIndex == null) {
                             if (controller.forgotVocabs.length == 1) {
                               var congrat = Vocabulary(
-                                  0,
-                                  0,
-                                  'Congratulations!',
-                                  '',
-                                  'You have completed all the cards in this round.',
-                                  '',
-                                  '',
-                                  '');
+                                id: 0,
+                                chapter: 0,
+                                kana: 'Congratulations!',
+                                kanji: '',
+                                meaning:
+                                    'You have completed all the cards in this round.',
+                                partOfSpeech: '',
+                                example: '',
+                                note: '',
+                              );
                               controller.forgotVocabs.add(congrat);
                             }
                             controller.isFinished.value = true;
