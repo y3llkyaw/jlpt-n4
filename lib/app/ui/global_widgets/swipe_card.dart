@@ -103,6 +103,36 @@ class _SwipeCardState extends State<SwipeCard> {
                       style: Get.textTheme.titleMedium,
                     ),
                   ),
+                  AnimatedOpacity(
+                    opacity: _showAnswer ? 1 : 0,
+                    duration: Durations.medium1,
+                    curve: Curves.easeIn,
+                    child: Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: Column(
+                        children: [
+                          widget.vocab.sameMeaningVocabs.isEmpty
+                              ? SizedBox.shrink()
+                              : Text(
+                                  "Same Meaning Vocabularies",
+                                  style: Get.textTheme.bodyMedium!.copyWith(
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                          SizedBox(height: 10),
+                          Wrap(
+                            spacing: 10,
+                            runSpacing: 10,
+                            children: widget.vocab.sameMeaningVocabs
+                                .map((e) => Chip(
+                                      label: Text(e.kana),
+                                    ))
+                                .toList(),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                   Spacer(),
                   Text(
                     "tap the card to show the answer",

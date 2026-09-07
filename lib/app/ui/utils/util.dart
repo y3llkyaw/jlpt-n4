@@ -22,19 +22,26 @@ TextTheme createTextTheme(
   return textTheme;
 }
 
-void speak(Vocabulary vocab) async {
-  FlutterTts flutterTts = FlutterTts();
-  await flutterTts.setLanguage("ja-JP"); // Japanese accent/voice
-  await flutterTts.setSpeechRate(0.4); // Slower speed
-  await flutterTts.setPitch(1.2); // Slightly higher pitch
+Future<void> speak(Vocabulary vocab) async {
+  final flutterTts = FlutterTts();
+  await flutterTts.setLanguage('ja-JP');
+  await flutterTts.setSpeechRate(0.4);
+  await flutterTts.setPitch(1.2);
+  await flutterTts.awaitSpeakCompletion(true);
   await flutterTts.speak(vocab.kana);
+  if (vocab.sameMeaningVocabs.isNotEmpty) {
+    for (final sameMeaningVocab in vocab.sameMeaningVocabs) {
+      await flutterTts.speak(sameMeaningVocab.kana);
+    }
+  }
 }
 
-void speakString(String text) async {
-  FlutterTts flutterTts = FlutterTts();
-  await flutterTts.setLanguage("ja-JP"); // Japanese accent/voice
-  await flutterTts.setSpeechRate(0.4); // Slower speed
-  await flutterTts.setPitch(1.2); // Slightly higher pitch
+Future<void> speakString(String text) async {
+  final flutterTts = FlutterTts();
+  await flutterTts.setLanguage('ja-JP');
+  await flutterTts.setSpeechRate(0.4);
+  await flutterTts.setPitch(1.2);
+  await flutterTts.awaitSpeakCompletion(true);
   await flutterTts.speak(text);
 }
 

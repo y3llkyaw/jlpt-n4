@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:n4/app/data/models/enums.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/data/services/database_services.dart';
+import 'package:n4/app/ui/utils/util.dart';
 
 class LessondetailController extends GetxController {
   var vocabs = <Vocabulary>[].obs;
@@ -12,25 +13,17 @@ class LessondetailController extends GetxController {
   var knownList = <Vocabulary>[].obs;
   var viewVocabs = <Vocabulary>[].obs;
 
+  var isPlaying = false.obs;
+  final currentIndex = (-1).obs;
+
   var isListView = true.obs;
   var vocabFilter = VocabFilter.all.obs;
   var round = 1.obs;
   var isFinished = false.obs;
-  var congrat = Vocabulary(
-    id: 0,
-    chapter: 0,
-    kana: 'Congratulations!',
-    kanji: '',
-    meaning: 'You have completed all the cards in this round.',
-    partOfSpeech: '',
-    example: '',
-    note: '',
-  );
 
   @override
   void onInit() async {
     super.onInit();
-    vocabs.value = [congrat, congrat];
 
     final data = await DatabaseServices.instance
         .getVocabularyByChapterWithSameMeaning(Get.arguments);
@@ -38,6 +31,28 @@ class LessondetailController extends GetxController {
     log(data.length.toString());
     vocabsCopy.value = vocabs.toList();
     viewVocabs.value = vocabs.toList();
+  }
+
+  Future<void> play() async {
+    isPlaying.value = true;
+
+    try {
+      for (final vocab in viewVocabs) {
+        currentIndex.value = viewVocabs.indexOf(vocab);
+        log('Current Index: ${currentIndex.value}, Vocab: ${vocab.kana}');
+        if (!isPlaying.value) {
+          break;
+        }
+        await speak(vocab);
+      }
+    } finally {
+      isPlaying.value = false;
+      currentIndex.value = -1;
+    }
+  }
+
+  void stop() {
+    isPlaying.value = false;
   }
 
   void changeFilter(VocabFilter filter) {
