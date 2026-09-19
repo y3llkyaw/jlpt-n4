@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_kanjivg/flutter_kanjivg.dart';
 import 'package:get/get.dart';
-import 'package:n4/app/data/models/kanji.dart';
 
 class KanjiDetailCard extends StatefulWidget {
   const KanjiDetailCard({Key? key, required this.kvg}) : super(key: key);

@@ -69,6 +69,15 @@ class DatabaseServices {
     ''');
   }
 
+  Future<void> createKanjiVocabJunction(int kanjiId, int vocabId) async {
+    final db = await database;
+    await db.insert(
+      'kanji_vocabulary',
+      {'vocab_id': vocabId, 'kanji_id': kanjiId},
+      conflictAlgorithm: ConflictAlgorithm.ignore,
+    );
+  }
+
   Future<void> createVocabJunction(int vocabId, int vocabId2) async {
     final db = await database;
     await db.insert(
@@ -137,7 +146,33 @@ class DatabaseServices {
         whereArgs: [vocabId2, vocabId]);
   }
 
-  Future<List<Vocabulary>> getRelatedVocabs(int vocabId) async {
+  Future<void> deleteKanjiVocabJunction(int kanjiId, int vocabId) async {
+    final db = await database;
+    await db.delete('kanji_vocabulary',
+        where: 'kanji_id = ? AND vocab_id = ?', whereArgs: [kanjiId, vocabId]);
+  }
+
+  // Future<List<Vocabulary>> getRelatedVocabs(int vocabId) async {
+  //   final db = await instance.database;
+  //   final List<Map<String, dynamic>> results = await db.rawQuery('''
+  //   SELECT * FROM Vocabularies v
+  //   JOIN same_meaning j ON j.vocab_id2 = v.id
+  //   WHERE j.vocab_id1 = ?
+  // ''', [vocabId]); // The variable replaces the '?' safely
+  //   return results.map((e) => Vocabulary.fromMap(e)).toList();
+  // }
+
+  Future<List<Vocabulary>> getRelatedVocabsFromVocabs(int vocabId) async {
+    final db = await instance.database;
+    final List<Map<String, dynamic>> results = await db.rawQuery('''
+    SELECT * FROM Vocabularies v
+    JOIN same_meaning j ON j.vocab_id2 = v.id
+    WHERE j.vocab_id1 = ?
+  ''', [vocabId]); // The variable replaces the '?' safely
+    return results.map((e) => Vocabulary.fromMap(e)).toList();
+  }
+
+  Future<List<Vocabulary>> getRelatedVocabsFromKanji(int vocabId) async {
     final db = await instance.database;
     final List<Map<String, dynamic>> results = await db.rawQuery('''
     SELECT * FROM Vocabularies v
@@ -196,7 +231,11 @@ class DatabaseServices {
   Future<List<Kanji>> getKanjis() async {
     final db = await instance.database;
     final kanjiString = await db.query('kanjis');
-    return kanjiString.map((e) => Kanji.fromMap(e)).toList();
+    final kanjiList = kanjiString.map((e) => Kanji.fromMap(e)).toList();
+    await Future.wait(kanjiList.map((kanji) async {
+      kanji.vocabularies = await getRelatedVocabsFromKanji(kanji.id!);
+    }));
+    return kanjiList;
   }
 
   Future<void> importDatabase() async {
@@ -288,7 +327,7 @@ class DatabaseServices {
     if (vocabMaps.isEmpty) return [];
     final vocabularies = vocabMaps.map((e) => Vocabulary.fromMap(e)).toList();
     await Future.wait(vocabularies.map((vocab) async {
-      vocab.sameMeaningVocabs = await getRelatedVocabs(vocab.id!);
+      vocab.sameMeaningVocabs = await getRelatedVocabsFromVocabs(vocab.id!);
     }));
     return vocabularies;
   }
@@ -297,6 +336,5 @@ class DatabaseServices {
     final db = await database;
     final samemeaning = await db.query('same_meaning');
     print('Same Meaning Table: $samemeaning');
-    
   }
 }

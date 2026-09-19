@@ -34,6 +34,7 @@ Future<void> speak(Vocabulary vocab) async {
       await flutterTts.speak(sameMeaningVocab.kana);
     }
   }
+  await Future.delayed(const Duration(milliseconds: 200));
 }
 
 Future<void> speakString(String text) async {

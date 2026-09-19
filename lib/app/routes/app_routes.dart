@@ -11,4 +11,5 @@ class AppRoutes {
   static const KANJI_BROWSE = '/kanji-browse';
   static const KANJI_HOW = '/kanji-how';
   static const ADD_SAME_MEANING = '/add-same-meaning';
+  static const EDIT_KANJI = '/edit-kanji';
 }

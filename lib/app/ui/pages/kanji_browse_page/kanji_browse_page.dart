@@ -39,19 +39,6 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                   },
                   icon: Icon(Icons.question_mark),
                 )
-                // PopupMenuButton(itemBuilder: (context) {
-                //   return [
-                //     PopupMenuItem(
-                //       child: Text("All"),
-                //     ),
-                //     PopupMenuItem(
-                //       child: Text("N5"),
-                //     ),
-                //     PopupMenuItem(
-                //       child: Text("N4"),
-                //     ),
-                //   ];
-                // })
               ],
             ),
             body: Column(
@@ -105,13 +92,36 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                       children: [
                                         Text("kunyomi"),
                                         Text(e.kunyomi!
-                                            .replaceAll('`、', "\n")
+                                            .replaceAll('、', "\n")
+                                            .replaceAll("（", "")
+                                            .replaceAll("）", "")
                                             .toString()),
                                         SizedBox(
                                           height: 10,
                                         ),
                                         Text("onYomi"),
                                         Text(e.onyomi.toString()),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        Row(
+                                          children: [
+                                            IconButton(
+                                              onPressed: () {
+                                                Get.toNamed(
+                                                    AppRoutes.EDIT_KANJI);
+                                              },
+                                              icon: Icon(Icons.edit),
+                                            ),
+                                            IconButton(
+                                              onPressed: () {
+                                                speakString(
+                                                    "${e.kunyomi!},${e.onyomi!}");
+                                              },
+                                              icon: Icon(Icons.volume_up),
+                                            ),
+                                          ],
+                                        )
                                       ],
                                     )
                                   ],

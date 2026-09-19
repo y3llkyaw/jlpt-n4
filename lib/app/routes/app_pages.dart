@@ -1,4 +1,6 @@
-import '../bindings/kanji_how_binding.dart';
+import '../bindings/edit_kanji_binding.dart';
+import '../ui/pages/edit_kanji_page/edit_kanji_page.dart';
+      import '../bindings/kanji_how_binding.dart';
 import '../ui/pages/kanji_how_page/kanji_how_page.dart';
 import '../bindings/kanji_browse_binding.dart';
 import '../ui/pages/kanji_browse_page/kanji_browse_page.dart';
@@ -85,5 +87,11 @@ class AppPages {
       binding: KanjiHowBinding(),
       transition: _defaultTransition,
     ),
-  ];
+    GetPage(
+      name: AppRoutes.EDIT_KANJI,
+      page: () => const EditKanjiPage(),
+      binding: EditKanjiBinding(),
+      transition: _defaultTransition,
+    ), 
+];
 }

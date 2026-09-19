@@ -983,7 +983,7 @@ CREATE TABLE IF NOT EXISTS kanjis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     kanji_number INTEGER NOT NULL,
     kanji TEXT NOT NULL,
-    level TEXT CHECK(level IN ('N5', 'N4')),
+    level TEXT CHECK(level IN ('N5', 'N4','N3','N2','N1')) NOT NULL,
     kunyomi TEXT,
     onyomi TEXT,
     meaning TEXT,
@@ -1000,7 +1000,6 @@ CREATE TABLE IF NOT EXISTS kanji_vocabulary (
     FOREIGN KEY (kanji_id) REFERENCES kanjis(id) ON DELETE CASCADE,
     FOREIGN KEY (vocab_id) REFERENCES vocabularies(id) ON DELETE CASCADE
 );
-
 
 
 INSERT INTO kanjis (kanji_number, kanji, level, kunyomi, onyomi, meaning, examples) VALUES (1, '人', 'N5', 'ひと', 'ジン、ニン', 'person', '人 ひと person: ここは人が多おおいですね。 | カナダ人 カナダじん Canadian: その人はカナダ人です。 | 三さん人 さんにん three people: こどもが三さ ん人います。');

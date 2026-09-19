@@ -5,7 +5,7 @@ CREATE TABLE IF NOT EXISTS kanjis (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     kanji_number INTEGER NOT NULL,
     kanji TEXT NOT NULL,
-    level TEXT CHECK(level IN ('N5', 'N4')),
+    level TEXT CHECK(level IN ('N5', 'N4','N3','N2','N1')) NOT NULL,
     kunyomi TEXT,
     onyomi TEXT,
     meaning TEXT,

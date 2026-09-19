@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
@@ -165,12 +167,24 @@ class VocabTrainingPage extends GetView<VocabTrainingController> {
                           }
                           if (direction == CardSwiperDirection.right) {
                             controller.knownVocabs
-                                .add(controller.reviewVocabs[currentIndex]);
+                                .add(controller.reviewVocabs[previousIndex]);
                           }
                           if (direction == CardSwiperDirection.left) {
                             controller.forgotVocabs
-                                .add(controller.reviewVocabs[currentIndex]);
+                                .add(controller.reviewVocabs[previousIndex]);
                           }
+                          log(
+                              controller.knownVocabs
+                                  .map((e) => e.kana)
+                                  .toList()
+                                  .join(","),
+                              name: "known-vocabs-list");
+                          log(
+                              controller.forgotVocabs
+                                  .map((e) => e.kana)
+                                  .toList()
+                                  .join(","),
+                              name: "forgot-vocabs-list");
                           return true;
                         },
                       ),
