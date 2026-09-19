@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/home_controller.dart';
-import 'package:n4/app/controllers/lessondetail_controller.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/data/services/database_services.dart';
 
@@ -18,7 +17,6 @@ class EditvocabController extends GetxController {
   final meaning = TextEditingController();
   final example = TextEditingController();
   final RxList<Vocabulary> sameMeaningList = <Vocabulary>[].obs;
-  final _vocabDetailController = Get.find<LessondetailController>();
 
   final vocabList = <Vocabulary>[].obs;
   final searchedVocab = <Vocabulary>[].obs;
@@ -168,6 +166,15 @@ class EditvocabController extends GetxController {
     } else {
       savedId = updatedVocab.id!;
       await DatabaseServices.instance.updateVocabulary(updatedVocab);
+
+      // update Realtime
+      int index = 0;
+      for (Vocabulary vocab in Get.arguments[1]) {
+        if (vocab.id! == updatedVocab.id!) {
+          Get.arguments[1][index] = updatedVocab;
+        }
+        index++;
+      }
     }
 
     await DatabaseServices.instance.synchronizeVocabJunctions(
@@ -177,30 +184,7 @@ class EditvocabController extends GetxController {
           .whereType<int>(),
     );
 
-    if (!wasNew) {
-      _updateSourceList(updatedVocab);
-    }
-
     Get.back();
-  }
-
-  void _updateSourceList(Vocabulary updatedVocab) {
-    if (sourceList == null) return;
-
-    final indexView = _vocabDetailController.viewVocabs.indexOf(updatedVocab);
-    final indexSource = _vocabDetailController.vocabs.indexOf(updatedVocab);
-
-    if (indexView != -1) {
-      _vocabDetailController.viewVocabs[indexView] = updatedVocab;
-    }
-    if (indexSource != -1) {
-      _vocabDetailController.vocabs[indexSource] = updatedVocab;
-    }
-
-    if (sourceIndex != null) {
-      sourceList![sourceIndex!] = updatedVocab;
-      return;
-    }
   }
 
   Future<void> deleteVocab() async {

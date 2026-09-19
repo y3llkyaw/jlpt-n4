@@ -224,7 +224,7 @@ class LessondetailPage extends GetView<LessondetailController> {
                               IconButton(
                                 onPressed: () {
                                   Get.toNamed(AppRoutes.EDITVOCAB,
-                                      arguments: [currentVocab]);
+                                      arguments: [currentVocab,controller.viewVocabs]);
                                 },
                                 icon: Icon(Icons.edit),
                               ),

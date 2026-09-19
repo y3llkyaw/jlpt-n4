@@ -10,7 +10,8 @@ class EditVocabPage extends GetView<EditvocabController> {
     return Scaffold(
       appBar: AppBar(
         title: Obx(
-          () => Text(controller.isNew ? 'Add Vocabulary' : 'Edit Vocabulary'),
+          () =>
+              Text(controller.isNew ? 'Add New Vocabulary' : 'Edit Vocabulary'),
         ),
         actions: [
           Obx(
