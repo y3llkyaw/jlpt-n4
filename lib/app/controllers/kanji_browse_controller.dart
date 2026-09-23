@@ -20,13 +20,13 @@ class KanjiBrowseController extends GetxController {
 
   @override
   void onInit() async {
-    kanjis.value = await DatabaseServices.instance.getKanjis();
-    changeFilter(LevelFilter.ALL);
+    kanjis.value = await DatabaseServices.instance.getKanjis("N4");
+    changeFilter(LevelFilter.All);
     super.onInit();
   }
 
   void changeFilter(LevelFilter filter) {
-    if (filter == LevelFilter.ALL) {
+    if (filter == LevelFilter.All) {
       viewKanjis.value = kanjis;
       return;
     }

@@ -1,6 +1,7 @@
+import 'package:equatable/equatable.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 
-class Kanji {
+class Kanji extends Equatable {
   int? id;
   int kanjiNumber;
   String kanji;
@@ -49,4 +50,17 @@ class Kanji {
       'examples': examples,
     };
   }
+
+  @override
+  List<Object?> get props => [
+        id,
+        kanjiNumber,
+        kanji,
+        level,
+        kunyomi,
+        onyomi,
+        meaning,
+        examples,
+        vocabularies
+      ];
 }

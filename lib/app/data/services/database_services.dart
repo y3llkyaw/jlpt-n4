@@ -228,9 +228,13 @@ class DatabaseServices {
     );
   }
 
-  Future<List<Kanji>> getKanjis() async {
+  Future<List<Kanji>> getKanjis(String lvl) async {
     final db = await instance.database;
-    final kanjiString = await db.query('kanjis');
+    final kanjiString = await db.query(
+      'kanjis',
+      where: 'level = ?',
+      whereArgs: [lvl],
+    );
     final kanjiList = kanjiString.map((e) => Kanji.fromMap(e)).toList();
     await Future.wait(kanjiList.map((kanji) async {
       kanji.vocabularies = await getRelatedVocabsFromKanji(kanji.id!);

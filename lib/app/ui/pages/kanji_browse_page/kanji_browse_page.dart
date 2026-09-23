@@ -5,7 +5,7 @@ import 'package:get/get.dart';
 import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/global_widgets/kanji_detail_card.dart';
 import 'package:n4/app/ui/utils/util.dart';
-import '../../../controllers/kanji_browse_controller.dart';
+import 'package:n4/app/controllers/kanji_browse_controller.dart';
 
 class KanjiBrowsePage extends GetView<KanjiBrowseController> {
   const KanjiBrowsePage({Key? key}) : super(key: key);
@@ -109,7 +109,8 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                             IconButton(
                                               onPressed: () {
                                                 Get.toNamed(
-                                                    AppRoutes.EDIT_KANJI);
+                                                    AppRoutes.EDIT_KANJI,
+                                                    arguments: [e]);
                                               },
                                               icon: Icon(Icons.edit),
                                             ),
@@ -194,8 +195,7 @@ class CustomSearchDeletgate extends SearchDelegate {
             leading: Text(
                 Get.find<KanjiBrowseController>().searchedKanji[index].kanji),
             title: Text(
-                Get.find<KanjiBrowseController>().searchedKanji[index].kanji ??
-                    ""),
+                Get.find<KanjiBrowseController>().searchedKanji[index].kanji),
           );
         },
       ),

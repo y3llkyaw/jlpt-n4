@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:n4/app/data/models/kanji.dart';
+import 'package:get/get.dart';
+import 'package:n4/app/controllers/edit_kanji_controller.dart';
 
-class EditKanjiPage extends StatelessWidget {
-  final Kanji? kanji;
-
-  const EditKanjiPage({Key? key, this.kanji}) : super(key: key);
+class EditKanjiPage extends GetView<EditKanjiController> {
+  const EditKanjiPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    final isEditing = kanji != null;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text(isEditing ? 'Edit Kanji' : 'Add Kanji'),
+        title: Text(controller.isEditing.value ? 'Edit Kanji' : 'Add Kanji'),
         centerTitle: true,
       ),
       body: SafeArea(
@@ -26,26 +24,10 @@ class EditKanjiPage extends StatelessWidget {
                 Text('Kanji', style: theme.textTheme.titleMedium),
                 const SizedBox(height: 8),
                 TextFormField(
-                  initialValue: kanji?.kanji ?? '',
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text('Kanji Number', style: theme.textTheme.titleMedium),
-                const SizedBox(height: 8),
-                TextFormField(
-                  initialValue: kanji?.kanjiNumber.toString() ?? '',
-                  keyboardType: TextInputType.number,
-                  decoration: const InputDecoration(
-                    border: OutlineInputBorder(),
-                  ),
-                ),
-                const SizedBox(height: 16),
-                Text('Level (optional)', style: theme.textTheme.titleMedium),
-                const SizedBox(height: 8),
-                TextFormField(
-                  initialValue: kanji?.level ?? '',
+                  onChanged: (value) {
+                    controller.onEdit();
+                  },
+                  controller: controller.kanjiTEC,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
@@ -54,7 +36,10 @@ class EditKanjiPage extends StatelessWidget {
                 Text('Kunyomi', style: theme.textTheme.titleMedium),
                 const SizedBox(height: 8),
                 TextFormField(
-                  initialValue: kanji?.kunyomi ?? '',
+                  onChanged: (value) {
+                    controller.onEdit();
+                  },
+                  controller: controller.kunyomiTEC,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
@@ -63,7 +48,10 @@ class EditKanjiPage extends StatelessWidget {
                 Text('Onyomi', style: theme.textTheme.titleMedium),
                 const SizedBox(height: 8),
                 TextFormField(
-                  initialValue: kanji?.onyomi ?? '',
+                  onChanged: (value) {
+                    controller.onEdit();
+                  },
+                  controller: controller.onyomiTEC,
                   decoration: const InputDecoration(
                     border: OutlineInputBorder(),
                   ),
@@ -72,7 +60,10 @@ class EditKanjiPage extends StatelessWidget {
                 Text('Meaning', style: theme.textTheme.titleMedium),
                 const SizedBox(height: 8),
                 TextFormField(
-                  initialValue: kanji?.meaning ?? '',
+                  onChanged: (value) {
+                    controller.onEdit();
+                  },
+                  controller: controller.meaningTEC,
                   minLines: 2,
                   maxLines: 4,
                   decoration: const InputDecoration(
@@ -83,7 +74,10 @@ class EditKanjiPage extends StatelessWidget {
                 Text('Examples', style: theme.textTheme.titleMedium),
                 const SizedBox(height: 8),
                 TextFormField(
-                  initialValue: kanji?.examples ?? '',
+                  onChanged: (value) {
+                    controller.onEdit();
+                  },
+                  controller: controller.examplesTEC,
                   minLines: 4,
                   maxLines: 8,
                   decoration: const InputDecoration(
@@ -99,16 +93,17 @@ class EditKanjiPage extends StatelessWidget {
                         subtitle: const Text('linked vocabularies'),
                         trailing: const Icon(Icons.list_alt_outlined),
                       ),
-                      if ((kanji?.vocabularies ?? []).isEmpty)
+                      if ((controller.kanji.value?.vocabularies ?? []).isEmpty)
                         const Padding(
                           padding: EdgeInsets.fromLTRB(16, 0, 16, 20),
                           child: Text('No related vocabulary yet'),
                         )
                       else
                         ...List.generate(
-                          kanji?.vocabularies.length ?? 0,
+                          controller.kanji.value?.vocabularies.length ?? 0,
                           (index) {
-                            final vocab = kanji!.vocabularies[index];
+                            final vocab =
+                                controller.kanji.value!.vocabularies[index];
                             return ListTile(
                               leading: Text('#${vocab.id ?? index + 1}'),
                               title: Text(vocab.kana),
@@ -124,9 +119,13 @@ class EditKanjiPage extends StatelessWidget {
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {},
-        child: const Icon(Icons.save),
+      floatingActionButton: Obx(
+        ()=> controller.isEdited.value
+            ? FloatingActionButton(
+                onPressed: () {},
+                child: const Icon(Icons.save),
+              )
+            : SizedBox.shrink(),
       ),
     );
   }
