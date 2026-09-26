@@ -23,7 +23,7 @@ class HomeController extends GetxController {
   void onInit() async {
     final data = await DatabaseServices.instance.getVocabulary();
 
-    kanjis.value = await DatabaseServices.instance.getKanjis('N4');
+    kanjis.value = await DatabaseServices.instance.getKanjis();
     vocabs.value = data.map((e) => Vocabulary.fromMap(e)).toList();
 
     randomVocab.value = vocabs[_random.nextInt(vocabs.length)];

@@ -20,7 +20,7 @@ class KanjiBrowseController extends GetxController {
 
   @override
   void onInit() async {
-    kanjis.value = await DatabaseServices.instance.getKanjis("N4");
+    kanjis.value = await DatabaseServices.instance.getKanjis();
     changeFilter(LevelFilter.All);
     super.onInit();
   }
@@ -37,9 +37,11 @@ class KanjiBrowseController extends GetxController {
 
   void search(String kanji) {
     searchedKanji.value = kanjis.where((e) {
-      return e.kanji == kanji ||
-          e.kunyomi!.replaceAll("（", "").replaceAll("）", "").contains(kanji) ||
-          e.onyomi!.contains(kanji);
+      return e.kanji == kanji || e.kunyomi != null
+          ? e.kunyomi!.replaceAll("（", "").replaceAll("）", "").contains(kanji)
+          : false || e.onyomi != null
+              ? e.onyomi!.contains(kanji)
+              : false;
     }).toList();
     if (searchedKanji.isNotEmpty) {
       log("search result : ${searchedKanji.first.kanji} ");

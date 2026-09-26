@@ -9,11 +9,13 @@ class SwipeCard extends StatefulWidget {
     required this.vocab,
     required this.index,
     this.isReverse = false,
+    this.isStudy = false,
   }) : super(key: key);
 
   final Vocabulary vocab;
   final int index;
   final bool isReverse;
+  final bool isStudy;
 
   @override
   State<SwipeCard> createState() => _SwipeCardState();
@@ -56,7 +58,11 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: _showAnswer ? 1 : 0,
+                    opacity: widget.isStudy
+                        ? 1
+                        : _showAnswer
+                            ? 1
+                            : 0,
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
                     child: Text(
@@ -65,7 +71,11 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: _showAnswer || widget.isReverse == false ? 1 : 0,
+                    opacity: widget.isStudy
+                        ? 1
+                        : _showAnswer || widget.isReverse == false
+                            ? 1
+                            : 0,
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
                     child: Text(
@@ -76,7 +86,11 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: _showAnswer || widget.isReverse ? 1 : 0,
+                    opacity: widget.isStudy
+                        ? 1
+                        : _showAnswer || widget.isReverse
+                            ? 1
+                            : 0,
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
                     child: Text(
@@ -86,7 +100,11 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: _showAnswer ? 1 : 0,
+                    opacity: widget.isStudy
+                        ? 1
+                        : _showAnswer
+                            ? 1
+                            : 0,
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
                     child: Text(
@@ -95,7 +113,11 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: _showAnswer ? 1 : 0,
+                    opacity: widget.isStudy
+                        ? 1
+                        : _showAnswer
+                            ? 1
+                            : 0,
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
                     child: Text(
@@ -104,7 +126,11 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
                   AnimatedOpacity(
-                    opacity: _showAnswer ? 1 : 0,
+                    opacity: widget.isStudy
+                        ? 1
+                        : _showAnswer
+                            ? 1
+                            : 0,
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
                     child: Padding(

@@ -54,9 +54,17 @@ class SettingPage extends GetView<SettingController> {
                 ListTile(
                   style: ListTileStyle.drawer,
                   leading: Icon(Icons.add),
-                  title: Text("Add Vocabulary"),
+                  title: Text("Add New Vocabulary"),
                   onTap: () {
                     Get.toNamed(AppRoutes.EDITVOCAB);
+                  },
+                ),
+                ListTile(
+                  style: ListTileStyle.drawer,
+                  leading: Icon(Icons.add),
+                  title: Text("Add New Kanji"),
+                  onTap: () {
+                    Get.toNamed(AppRoutes.EDIT_KANJI);
                   },
                 ),
                 InkWell(

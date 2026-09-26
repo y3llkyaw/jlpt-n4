@@ -19,6 +19,7 @@ class EditVocabPage extends GetView<EditvocabController> {
                 ? SizedBox.shrink()
                 : IconButton(
                     onPressed: () {
+                      final controller = Get.find<EditvocabController>();
                       Get.defaultDialog(
                         title: 'Delete Vocabulary',
                         middleText:
@@ -26,12 +27,12 @@ class EditVocabPage extends GetView<EditvocabController> {
                         textCancel: 'Cancel',
                         textConfirm: 'Delete',
                         confirmTextColor: Get.theme.colorScheme.onPrimary,
+                        buttonColor: Get.theme.colorScheme.onErrorContainer,
                         onConfirm: () async {
-                          await controller.deleteVocab();
+                          await controller.deleteVocab(controller.vocab.value!);
                           Get.back();
                           Get.back();
                         },
-                        buttonColor: Get.theme.colorScheme.error,
                       );
                     },
                     icon: Icon(Icons.delete),

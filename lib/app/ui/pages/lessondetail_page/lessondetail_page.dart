@@ -1,10 +1,13 @@
 import 'dart:developer';
 
+import 'package:carousel_slider/carousel_slider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/lessondetail_controller.dart';
 import 'package:n4/app/data/models/enums.dart';
 import 'package:n4/app/routes/app_routes.dart';
+import 'package:n4/app/ui/global_widgets/swipe_card.dart';
 import 'package:n4/app/ui/utils/util.dart';
 
 class LessondetailPage extends GetView<LessondetailController> {
@@ -27,8 +30,16 @@ class LessondetailPage extends GetView<LessondetailController> {
               snap: false,
               expandedHeight: height * 2.5,
               toolbarHeight: 75,
-              centerTitle: true,
+              centerTitle: false,
               actions: [
+                IconButton(
+                  onPressed: () {
+                    controller.isListView.value = !controller.isListView.value;
+                  },
+                  icon: Icon(controller.isListView.value
+                      ? Icons.list
+                      : CupertinoIcons.rectangle_fill_on_rectangle_angled_fill),
+                ),
                 IconButton(
                   onPressed: () async {
                     if (controller.isPlaying.value) {
@@ -76,7 +87,7 @@ class LessondetailPage extends GetView<LessondetailController> {
                     }),
               ],
               title: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
                     "Chapter ${controller.vocabs.isNotEmpty ? controller.vocabs.first.chapter : 0}",
@@ -114,130 +125,167 @@ class LessondetailPage extends GetView<LessondetailController> {
                 ),
               ),
             ),
-            SliverList(
-              delegate: SliverChildBuilderDelegate(
-                (context, index) {
-                  final currentVocab = controller.viewVocabs[index];
-                  return Obx(
-                    () => Container(
-                      decoration: BoxDecoration(
-                        border: Border(
-                          bottom: BorderSide(
-                            color: Get.theme.colorScheme.primary.withAlpha(50),
-                          ),
-                        ),
-                        color: index == controller.currentIndex.value
-                            ? Get.theme.colorScheme.primaryContainer
-                                .withAlpha(100)
-                            : null,
-                      ),
-                      child: ExpansionTile(
-                        shape: Border(
-                          top: BorderSide(
-                            color: Get.theme.colorScheme.primary.withAlpha(0),
-                          ),
-                          bottom: BorderSide(
-                            color: Get.theme.colorScheme.primary.withAlpha(0),
-                          ),
-                        ),
-                        splashColor:
-                            Get.theme.colorScheme.primary.withAlpha(50),
-                        leading: Text("${index + 1}"),
-                        title: Text(
-                          currentVocab.kana == ''
-                              ? currentVocab.kanji
-                              : currentVocab.kana,
-                          style: Get.textTheme.bodyLarge!.copyWith(
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        subtitle: Text(currentVocab.meaning),
-                        trailing: Row(
-                          mainAxisSize: MainAxisSize.min,
-                          children: [
-                            IconButton(
-                              onPressed: () {
-                                speak(currentVocab);
-                              },
-                              icon: Obx(
-                                () => Icon(
-                                  Icons.speaker,
-                                  color: index == controller.currentIndex.value
-                                      ? Get.theme.colorScheme.primary
-                                      : Get.theme.colorScheme.secondary,
+            controller.isListView.value
+                ? SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) {
+                        final currentVocab = controller.viewVocabs[index];
+                        return Obx(
+                          () => Container(
+                            decoration: BoxDecoration(
+                              border: Border(
+                                bottom: BorderSide(
+                                  color: Get.theme.colorScheme.primary
+                                      .withAlpha(50),
                                 ),
                               ),
+                              color: index == controller.currentIndex.value
+                                  ? Get.theme.colorScheme.primaryContainer
+                                      .withAlpha(100)
+                                  : null,
                             ),
-                          ],
-                        ),
-                        children: [
-                          currentVocab.kanji != ''
-                              ? ListTile(
-                                  onTap: () {
-                                    log("Note: ${currentVocab.kanji}");
-                                  },
-                                  leading: Text(""),
-                                  title: Text("Kanji"),
-                                  subtitle: Text(currentVocab.kanji),
-                                )
-                              : SizedBox.shrink(),
-                          currentVocab.note != null && currentVocab.note != ""
-                              ? ListTile(
-                                  onTap: () {
-                                    log("Note: ${currentVocab.note}");
-                                  },
-                                  leading: Text(""),
-                                  title: Text("Note"),
-                                  subtitle: Text(currentVocab.note ?? ""),
-                                )
-                              : SizedBox.shrink(),
-                          currentVocab.example != null &&
-                                  currentVocab.example != ""
-                              ? ListTile(
-                                  leading: Text(""),
-                                  title: Text("Example"),
-                                  subtitle: Text(currentVocab.example ?? ""),
-                                )
-                              : SizedBox.shrink(),
-                          currentVocab.sameMeaningVocabs.isEmpty
-                              ? SizedBox.shrink()
-                              : Text(
-                                  "Same Meaning Vocabularies",
-                                  style: Get.textTheme.bodyMedium!.copyWith(
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                            child: ExpansionTile(
+                              shape: Border(
+                                top: BorderSide(
+                                  color: Get.theme.colorScheme.primary
+                                      .withAlpha(0),
                                 ),
-                          SizedBox(height: 10),
-                          Wrap(
-                            spacing: 10,
-                            runSpacing: 10,
-                            children: currentVocab.sameMeaningVocabs
-                                .map((e) => Chip(
-                                      label: Text(e.kana),
-                                    ))
-                                .toList(),
-                          ),
-                          Row(
-                            spacing: 10,
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              IconButton(
-                                onPressed: () {
-                                  Get.toNamed(AppRoutes.EDITVOCAB,
-                                      arguments: [currentVocab,controller.viewVocabs]);
-                                },
-                                icon: Icon(Icons.edit),
+                                bottom: BorderSide(
+                                  color: Get.theme.colorScheme.primary
+                                      .withAlpha(0),
+                                ),
                               ),
-                            ],
+                              splashColor:
+                                  Get.theme.colorScheme.primary.withAlpha(50),
+                              leading: Text("${index + 1}"),
+                              title: Text(
+                                currentVocab.kana == ''
+                                    ? currentVocab.kanji
+                                    : currentVocab.kana,
+                                style: Get.textTheme.bodyLarge!.copyWith(
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              subtitle: Text(currentVocab.meaning),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  IconButton(
+                                    onPressed: () {
+                                      speak(currentVocab);
+                                    },
+                                    icon: Obx(
+                                      () => Icon(
+                                        Icons.speaker,
+                                        color: index ==
+                                                controller.currentIndex.value
+                                            ? Get.theme.colorScheme.primary
+                                            : Get.theme.colorScheme.secondary,
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              children: [
+                                currentVocab.kanji != ''
+                                    ? ListTile(
+                                        onTap: () {
+                                          log("Note: ${currentVocab.kanji}");
+                                        },
+                                        leading: Text(""),
+                                        title: Text("Kanji"),
+                                        subtitle: Text(currentVocab.kanji),
+                                      )
+                                    : SizedBox.shrink(),
+                                currentVocab.note != null &&
+                                        currentVocab.note != ""
+                                    ? ListTile(
+                                        onTap: () {
+                                          log("Note: ${currentVocab.note}");
+                                        },
+                                        leading: Text(""),
+                                        title: Text("Note"),
+                                        subtitle: Text(currentVocab.note ?? ""),
+                                      )
+                                    : SizedBox.shrink(),
+                                currentVocab.example != null &&
+                                        currentVocab.example != ""
+                                    ? ListTile(
+                                        leading: Text(""),
+                                        title: Text("Example"),
+                                        subtitle:
+                                            Text(currentVocab.example ?? ""),
+                                      )
+                                    : SizedBox.shrink(),
+                                currentVocab.sameMeaningVocabs.isEmpty
+                                    ? SizedBox.shrink()
+                                    : Text(
+                                        "Same Meaning Vocabularies",
+                                        style:
+                                            Get.textTheme.bodyMedium!.copyWith(
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                SizedBox(height: 10),
+                                Wrap(
+                                  spacing: 10,
+                                  runSpacing: 10,
+                                  children: currentVocab.sameMeaningVocabs
+                                      .map((e) => Chip(
+                                            label: Text(e.kana),
+                                          ))
+                                      .toList(),
+                                ),
+                                Row(
+                                  spacing: 10,
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    IconButton(
+                                      onPressed: () {
+                                        Get.toNamed(AppRoutes.EDITVOCAB,
+                                            arguments: [
+                                              currentVocab,
+                                              controller.viewVocabs
+                                            ]);
+                                      },
+                                      icon: Icon(Icons.edit),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
-                        ],
-                      ),
+                        );
+                      },
+                      childCount: controller.viewVocabs.length,
                     ),
-                  );
-                },
-                childCount: controller.viewVocabs.length,
-              ),
-            ),
+                  )
+                : SliverList(
+                    delegate: SliverChildBuilderDelegate(
+                      (context, index) => CarouselSlider.builder(
+                        itemCount: controller.viewVocabs.length,
+                        itemBuilder: (context, index, realIndex) {
+                          return SwipeCard(
+                              isStudy: true,
+                              vocab: controller.viewVocabs[index],
+                              index: index);
+                        },
+                        carouselController: controller.carouselSliderController,
+                        options: CarouselOptions(
+                          autoPlayCurve: Curves.easeIn,
+                          onPageChanged: (index, reason) async {},
+                          autoPlay: controller.isPlaying.value,
+                          pageViewKey: PageStorageKey(
+                              "Chapter ${controller.vocabs.isNotEmpty ? controller.vocabs.first.chapter : 0}"),
+                          enlargeFactor: 0.3,
+                          enlargeCenterPage: true,
+                          viewportFraction: 0.8,
+                          height: Get.height * 0.8,
+                        ),
+                      ),
+                      childCount: 1,
+                    ),
+                  ),
           ],
         ),
       ),

@@ -44,7 +44,7 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
             body: Column(
               children: [
                 Expanded(
-                  flex: 1,
+                  flex: 2,
                   child: TabBarView(
                     children: controller.viewKanjis
                         .map(
@@ -79,11 +79,12 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                         }
 
                                         return SizedBox(
-                                            height: 150,
-                                            width: 150,
-                                            child: KanjiDetailCard(
-                                              kvg: kvg,
-                                            ));
+                                          height: 150,
+                                          width: 150,
+                                          child: KanjiDetailCard(
+                                            kvg: kvg,
+                                          ),
+                                        );
                                       },
                                     ),
                                     Column(
@@ -91,16 +92,24 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                           CrossAxisAlignment.start,
                                       children: [
                                         Text("kunyomi"),
-                                        Text(e.kunyomi!
-                                            .replaceAll('、', "\n")
-                                            .replaceAll("（", "")
-                                            .replaceAll("）", "")
-                                            .toString()),
+                                        Text(e.kunyomi != null
+                                            ? e.kunyomi!
+                                                .replaceAll('、', "\n")
+                                                .replaceAll("（", "")
+                                                .replaceAll("）", "")
+                                                .toString()
+                                            : ''),
                                         SizedBox(
                                           height: 10,
                                         ),
                                         Text("onYomi"),
-                                        Text(e.onyomi.toString()),
+                                        Text(e.onyomi != null
+                                            ? e.onyomi!
+                                                .replaceAll('、', "\n")
+                                                .replaceAll("（", "")
+                                                .replaceAll("）", "")
+                                                .toString()
+                                            : ''),
                                         SizedBox(
                                           height: 10,
                                         ),
@@ -117,7 +126,7 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                             IconButton(
                                               onPressed: () {
                                                 speakString(
-                                                    "${e.kunyomi!},${e.onyomi!}");
+                                                    "${e.kunyomi!},${e.onyomi ?? ''}");
                                               },
                                               icon: Icon(Icons.volume_up),
                                             ),
@@ -154,11 +163,29 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                     children: controller.viewKanjis
                         .map(
                           (e) => Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(e.meaning ?? ''),
-                              Text(e.examples ?? ''),
-                            ],
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: e.vocabularies
+                                .map(
+                                  (e) => Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 20),
+                                    child: ListTile(
+                                      leading: Text(
+                                        e.kanji,
+                                        style: Get.textTheme.displayMedium,
+                                      ),
+                                      title: Text(e.kana),
+                                      subtitle: Text(e.meaning),
+                                      trailing: IconButton(
+                                        onPressed: () async {
+                                          await speak(e);
+                                        },
+                                        icon: Icon(Icons.speaker),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .toList(),
                           ),
                         )
                         .toList(),

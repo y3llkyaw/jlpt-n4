@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/home_controller.dart';
@@ -57,14 +59,9 @@ class EditvocabController extends GetxController {
     if (args is List && args.isNotEmpty && args.first is Vocabulary) {
       vocab.value = args.first as Vocabulary;
 
-      if (args.length >= 3) {
-        if (args[1] is List && args[2] is int) {
-          sourceList = (args[1] as List).cast<Vocabulary>();
-          sourceIndex = args[2] as int;
-        } else if (args[1] is int && args[2] is List) {
-          sourceIndex = args[1] as int;
-          sourceList = (args[2] as List).cast<Vocabulary>();
-        }
+      if (Get.arguments.length == 2) {
+        vocab.value = Get.arguments[0];
+        sourceList = Get.arguments[1];
       }
       return;
     }
@@ -187,15 +184,17 @@ class EditvocabController extends GetxController {
     Get.back();
   }
 
-  Future<void> deleteVocab() async {
-    final id = vocab.value?.id;
+  Future<void> deleteVocab(Vocabulary vocab) async {
+    final id = vocab.id;
+    log(sourceList.toString());
 
     if (id == null) {
       return;
     }
     await DatabaseServices.instance.deleteVocabulary(id);
-    if (sourceList != null) {
-      sourceList!.removeWhere((item) => item.id == id);
+    if (sourceList != null && sourceList!.isNotEmpty) {
+      sourceList!.removeWhere((Vocabulary item) => item.id == vocab.id);
+      log("Deleted");
     }
   }
 

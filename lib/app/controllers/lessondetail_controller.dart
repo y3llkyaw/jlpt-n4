@@ -1,5 +1,5 @@
 import 'dart:developer';
-
+import 'package:carousel_slider/carousel_controller.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/data/models/enums.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
@@ -12,8 +12,9 @@ class LessondetailController extends GetxController {
   var forgotList = <Vocabulary>[].obs;
   var knownList = <Vocabulary>[].obs;
   var viewVocabs = <Vocabulary>[].obs;
-
+  var carouselSliderController = CarouselSliderController();
   var isPlaying = false.obs;
+
   final currentIndex = (-1).obs;
 
   var isListView = true.obs;
@@ -24,7 +25,6 @@ class LessondetailController extends GetxController {
   @override
   void onInit() async {
     super.onInit();
-
     final data = await DatabaseServices.instance
         .getVocabularyByChapterWithSameMeaning(Get.arguments);
     vocabs.value = data.toList();
@@ -35,8 +35,9 @@ class LessondetailController extends GetxController {
 
   Future<void> play() async {
     isPlaying.value = true;
+    if (!isListView.value) {
+      carouselSliderController.jumpToPage(0);
 
-    try {
       for (final vocab in viewVocabs) {
         currentIndex.value = viewVocabs.indexOf(vocab);
         log('Current Index: ${currentIndex.value}, Vocab: ${vocab.kana}');
@@ -44,11 +45,22 @@ class LessondetailController extends GetxController {
           break;
         }
         await speak(vocab);
+        await carouselSliderController.nextPage();
       }
-    } finally {
-      isPlaying.value = false;
-      currentIndex.value = -1;
+    } else {
+      try {
+        for (final vocab in viewVocabs) {
+          currentIndex.value = viewVocabs.indexOf(vocab);
+          log('Current Index: ${currentIndex.value}, Vocab: ${vocab.kana}');
+          if (!isPlaying.value) {
+            break;
+          }
+          await speak(vocab);
+        }
+      } finally {}
     }
+    isPlaying.value = false;
+    currentIndex.value = -1;
   }
 
   void stop() {
