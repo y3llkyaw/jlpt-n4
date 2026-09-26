@@ -5,6 +5,7 @@ import 'package:n4/app/data/services/database_services.dart';
 import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/global_widgets/kanji_card.dart';
 import 'package:n4/app/ui/global_widgets/word_of_the_day.dart';
+import 'package:n4/app/ui/pages/review_page/review_page.dart';
 import 'package:n4/app/ui/pages/setting_page/setting_page.dart';
 import 'package:n4/app/ui/utils/util.dart';
 
@@ -227,11 +228,7 @@ class HomePage extends GetView<HomeController> {
                   ),
                 ),
               ),
-              Center(
-                child: SizedBox(
-                  child: Text("Still Building..."),
-                ),
-              ),
+              ReviewPage(),
               SettingPage(),
             ][controller.index.value]),
       ),

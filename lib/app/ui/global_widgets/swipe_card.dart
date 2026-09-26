@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jp_transliterate/jp_transliterate.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
 import 'package:n4/app/ui/utils/util.dart';
 
@@ -48,7 +49,7 @@ class _SwipeCardState extends State<SwipeCard> {
                 children: [
                   Spacer(),
                   Text(
-                    "#${widget.index.toString()}",
+                    "#${widget.index + 1}",
                     style: Get.textTheme.bodyMedium,
                   ),
                   Chip(
@@ -65,9 +66,19 @@ class _SwipeCardState extends State<SwipeCard> {
                             : 0,
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
-                    child: Text(
-                      widget.vocab.kanji,
-                      style: Get.textTheme.bodyMedium,
+                    child: FutureBuilder<List<TransliterationData>>(
+                      future: JpTransliterate.transliterateWords(kanji: widget.vocab.kanji),
+                      builder: (context, snapshot) {
+                        if (snapshot.data != null) {
+                          return FuriganaText(
+                            transliterations: snapshot.data ?? [],
+                            style: const TextStyle(fontSize: 20),
+                            rubyStyle: const TextStyle(fontSize: 10),
+                          );
+                        } else {
+                          return Text("");
+                        }
+                      },
                     ),
                   ),
                   AnimatedOpacity(
@@ -159,13 +170,15 @@ class _SwipeCardState extends State<SwipeCard> {
                       ),
                     ),
                   ),
-                  Spacer(),
-                  Text(
-                    "tap the card to show the answer",
-                    style: Get.textTheme.bodyMedium!.copyWith(
-                      color: Get.theme.colorScheme.secondary,
-                    ),
-                  ),
+                  // Spacer(),
+                  !widget.isStudy
+                      ? Text(
+                          "tap the card to show the answer",
+                          style: Get.textTheme.bodyMedium!.copyWith(
+                            color: Get.theme.colorScheme.secondary,
+                          ),
+                        )
+                      : Container(),
                   SizedBox(
                     height: 10,
                   ),

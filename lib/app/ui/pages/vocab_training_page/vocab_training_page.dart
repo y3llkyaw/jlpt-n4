@@ -28,194 +28,183 @@ class VocabTrainingPage extends GetView<VocabTrainingController> {
       ),
       body: SafeArea(
         child: Obx(
-          () => controller.isFinished.value
-              ? Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    controller.forgotVocabs.isEmpty
-                        ? Text(
-                            "Congradulations you know all Words !",
-                            style: Get.textTheme.titleMedium,
-                          )
-                        : Text(
-                            "Let's Review Forgotten Cards !",
-                            style: Get.textTheme.titleMedium,
-                          ),
-                    SizedBox(
-                      height: 20,
-                    ),
-                    Center(
-                      child: Badge.count(
-                        count: controller.forgotVocabs.length,
-                        child: FilledButton.icon(
-                          onPressed: () {
-                            if (controller.forgotVocabs.isEmpty) {
-                              // No forgotten cards, nothing to reset
-                              controller.reviewVocabs.value =
-                                  controller.vocabs.toList();
-                              controller.forgotVocabs.clear();
-                              controller.knownVocabs.clear();
-                              controller.cardSwiperController.value =
-                                  CardSwiperController();
-                              controller.isFinished.value = false;
-                            } else {
-                              // Move forgotten cards back to review stack and reset swiper
-                              controller.reviewVocabs.value =
-                                  controller.forgotVocabs.toList();
-                              controller.forgotVocabs.clear();
-                              controller.cardSwiperController.value =
-                                  CardSwiperController();
-                              controller.isFinished.value = false;
-                            }
-                          },
-                          label: Text(controller.forgotVocabs.isEmpty
-                              ? "Restart Reviewing Cards"
-                              : "Review forgotten Cards"),
-                          icon: Icon(Icons.repeat),
+          () => Stack(
+            children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  controller.forgotVocabs.isEmpty
+                      ? Text(
+                          "Congradulations you know all Words !",
+                          style: Get.textTheme.titleMedium,
+                        )
+                      : Text(
+                          "Let's Review Forgotten Cards !",
+                          style: Get.textTheme.titleMedium,
                         ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Center(
+                    child: Badge.count(
+                      count: controller.forgotVocabs.length,
+                      child: FilledButton.icon(
+                        style: ButtonStyle(
+                          textStyle: WidgetStatePropertyAll(TextStyle(
+                            color: Get.theme.colorScheme.onErrorContainer,
+                          )),
+                          backgroundColor: WidgetStatePropertyAll(
+                            Get.theme.colorScheme.errorContainer,
+                          ),
+                        ),
+                        onPressed: () {
+                          log("pressed ${controller.reviewVocabs.length}");
+                          if (controller.forgotVocabs.isEmpty) {
+                            controller.reviewVocabs.value =
+                                controller.vocabs.toList();
+                            controller.forgotVocabs.clear();
+                            controller.knownVocabs.clear();
+                          } else {
+                            if (controller.forgotVocabs.length == 1) {
+                              controller.addForget(
+                                Vocabulary(
+                                  chapter: -1,
+                                  kana: "おめでとうございます。",
+                                  kanji: "おめでとう",
+                                  meaning: "Congradulation　🥳 !",
+                                  partOfSpeech: "🥳",
+                                ),
+                              );
+                            }
+                            controller.reviewVocabs.value =
+                                controller.forgotVocabs.toList();
+                            controller.forgotVocabs.clear();
+                          }
+                          controller.resetSwiper();
+                          controller.isFinished.value = false;
+                        },
+                        label: Text(controller.forgotVocabs.isEmpty
+                            ? "Restart Reviewing Cards"
+                            : "Review forgotten Cards"),
+                        icon: Icon(Icons.repeat),
                       ),
                     ),
-                    controller.forgotVocabs.isEmpty
-                        ? Center(
-                            child: FilledButton.icon(
-                              onPressed: () {
-                                Get.back();
-                              },
-                              label: Text("Back To Lesson"),
-                              icon: Icon(Icons.arrow_left),
-                            ),
-                          )
-                        : SizedBox.shrink(),
-                  ],
-                )
-              : Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [
-                        Card(
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              spacing: 20,
-                              children: [
-                                Text("${controller.forgotVocabs.length}"),
-                                Text("Forgotten Cards"),
-                              ],
-                            ),
+                  ),
+                  controller.forgotVocabs.isEmpty
+                      ? Center(
+                          child: FilledButton.icon(
+                            onPressed: () {
+                              Get.back();
+                            },
+                            label: Text("Back To Lesson"),
+                            icon: Icon(Icons.arrow_left),
+                          ),
+                        )
+                      : SizedBox.shrink(),
+                ],
+              ),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 20,
+                            children: [
+                              Text("${controller.forgotVocabs.length}"),
+                              Text("Forgotten Cards"),
+                            ],
                           ),
                         ),
-                        Card(
-                          elevation: 0,
-                          child: Padding(
-                            padding: const EdgeInsets.all(10.0),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              spacing: 20,
-                              children: [
-                                Text("${controller.knownVocabs.length}"),
-                                Text("Known Cards"),
-                              ],
-                            ),
+                      ),
+                      Card(
+                        elevation: 0,
+                        child: Padding(
+                          padding: const EdgeInsets.all(10.0),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            spacing: 20,
+                            children: [
+                              Text("${controller.knownVocabs.length}"),
+                              Text("Known Cards"),
+                            ],
                           ),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Expanded(
+                    child: CardSwiper(
+                      key: ValueKey(controller.resetToken.value),
+                      isLoop: false,
+                      duration: Duration(milliseconds: 200),
+                      controller: controller.cardSwiperController.value,
+                      cardsCount: controller.reviewVocabs.length,
+                      cardBuilder: (context, index, horizontalOffsetPercentage,
+                          verticalOffsetPercentage) {
+                        return SwipeCard(
+                          index: index + 1,
+                          key: ValueKey(controller.reviewVocabs[index].id),
+                          vocab: controller.reviewVocabs[index],
+                          isReverse: Get.arguments == null ? false : true,
+                        );
+                      },
+                      allowedSwipeDirection: AllowedSwipeDirection.only(
+                        left: true,
+                        right: true,
+                      ),
+                      onSwipe: (previousIndex, currentIndex, direction) {
+                        if (controller.reviewVocabs[previousIndex].chapter !=
+                            -1) {
+                          if (direction == CardSwiperDirection.right) {
+                            controller.addKnown(
+                                controller.reviewVocabs[previousIndex]);
+                          }
+                          if (direction == CardSwiperDirection.left) {
+                            controller.addForget(
+                                controller.reviewVocabs[previousIndex]);
+                          }
+                        }
+                        return true;
+                      },
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(bottom: 40),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        IconButton.filled(
+                          style: ButtonStyle(
+                              backgroundColor: WidgetStatePropertyAll(
+                                  Get.theme.colorScheme.error)),
+                          onPressed: () {
+                            controller.cardSwiperController.value
+                                .swipe(CardSwiperDirection.left);
+                          },
+                          icon: Icon(Icons.close),
+                        ),
+                        IconButton.filled(
+                          onPressed: () {
+                            controller.cardSwiperController.value
+                                .swipe(CardSwiperDirection.right);
+                          },
+                          icon: Icon(CupertinoIcons.heart_fill),
                         ),
                       ],
                     ),
-                    Expanded(
-                      child: CardSwiper(
-                        isLoop: false,
-                        duration: Duration(milliseconds: 200),
-                        controller: controller.cardSwiperController.value,
-                        cardsCount: controller.reviewVocabs.length,
-                        cardBuilder: (context,
-                            index,
-                            horizontalOffsetPercentage,
-                            verticalOffsetPercentage) {
-                          return SwipeCard(
-                            index: index + 1,
-                            key: ValueKey(controller.reviewVocabs[index].id),
-                            vocab: controller.vocabs[index],
-                            isReverse: Get.arguments == null ? false : true,
-                          );
-                        },
-                        allowedSwipeDirection: AllowedSwipeDirection.only(
-                          left: true,
-                          right: true,
-                        ),
-                        onSwipe: (previousIndex, currentIndex, direction) {
-                          if (currentIndex == null) {
-                            if (controller.forgotVocabs.length == 1) {
-                              var congrat = Vocabulary(
-                                id: 0,
-                                chapter: 0,
-                                kana: 'Congratulations!',
-                                kanji: '',
-                                meaning:
-                                    'You have completed all the cards in this round.',
-                                partOfSpeech: '',
-                                example: '',
-                                note: '',
-                              );
-                              controller.forgotVocabs.add(congrat);
-                            }
-                            controller.isFinished.value = true;
-                            return false;
-                          }
-                          if (direction == CardSwiperDirection.right) {
-                            controller.knownVocabs
-                                .add(controller.reviewVocabs[previousIndex]);
-                          }
-                          if (direction == CardSwiperDirection.left) {
-                            controller.forgotVocabs
-                                .add(controller.reviewVocabs[previousIndex]);
-                          }
-                          log(
-                              controller.knownVocabs
-                                  .map((e) => e.kana)
-                                  .toList()
-                                  .join(","),
-                              name: "known-vocabs-list");
-                          log(
-                              controller.forgotVocabs
-                                  .map((e) => e.kana)
-                                  .toList()
-                                  .join(","),
-                              name: "forgot-vocabs-list");
-                          return true;
-                        },
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 40),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          IconButton.filled(
-                            style: ButtonStyle(
-                                backgroundColor: WidgetStatePropertyAll(
-                                    Get.theme.colorScheme.error)),
-                            onPressed: () {
-                              controller.cardSwiperController.value
-                                  .swipe(CardSwiperDirection.left);
-                            },
-                            icon: Icon(Icons.close),
-                          ),
-                          IconButton.filled(
-                            onPressed: () {
-                              controller.cardSwiperController.value
-                                  .swipe(CardSwiperDirection.right);
-                            },
-                            icon: Icon(CupertinoIcons.heart_fill),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ],
-                ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );

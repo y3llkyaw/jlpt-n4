@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_card_swiper/flutter_card_swiper.dart';
 import 'package:get/get.dart';
 import 'package:n4/app/controllers/lessondetail_controller.dart';
@@ -12,6 +14,7 @@ class VocabTrainingController extends GetxController {
   final reviewVocabs = <Vocabulary>[].obs;
 
   final isFinished = false.obs;
+  final resetToken = 0.obs;
 
   @override
   void onInit() {
@@ -22,15 +25,31 @@ class VocabTrainingController extends GetxController {
     super.onInit();
   }
 
-  void forget(Vocabulary vocab) {
-    forgotVocabs.add(vocab);
+  void resetSwiper() {
+    cardSwiperController.value = CardSwiperController();
+    resetToken.value++;
   }
 
-  void known(Vocabulary vocab) {
+  void addForget(Vocabulary vocab) {
+    forgotVocabs.add(vocab);
+    log("${vocab.kana} added to Forgotten list");
+    logVocabs();
+  }
+
+  void addKnown(Vocabulary vocab) {
     knownVocabs.add(vocab);
+    log("${vocab.kana} added to Known list");
+    logVocabs();
   }
 
   void finsied() {
     isFinished.value = true;
+  }
+
+  void logVocabs() {
+    log(knownVocabs.map((e) => e.kana).toList().join(","),
+        name: "known-vocabs-list");
+    log(forgotVocabs.map((e) => e.kana).toList().join(","),
+        name: "forgot-vocabs-list");
   }
 }

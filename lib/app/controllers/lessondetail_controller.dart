@@ -50,12 +50,16 @@ class LessondetailController extends GetxController {
     } else {
       try {
         for (final vocab in viewVocabs) {
-          currentIndex.value = viewVocabs.indexOf(vocab);
-          log('Current Index: ${currentIndex.value}, Vocab: ${vocab.kana}');
           if (!isPlaying.value) {
             break;
           }
+          currentIndex.value = viewVocabs.indexOf(vocab);
+          log('Current Index: ${currentIndex.value}, Vocab: ${vocab.kana}');
+
           await speak(vocab);
+          if (!isPlaying.value) {
+            break;
+          }
         }
       } finally {}
     }

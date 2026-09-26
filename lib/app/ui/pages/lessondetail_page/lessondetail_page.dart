@@ -4,6 +4,7 @@ import 'package:carousel_slider/carousel_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:jp_transliterate/jp_transliterate.dart';
 import 'package:n4/app/controllers/lessondetail_controller.dart';
 import 'package:n4/app/data/models/enums.dart';
 import 'package:n4/app/routes/app_routes.dart';
@@ -194,7 +195,26 @@ class LessondetailPage extends GetView<LessondetailController> {
                                         },
                                         leading: Text(""),
                                         title: Text("Kanji"),
-                                        subtitle: Text(currentVocab.kanji),
+                                        subtitle: FutureBuilder<
+                                            List<TransliterationData>>(
+                                          future: JpTransliterate
+                                              .transliterateWords(
+                                                  kanji: currentVocab.kanji),
+                                          builder: (context, snapshot) {
+                                            if (snapshot.data != null) {
+                                              return FuriganaText(
+                                                transliterations:
+                                                    snapshot.data ?? [],
+                                                style: const TextStyle(
+                                                    fontSize: 16),
+                                                rubyStyle: const TextStyle(
+                                                    fontSize: 8),
+                                              );
+                                            } else {
+                                              return Text("");
+                                            }
+                                          },
+                                        ),
                                       )
                                     : SizedBox.shrink(),
                                 currentVocab.note != null &&
@@ -273,7 +293,11 @@ class LessondetailPage extends GetView<LessondetailController> {
                         carouselController: controller.carouselSliderController,
                         options: CarouselOptions(
                           autoPlayCurve: Curves.easeIn,
-                          onPageChanged: (index, reason) async {},
+                          onPageChanged: (index, reason) async {
+                            if (!controller.isPlaying.value) {
+                              speak(controller.viewVocabs[index]);
+                            }
+                          },
                           autoPlay: controller.isPlaying.value,
                           pageViewKey: PageStorageKey(
                               "Chapter ${controller.vocabs.isNotEmpty ? controller.vocabs.first.chapter : 0}"),

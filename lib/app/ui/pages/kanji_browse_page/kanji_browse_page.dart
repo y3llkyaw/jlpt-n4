@@ -2,10 +2,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_kanjivg/flutter_kanjivg.dart';
 import 'package:get/get.dart';
+import 'package:jp_transliterate/jp_transliterate.dart';
 import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/global_widgets/kanji_detail_card.dart';
 import 'package:n4/app/ui/utils/util.dart';
 import 'package:n4/app/controllers/kanji_browse_controller.dart';
+import 'package:jp_transliterate/jp_transliterate.dart';
 
 class KanjiBrowsePage extends GetView<KanjiBrowseController> {
   const KanjiBrowsePage({Key? key}) : super(key: key);
@@ -170,11 +172,29 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 20),
                                     child: ListTile(
-                                      leading: Text(
-                                        e.kanji,
-                                        style: Get.textTheme.displayMedium,
+                                      // leading: Text(
+                                      //   e.kanji,
+                                      // ),
+                                      title: FutureBuilder<
+                                          List<TransliterationData>>(
+                                        future:
+                                            JpTransliterate.transliterateWords(
+                                                kanji: e.kanji),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.data != null) {
+                                            return FuriganaText(
+                                              transliterations:
+                                                  snapshot.data ?? [],
+                                              style:
+                                                  const TextStyle(fontSize: 16),
+                                              rubyStyle:
+                                                  const TextStyle(fontSize: 8),
+                                            );
+                                          } else {
+                                            return Text("");
+                                          }
+                                        },
                                       ),
-                                      title: Text(e.kana),
                                       subtitle: Text(e.meaning),
                                       trailing: IconButton(
                                         onPressed: () async {
