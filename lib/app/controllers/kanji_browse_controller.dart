@@ -20,7 +20,7 @@ class KanjiBrowseController extends GetxController {
 
   @override
   void onInit() async {
-    kanjis.value = await DatabaseServices.instance.getKanjis();
+    kanjis.value = await DatabaseServices.instance.getKanjisWithLevel('n4');
     changeFilter(LevelFilter.All);
     super.onInit();
   }

@@ -102,8 +102,7 @@ class LessondetailPage extends GetView<LessondetailController> {
               ),
               flexibleSpace: SafeArea(
                 child: FlexibleSpaceBar(
-                  background: Container(
-                    margin: EdgeInsets.only(top: height, bottom: 10, left: 10),
+                  background: Center(
                     child: SingleChildScrollView(
                       scrollDirection: Axis.horizontal,
                       child: Row(
@@ -286,9 +285,11 @@ class LessondetailPage extends GetView<LessondetailController> {
                         itemCount: controller.viewVocabs.length,
                         itemBuilder: (context, index, realIndex) {
                           return SwipeCard(
+                              
                               isStudy: true,
                               vocab: controller.viewVocabs[index],
-                              index: index);
+                              index: index,
+                              currentVocabList: controller.viewVocabs);
                         },
                         carouselController: controller.carouselSliderController,
                         options: CarouselOptions(

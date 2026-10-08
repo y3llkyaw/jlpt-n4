@@ -24,7 +24,7 @@ class HomePage extends GetView<HomeController> {
       body: SafeArea(
         child: Obx(() => [
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
                 child: SingleChildScrollView(
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
@@ -205,20 +205,20 @@ class HomePage extends GetView<HomeController> {
                                     trailing: Icon(Icons.chevron_right),
                                   ),
                                 ),
-                                InkWell(
-                                  borderRadius: BorderRadius.circular(10),
-                                  onTap: () async {
-                                    Get.toNamed(AppRoutes.KANJI_BROWSE);
-                                  },
-                                  child: ListTile(
-                                    leading:
-                                        CircleAvatar(child: Icon(Icons.brush)),
-                                    title: Text("Kanji"),
-                                    subtitle:
-                                        Text("learn kanji and take a quiz."),
-                                    trailing: Icon(Icons.chevron_right),
-                                  ),
-                                ),
+                                // InkWell(
+                                //   borderRadius: BorderRadius.circular(10),
+                                //   onTap: () async {
+                                //     Get.toNamed(AppRoutes.KANJI_BROWSE);
+                                //   },
+                                //   child: ListTile(
+                                //     leading:
+                                //         CircleAvatar(child: Icon(Icons.brush)),
+                                //     title: Text("Kanji"),
+                                //     subtitle:
+                                //         Text("learn kanji and take a quiz."),
+                                //     trailing: Icon(Icons.chevron_right),
+                                //   ),
+                                // ),
                               ],
                             ),
                           ),

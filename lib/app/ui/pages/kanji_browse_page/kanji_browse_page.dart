@@ -53,6 +53,7 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                           (e) => Container(
                             padding: EdgeInsets.all(10),
                             child: Column(
+                              mainAxisSize: MainAxisSize.max,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Row(
@@ -60,60 +61,75 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                       MainAxisAlignment.spaceAround,
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   children: [
-                                    FutureBuilder(
-                                      future: loadKanjiSVG(e.kanji),
-                                      builder: (context, asyncSnapshot) {
-                                        if (asyncSnapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          return SizedBox(
-                                            height: 150,
-                                            width: 150,
-                                          );
-                                        }
+                                    Column(
+                                      children: [
+                                        FutureBuilder(
+                                          future: loadKanjiSVG(e.kanji),
+                                          builder: (context, asyncSnapshot) {
+                                            if (asyncSnapshot.connectionState ==
+                                                ConnectionState.waiting) {
+                                              return SizedBox(
+                                                height: 150,
+                                                width: 150,
+                                              );
+                                            }
 
-                                        const parser = KanjiParser();
-                                        var kvg;
-                                        try {
-                                          kvg = parser.parse(
-                                              asyncSnapshot.data.toString());
-                                        } catch (e) {
-                                          log(e.toString());
-                                        }
+                                            const parser = KanjiParser();
+                                            var kvg;
+                                            try {
+                                              kvg = parser.parse(asyncSnapshot
+                                                  .data
+                                                  .toString());
+                                            } catch (e) {
+                                              log(e.toString());
+                                            }
 
-                                        return SizedBox(
-                                          height: 150,
-                                          width: 150,
-                                          child: KanjiDetailCard(
-                                            kvg: kvg,
-                                          ),
-                                        );
-                                      },
+                                            return SizedBox(
+                                              height: 150,
+                                              width: 150,
+                                              child: KanjiDetailCard(
+                                                kvg: kvg,
+                                              ),
+                                            );
+                                          },
+                                        ),
+                                        Text(
+                                          e.meaning ?? '',
+                                          style: Get.textTheme.titleMedium,
+                                        ),
+                                      ],
                                     ),
                                     Column(
+                                      spacing: 30,
+                                      mainAxisSize: MainAxisSize.max,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
                                       crossAxisAlignment:
-                                          CrossAxisAlignment.start,
+                                          CrossAxisAlignment.center,
                                       children: [
-                                        Text("kunyomi"),
-                                        Text(e.kunyomi != null
-                                            ? e.kunyomi!
-                                                .replaceAll('、', "\n")
-                                                .replaceAll("（", "")
-                                                .replaceAll("）", "")
-                                                .toString()
-                                            : ''),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        Text("onYomi"),
-                                        Text(e.onyomi != null
-                                            ? e.onyomi!
-                                                .replaceAll('、', "\n")
-                                                .replaceAll("（", "")
-                                                .replaceAll("）", "")
-                                                .toString()
-                                            : ''),
-                                        SizedBox(
-                                          height: 10,
+                                        Column(
+                                          children: [
+                                            Text(
+                                              e.kunyomi != null
+                                                  ? e.kunyomi!
+                                                      .replaceAll('、', "\n")
+                                                      .replaceAll("（", "")
+                                                      .replaceAll("）", "")
+                                                      .toString()
+                                                  : '',
+                                              style: Get.textTheme.titleMedium,
+                                            ),
+                                            Text(
+                                              e.onyomi != null
+                                                  ? e.onyomi!
+                                                      .replaceAll('、', "\n")
+                                                      .replaceAll("（", "")
+                                                      .replaceAll("）", "")
+                                                      .toString()
+                                                  : '',
+                                              style: Get.textTheme.titleMedium,
+                                            ),
+                                          ],
                                         ),
                                         Row(
                                           children: [
@@ -135,7 +151,7 @@ class KanjiBrowsePage extends GetView<KanjiBrowseController> {
                                           ],
                                         )
                                       ],
-                                    )
+                                    ),
                                   ],
                                 ),
                               ],
@@ -281,3 +297,5 @@ class CustomSearchDeletgate extends SearchDelegate {
     );
   }
 }
+
+

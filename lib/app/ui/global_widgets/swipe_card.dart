@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:jp_transliterate/jp_transliterate.dart';
 import 'package:n4/app/data/models/vocabulary.dart';
+import 'package:n4/app/routes/app_routes.dart';
 import 'package:n4/app/ui/utils/util.dart';
 
 class SwipeCard extends StatefulWidget {
@@ -11,13 +12,14 @@ class SwipeCard extends StatefulWidget {
     required this.index,
     this.isReverse = false,
     this.isStudy = false,
+    this.currentVocabList = const [],
   }) : super(key: key);
 
   final Vocabulary vocab;
   final int index;
   final bool isReverse;
   final bool isStudy;
-
+  final List<Vocabulary> currentVocabList;
   @override
   State<SwipeCard> createState() => _SwipeCardState();
 }
@@ -44,7 +46,7 @@ class _SwipeCardState extends State<SwipeCard> {
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                spacing: 20,
+                spacing: 10,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Spacer(),
@@ -67,7 +69,8 @@ class _SwipeCardState extends State<SwipeCard> {
                     duration: Durations.medium1,
                     curve: Curves.easeIn,
                     child: FutureBuilder<List<TransliterationData>>(
-                      future: JpTransliterate.transliterateWords(kanji: widget.vocab.kanji),
+                      future: JpTransliterate.transliterateWords(
+                          kanji: widget.vocab.kanji),
                       builder: (context, snapshot) {
                         if (snapshot.data != null) {
                           return FuriganaText(
@@ -169,6 +172,13 @@ class _SwipeCardState extends State<SwipeCard> {
                         ],
                       ),
                     ),
+                  ),
+                  IconButton(
+                    onPressed: () {
+                      Get.toNamed(AppRoutes.EDITVOCAB,
+                          arguments: [widget.vocab, widget.currentVocabList]);
+                    },
+                    icon: Icon(Icons.edit),
                   ),
                   // Spacer(),
                   !widget.isStudy

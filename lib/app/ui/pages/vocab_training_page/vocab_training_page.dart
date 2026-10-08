@@ -33,6 +33,11 @@ class VocabTrainingPage extends GetView<VocabTrainingController> {
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
+                  Container(
+                    width: double.infinity,
+                    color: Get.theme.colorScheme.primaryContainer,
+                    child: Text(controller.round.toString()),
+                  ),
                   controller.forgotVocabs.isEmpty
                       ? Text(
                           "Congradulations you know all Words !",
@@ -60,11 +65,14 @@ class VocabTrainingPage extends GetView<VocabTrainingController> {
                         onPressed: () {
                           log("pressed ${controller.reviewVocabs.length}");
                           if (controller.forgotVocabs.isEmpty) {
+                            controller.round.value = 1;
                             controller.reviewVocabs.value =
                                 controller.vocabs.toList();
                             controller.forgotVocabs.clear();
                             controller.knownVocabs.clear();
                           } else {
+                            controller.round.value++;
+
                             if (controller.forgotVocabs.length == 1) {
                               controller.addForget(
                                 Vocabulary(

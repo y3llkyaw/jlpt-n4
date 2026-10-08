@@ -314,7 +314,7 @@ class DatabaseServices {
     final kanjiString = await db.query(
       'kanjis',
       where: 'level = ?',
-      whereArgs: [lvl],
+      whereArgs: [lvl.toUpperCase()],
     );
     final kanjiList = kanjiString.map((e) => Kanji.fromMap(e)).toList();
     await Future.wait(kanjiList.map((kanji) async {

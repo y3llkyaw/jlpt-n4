@@ -13,6 +13,8 @@ class VocabTrainingController extends GetxController {
   final knownVocabs = <Vocabulary>[].obs;
   final reviewVocabs = <Vocabulary>[].obs;
 
+  final round = 1.obs;
+
   final isFinished = false.obs;
   final resetToken = 0.obs;
 
